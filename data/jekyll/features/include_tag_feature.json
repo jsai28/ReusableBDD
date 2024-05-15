@@ -1,0 +1,866 @@
+[
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 1,
+        "step_name": "I have an _includes directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 2,
+        "step_name": "I have an \"_includes/header.html\" file that contains \"<header>My awesome blog header: {{include.param}}</header>\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 3,
+        "step_name": "I have an \"_includes/params.html\" file that contains \"Parameters:<ul>{% for param in include %}<li>{{param[0]}} = {{param[1]}}</li>{% endfor %}</ul>\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 4,
+        "step_name": "I have an \"_includes/ignore.html\" file that contains \"<footer>My blog footer</footer>\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 5,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 6,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 7,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 8,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 9,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 10,
+        "step_name": "I should see \"<header>My awesome blog header: myparam</header>\" in \"_site/2013/03/21/include-files.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 11,
+        "step_name": "I should not see \"myparam\" in \"_site/2013/03/21/ignore-params-if-unused.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 12,
+        "step_name": "I should see \"<li>date = today</li>\" in \"_site/2013/03/21/list-multiple-parameters.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 13,
+        "step_name": "I should see \"<li>start = tomorrow</li>\" in \"_site/2013/03/21/list-multiple-parameters.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 14,
+        "step_name": "I should not see \"<header>My awesome blog header: myparam</header>\" in \"_site/2013/03/21/dont-keep-parameters.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 15,
+        "step_name": "I should see \"<header>My awesome blog header: </header>\" in \"_site/2013/03/21/dont-keep-parameters.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 16,
+        "step_name": "I should see \"<li>cool = param with spaces</li>\" in \"_site/2013/04/07/allow-params-with-spaces-and-quotes.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 17,
+        "step_name": "I should see \"<li>super = \\\"quoted\\\"</li>\" in \"_site/2013/04/07/allow-params-with-spaces-and-quotes.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 18,
+        "step_name": "I should see \"<li>single = has \\\"quotes\\\"</li>\" in \"_site/2013/04/07/allow-params-with-spaces-and-quotes.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 19,
+        "step_name": "I should see \"<li>escaped = 'single' quotes</li>\" in \"_site/2013/04/07/allow-params-with-spaces-and-quotes.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 20,
+        "step_name": "I should see \"<li>param1_or_2 = value</li>\" in \"_site/2013/04/12/parameter-syntax.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 21,
+        "step_name": "I should see \"<li>local = some text</li>\" in \"_site/2013/06/22/pass-a-variable.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with parameters",
+        "step_num": 22,
+        "step_name": "I should see \"<li>title = Pass a variable</li>\" in \"_site/2013/06/22/pass-a-variable.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file from a variable",
+        "step_num": 1,
+        "step_name": "I have an _includes directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file from a variable",
+        "step_num": 2,
+        "step_name": "I have an \"_includes/snippet.html\" file that contains \"a snippet\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file from a variable",
+        "step_num": 3,
+        "step_name": "I have an \"_includes/parametrized.html\" file that contains \"works with {{include.what}}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file from a variable",
+        "step_num": 4,
+        "step_name": "I have a configuration file with",
+        "glue_code": "Given(%r!^I have a configuration file with:$!) do |table|\n  table.hashes.each do |row|\n    step %(I have a configuration file with \"#{row[\"key\"]}\" set to \"#{row[\"value\"]}\")\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file from a variable",
+        "step_num": 5,
+        "step_name": "I have an \"index.html\" page that contains \"{% include {{site.include_file1}} %} that {% include {{site.include_file2}} what='parameters' %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file from a variable",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file from a variable",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file from a variable",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file from a variable",
+        "step_num": 9,
+        "step_name": "I should see \"a snippet that works with parameters\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a variable file in a loop",
+        "step_num": 1,
+        "step_name": "I have an _includes directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a variable file in a loop",
+        "step_num": 2,
+        "step_name": "I have an \"_includes/one.html\" file that contains \"one\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a variable file in a loop",
+        "step_num": 3,
+        "step_name": "I have an \"_includes/two.html\" file that contains \"two\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a variable file in a loop",
+        "step_num": 4,
+        "step_name": "I have an \"index.html\" page with files \"[one.html, two.html]\" that contains \"{% for file in page.files %}{% include {{file}} %} {% endfor %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a variable file in a loop",
+        "step_num": 5,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a variable file in a loop",
+        "step_num": 6,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a variable file in a loop",
+        "step_num": 7,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a variable file in a loop",
+        "step_num": 8,
+        "step_name": "I should see \"one two\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with variables and filters",
+        "step_num": 1,
+        "step_name": "I have an _includes directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with variables and filters",
+        "step_num": 2,
+        "step_name": "I have an \"_includes/one.html\" file that contains \"one included\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with variables and filters",
+        "step_num": 3,
+        "step_name": "I have a configuration file with",
+        "glue_code": "Given(%r!^I have a configuration file with:$!) do |table|\n  table.hashes.each do |row|\n    step %(I have a configuration file with \"#{row[\"key\"]}\" set to \"#{row[\"value\"]}\")\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with variables and filters",
+        "step_num": 4,
+        "step_name": "I have an \"index.html\" page that contains \"{% include {{ site.include_file | append: '.html' }} %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with variables and filters",
+        "step_num": 5,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with variables and filters",
+        "step_num": 6,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with variables and filters",
+        "step_num": 7,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with variables and filters",
+        "step_num": 8,
+        "step_name": "I should see \"one included\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with partial variables",
+        "step_num": 1,
+        "step_name": "I have an _includes directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with partial variables",
+        "step_num": 2,
+        "step_name": "I have an \"_includes/one.html\" file that contains \"one included\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with partial variables",
+        "step_num": 3,
+        "step_name": "I have a configuration file with",
+        "glue_code": "Given(%r!^I have a configuration file with:$!) do |table|\n  table.hashes.each do |row|\n    step %(I have a configuration file with \"#{row[\"key\"]}\" set to \"#{row[\"value\"]}\")\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with partial variables",
+        "step_num": 4,
+        "step_name": "I have an \"index.html\" page that contains \"{% include {{ site.include_file }}.html %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with partial variables",
+        "step_num": 5,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with partial variables",
+        "step_num": 6,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with partial variables",
+        "step_num": 7,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with partial variables",
+        "step_num": 8,
+        "step_name": "I should see \"one included\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file and rebuild when include content is changed",
+        "step_num": 1,
+        "step_name": "I have an _includes directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file and rebuild when include content is changed",
+        "step_num": 2,
+        "step_name": "I have an \"_includes/one.html\" file that contains \"include\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file and rebuild when include content is changed",
+        "step_num": 3,
+        "step_name": "I have an \"index.html\" page that contains \"{% include one.html %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file and rebuild when include content is changed",
+        "step_num": 4,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file and rebuild when include content is changed",
+        "step_num": 5,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file and rebuild when include content is changed",
+        "step_num": 6,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file and rebuild when include content is changed",
+        "step_num": 7,
+        "step_name": "I should see \"include\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file and rebuild when include content is changed",
+        "step_num": 8,
+        "step_name": "I wait 1 second",
+        "glue_code": "Given(%r!^I wait (\\d+) second(s?)$!) do |time, _|\n  sleep(time.to_f)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file and rebuild when include content is changed",
+        "step_num": 9,
+        "step_name": "I have an \"_includes/one.html\" file that contains \"include content changed\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file and rebuild when include content is changed",
+        "step_num": 10,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file and rebuild when include content is changed",
+        "step_num": 11,
+        "step_name": "I should see \"include content changed\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with multiple variables",
+        "step_num": 1,
+        "step_name": "I have an _includes directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with multiple variables",
+        "step_num": 2,
+        "step_name": "I have an \"_includes/header-en.html\" file that contains \"include\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with multiple variables",
+        "step_num": 3,
+        "step_name": "I have an \"index.html\" page that contains \"{% assign name = 'header' %}{% assign locale = 'en' %}{% include {{name}}-{{locale}}.html %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with multiple variables",
+        "step_num": 4,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with multiple variables",
+        "step_num": 5,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with multiple variables",
+        "step_num": 6,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file with multiple variables",
+        "step_num": 7,
+        "step_name": "I should see \"include\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 1,
+        "step_name": "I have an _includes directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 2,
+        "step_name": "I have an \"_includes/header-en.html\" file that contains \"include\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 3,
+        "step_name": "I have an \"index.html\" page that contains \"{% include ./header-en.html %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 4,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 5,
+        "step_name": "I should get a non-zero exit status",
+        "glue_code": "Then(%r!^I should get a non-zero exit(?:-| )status$!) do\n  step %(I should not see \"EXIT STATUS: 0\" in the build output)\nend\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 6,
+        "step_name": "I should see \"Invalid syntax for include tag.\" in the build output",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in the build output$!) do |negative, text|\n  if negative.nil? || negative.empty?\n    expect(jekyll_run_output).to match Regexp.new(text)\n  else\n    expect(jekyll_run_output).not_to match Regexp.new(text)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 7,
+        "step_name": "I have an \"index.html\" page that contains \"{% include foo/.header-en.html %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 8,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 9,
+        "step_name": "I should get a non-zero exit status",
+        "glue_code": "Then(%r!^I should get a non-zero exit(?:-| )status$!) do\n  step %(I should not see \"EXIT STATUS: 0\" in the build output)\nend\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 10,
+        "step_name": "I should see \"Invalid syntax for include tag.\" in the build output",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in the build output$!) do |negative, text|\n  if negative.nil? || negative.empty?\n    expect(jekyll_run_output).to match Regexp.new(text)\n  else\n    expect(jekyll_run_output).not_to match Regexp.new(text)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 11,
+        "step_name": "I have an \"index.html\" page that contains \"{% include //header-en.html %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 12,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 13,
+        "step_name": "I should get a non-zero exit status",
+        "glue_code": "Then(%r!^I should get a non-zero exit(?:-| )status$!) do\n  step %(I should not see \"EXIT STATUS: 0\" in the build output)\nend\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 14,
+        "step_name": "I should see \"Invalid syntax for include tag.\" in the build output",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in the build output$!) do |negative, text|\n  if negative.nil? || negative.empty?\n    expect(jekyll_run_output).to match Regexp.new(text)\n  else\n    expect(jekyll_run_output).not_to match Regexp.new(text)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 15,
+        "step_name": "I have an \"index.html\" page that contains \"{% include ..header-en.html %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 16,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 17,
+        "step_name": "I should get a non-zero exit status",
+        "glue_code": "Then(%r!^I should get a non-zero exit(?:-| )status$!) do\n  step %(I should not see \"EXIT STATUS: 0\" in the build output)\nend\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 18,
+        "step_name": "I should see \"Invalid syntax for include tag.\" in the build output",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in the build output$!) do |negative, text|\n  if negative.nil? || negative.empty?\n    expect(jekyll_run_output).to match Regexp.new(text)\n  else\n    expect(jekyll_run_output).not_to match Regexp.new(text)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 19,
+        "step_name": "I have an \"index.html\" page that contains \"{% include header-en.html %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 20,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 21,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 22,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "include_tag.feature",
+        "scenario": "Include a file-path with non-alphanumeric character sequences",
+        "step_num": 23,
+        "step_name": "I should see \"include\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    }
+]

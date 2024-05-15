@@ -1,0 +1,695 @@
+[
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt without a layout",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page that contains \"{% for post in site.posts %}{{ post.excerpt }}{% endfor %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt without a layout",
+        "step_num": 2,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt without a layout",
+        "step_num": 3,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt without a layout",
+        "step_num": 4,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt without a layout",
+        "step_num": 5,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt without a layout",
+        "step_num": 6,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt without a layout",
+        "step_num": 7,
+        "step_name": "I should see exactly \"<p>content for entry1.</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should see exactly \"(.*)\" in \"(.*)\"$!) do |text, file|\n  step %(the \"#{file}\" file should exist)\n  expect(file_contents(file).strip).to eq text\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page that contains \"{% for post in site.posts %}{{ post.excerpt }}{% endfor %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 2,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 3,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 4,
+        "step_name": "I have a post layout that contains \"{{ page.excerpt }}\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 5,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 9,
+        "step_name": "the _site/2007 directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 10,
+        "step_name": "the _site/2007/12 directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 11,
+        "step_name": "the _site/2007/12/31 directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 12,
+        "step_name": "the \"_site/2007/12/31/entry1.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 13,
+        "step_name": "I should see exactly \"<p>content for entry1.</p>\" in \"_site/2007/12/31/entry1.html\"",
+        "glue_code": "Then(%r!^I should see exactly \"(.*)\" in \"(.*)\"$!) do |text, file|\n  step %(the \"#{file}\" file should exist)\n  expect(file_contents(file).strip).to eq text\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout",
+        "step_num": 14,
+        "step_name": "I should see exactly \"<p>content for entry1.</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should see exactly \"(.*)\" in \"(.*)\"$!) do |text, file|\n  step %(the \"#{file}\" file should exist)\n  expect(file_contents(file).strip).to eq text\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page that contains \"{% for post in site.posts %}{{ post.excerpt }}{% endfor %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 2,
+        "step_name": "I have a configuration file with \"baseurl\" set to \"/blog\"",
+        "glue_code": "Given(%r!^I have a configuration file with \"(.*)\" set to \"(.*)\"$!) do |key, value|\n  config = \\\n    if source_dir.join(\"_config.yml\").exist?\n      SafeYAML.load_file(source_dir.join(\"_config.yml\"))\n    else\n      {}\n    end\n  config[key] = SafeYAML.load(value)\n  Jekyll.set_timezone(value) if key == \"timezone\"\n  File.write(\"_config.yml\", YAML.dump(config))\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 3,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 4,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 5,
+        "step_name": "I have a post layout that contains \"{{ page.excerpt }}\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 6,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 7,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 8,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 9,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 10,
+        "step_name": "the _site/2007 directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 11,
+        "step_name": "the _site/2007/12 directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 12,
+        "step_name": "the _site/2007/12/31 directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 13,
+        "step_name": "the \"_site/2007/12/31/entry1.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 14,
+        "step_name": "I should see exactly \"<p>/blog/assets/style.css</p>\" in \"_site/2007/12/31/entry1.html\"",
+        "glue_code": "Then(%r!^I should see exactly \"(.*)\" in \"(.*)\"$!) do |text, file|\n  step %(the \"#{file}\" file should exist)\n  expect(file_contents(file).strip).to eq text\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt with Liquid constructs from a post with a layout",
+        "step_num": 15,
+        "step_name": "I should see exactly \"<p>/blog/assets/style.css</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should see exactly \"(.*)\" in \"(.*)\"$!) do |text, file|\n  step %(the \"#{file}\" file should exist)\n  expect(file_contents(file).strip).to eq text\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page that contains \"{% for post in site.posts %}{{ post.excerpt }}{% endfor %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 2,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 3,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 4,
+        "step_name": "I have a post layout that contains \"<html><head></head><body>{{ page.excerpt }}</body></html>\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 5,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 9,
+        "step_name": "the _site/2007 directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 10,
+        "step_name": "the _site/2007/12 directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 11,
+        "step_name": "the _site/2007/12/31 directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 12,
+        "step_name": "the \"_site/2007/12/31/entry1.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 13,
+        "step_name": "I should see \"<p>content for entry1.</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "An excerpt from a post with a layout which has context",
+        "step_num": 14,
+        "step_name": "I should see \"<html><head></head><body><p>content for entry1.</p>\\n</body></html>\" in \"_site/2007/12/31/entry1.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page that contains \"{% for post in site.posts %}{{ post.excerpt }}{% endfor %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 2,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 3,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 4,
+        "step_name": "I have a post layout that contains \"{{ page.excerpt }}\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 5,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 8,
+        "step_name": "the _site/2017/07/06 directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 9,
+        "step_name": "the \"_site/2017/07/06/unrendered-post.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 10,
+        "step_name": "the \"_site/2017/07/06/rendered-post.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 11,
+        "step_name": "I should see \"Liquid is not rendered at {{ page.url }}\" in \"_site/2017/07/06/unrendered-post.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 12,
+        "step_name": "I should see \"<p>Liquid is rendered at /2017/07/06/rendered-post.html</p>\" in \"_site/2017/07/06/rendered-post.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts having 'render_with_liquid' in their front matter",
+        "step_num": 13,
+        "step_name": "I should see \"<p>Liquid is not rendered at {{ page.url }}</p>\\n<p>Liquid is rendered at /2017/07/06/rendered-post.html</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 1,
+        "step_name": "I have a configuration file with",
+        "glue_code": "Given(%r!^I have a configuration file with:$!) do |table|\n  table.hashes.each do |row|\n    step %(I have a configuration file with \"#{row[\"key\"]}\" set to \"#{row[\"value\"]}\")\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 2,
+        "step_name": "I have an \"index.html\" page that contains \"{% for post in site.posts %}{{ post.excerpt }}{% endfor %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 3,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 4,
+        "step_name": "I have a post layout that contains \"{{ page.excerpt }}\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 5,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 6,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 7,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 8,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 9,
+        "step_name": "I should not see \"Kramdown warning\" in the build output",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in the build output$!) do |negative, text|\n  if negative.nil? || negative.empty?\n    expect(jekyll_run_output).to match Regexp.new(text)\n  else\n    expect(jekyll_run_output).not_to match Regexp.new(text)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 10,
+        "step_name": "I should see exactly \"<p>Install Jekyll</p>\" in \"_site/just-text-excerpt.html\"",
+        "glue_code": "Then(%r!^I should see exactly \"(.*)\" in \"(.*)\"$!) do |text, file|\n  step %(the \"#{file}\" file should exist)\n  expect(file_contents(file).strip).to eq text\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 11,
+        "step_name": "I should see \"<p>Alpha <sup id=\\\"fnref:1\\\" role=\\\"doc-noteref\\\"><a href=\\\"#fn:1\\\" class=\\\"footnote\\\" rel=\\\"footnote\\\">1</a></sup></p>\" in \"_site/text-and-footnote.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 12,
+        "step_name": "I should see \"<p>Omega sigma\u00a0<a href=\\\"#fnref:1\\\" class=\\\"reversefootnote\\\" role=\\\"doc-backlink\\\">&#8617;</a></p>\" in \"_site/text-and-footnote.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 13,
+        "step_name": "I should see \"<p>Read <a href=\\\"docs.jekyll.com\\\">docs</a></p>\" in \"_site/text-and-reference-link.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "post_excerpts.feature",
+        "scenario": "Excerpts from posts with reference-style Markdown links",
+        "step_num": 14,
+        "step_name": "I should see \"<p>Check out <a href=\\\"jekyllrb.com\\\">jekyll</a></p>\" in \"_site/text-and-self-referencing-link.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    }
+]

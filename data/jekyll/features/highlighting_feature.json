@@ -1,0 +1,119 @@
+[
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "highlighting an apache configuration",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page with content:$!) do |file, text|\n  File.write(file, <<~DATA)\n    ---\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "highlighting an apache configuration",
+        "step_num": 2,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "highlighting an apache configuration",
+        "step_num": 3,
+        "step_name": "I should get a zero exit-status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "highlighting an apache configuration",
+        "step_num": 4,
+        "step_name": "I should see \"<span class=\"nc\">RewriteCond</span>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "marking lines 1 and 2 in a Ruby code block with valid syntax",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page with content:$!) do |file, text|\n  File.write(file, <<~DATA)\n    ---\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "marking lines 1 and 2 in a Ruby code block with valid syntax",
+        "step_num": 2,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "marking lines 1 and 2 in a Ruby code block with valid syntax",
+        "step_num": 3,
+        "step_name": "I should get a zero exit-status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "marking lines 1 and 2 in a Ruby code block with valid syntax",
+        "step_num": 4,
+        "step_name": "I should see \"<span class=\\\"hll\\\"><span class=\\\"k\\\">module</span> <span class=\\\"nn\\\">Jekyll</span>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "marking lines 1 and 2 in a Ruby code block with valid syntax",
+        "step_num": 5,
+        "step_name": "I should see \"<span class=\\\"hll\\\">  <span class=\\\"k\\\">module</span> <span class=\\\"nn\\\">Tags</span>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "marking lines 1 and 2 in a Ruby code block with valid syntax",
+        "step_num": 6,
+        "step_name": "I should see \"<span class=\\\"k\\\">class</span> <span class=\\\"nc\\\">HighlightBlock</span\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "marking a single line in a Ruby code block with invalid syntax",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page with content:$!) do |file, text|\n  File.write(file, <<~DATA)\n    ---\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "marking a single line in a Ruby code block with invalid syntax",
+        "step_num": 2,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "highlighting.feature",
+        "scenario": "marking a single line in a Ruby code block with invalid syntax",
+        "step_num": 3,
+        "step_name": "I should see \"Liquid Exception: Syntax Error\" in the build output",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in the build output$!) do |negative, text|\n  if negative.nil? || negative.empty?\n    expect(jekyll_run_output).to match Regexp.new(text)\n  else\n    expect(jekyll_run_output).not_to match Regexp.new(text)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    }
+]

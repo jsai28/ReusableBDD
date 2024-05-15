@@ -1,0 +1,281 @@
+[
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Paginate with N posts per page",
+        "step_num": 1,
+        "step_name": "I have a configuration file with",
+        "glue_code": "Given(%r!^I have a configuration file with:$!) do |table|\n  table.hashes.each do |row|\n    step %(I have a configuration file with \"#{row[\"key\"]}\" set to \"#{row[\"value\"]}\")\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Paginate with N posts per page",
+        "step_num": 2,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Paginate with N posts per page",
+        "step_num": 3,
+        "step_name": "I have an \"index.html\" page that contains \"{{ paginator.posts.size }}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Paginate with N posts per page",
+        "step_num": 4,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Paginate with N posts per page",
+        "step_num": 5,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Paginate with N posts per page",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Paginate with N posts per page",
+        "step_num": 7,
+        "step_name": "the _site/page<exist> directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Paginate with N posts per page",
+        "step_num": 8,
+        "step_name": "the \"_site/page<exist>/index.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Paginate with N posts per page",
+        "step_num": 9,
+        "step_name": "I should see \"<posts>\" in \"_site/page<exist>/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Paginate with N posts per page",
+        "step_num": 10,
+        "step_name": "the \"_site/page<not_exist>/index.html\" file should not exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path",
+        "step_num": 1,
+        "step_name": "I have a configuration file with",
+        "glue_code": "Given(%r!^I have a configuration file with:$!) do |table|\n  table.hashes.each do |row|\n    step %(I have a configuration file with \"#{row[\"key\"]}\" set to \"#{row[\"value\"]}\")\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path",
+        "step_num": 2,
+        "step_name": "I have a blog directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path",
+        "step_num": 3,
+        "step_name": "I have an \"blog/index.html\" page that contains \"{{ paginator.posts.size }}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path",
+        "step_num": 4,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path",
+        "step_num": 5,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path",
+        "step_num": 7,
+        "step_name": "the _site/blog/page-<exist> directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path",
+        "step_num": 8,
+        "step_name": "the \"_site/blog/page-<exist>/index.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path",
+        "step_num": 9,
+        "step_name": "I should see \"<posts>\" in \"_site/blog/page-<exist>/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path",
+        "step_num": 10,
+        "step_name": "the \"_site/blog/page-<not_exist>/index.html\" file should not exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path without an index.html in it",
+        "step_num": 1,
+        "step_name": "I have a configuration file with",
+        "glue_code": "Given(%r!^I have a configuration file with:$!) do |table|\n  table.hashes.each do |row|\n    step %(I have a configuration file with \"#{row[\"key\"]}\" set to \"#{row[\"value\"]}\")\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path without an index.html in it",
+        "step_num": 2,
+        "step_name": "I have a blog directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path without an index.html in it",
+        "step_num": 3,
+        "step_name": "I have an \"blog/index.html\" page that contains \"{{ paginator.posts.size }}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path without an index.html in it",
+        "step_num": 4,
+        "step_name": "I have an \"index.html\" page that contains \"Don't pick me!\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path without an index.html in it",
+        "step_num": 5,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path without an index.html in it",
+        "step_num": 6,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path without an index.html in it",
+        "step_num": 7,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path without an index.html in it",
+        "step_num": 8,
+        "step_name": "the _site/blog/page/<exist> directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path without an index.html in it",
+        "step_num": 9,
+        "step_name": "the \"_site/blog/page/<exist>/index.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path without an index.html in it",
+        "step_num": 10,
+        "step_name": "I should see \"<posts>\" in \"_site/blog/page/<exist>/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "pagination.feature",
+        "scenario": "Setting a custom pagination path without an index.html in it",
+        "step_num": 11,
+        "step_name": "the \"_site/blog/page/<not_exist>/index.html\" file should not exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    }
+]

@@ -1,0 +1,1622 @@
+[
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Custom collections_dir containing only posts",
+        "step_num": 1,
+        "step_name": "I have a collections/_posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Custom collections_dir containing only posts",
+        "step_num": 2,
+        "step_name": "I have the following post within the \"collections\" directory",
+        "glue_code": "Given(%r!^I have the following (draft|post)s? within the \"(.*)\" directory:$!) do |type, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n\n    filename = type == \"draft\" ? \"#{title}.markdown\" : \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.markdown\"\n\n    path = File.join(folder, \"_#{type}s\", filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Custom collections_dir containing only posts",
+        "step_num": 3,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Custom collections_dir containing only posts",
+        "step_num": 4,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Custom collections_dir containing only posts",
+        "step_num": 5,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Custom collections_dir containing only posts",
+        "step_num": 6,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Custom collections_dir containing only posts",
+        "step_num": 7,
+        "step_name": "I should see \"Random Content.\" in \"_site/2009/03/27/gathered-post.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing posts",
+        "step_num": 1,
+        "step_name": "I have a collections/_puppies directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing posts",
+        "step_num": 2,
+        "step_name": "I have the following document under the \"puppies\" collection within the \"collections\" directory",
+        "glue_code": "Given(%r!^I have the following documents? under the \"(.*)\" collection within the \"(.*)\" directory:$!) do |label, dir, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing posts",
+        "step_num": 3,
+        "step_name": "I have a collections/_posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing posts",
+        "step_num": 4,
+        "step_name": "I have the following post within the \"collections\" directory",
+        "glue_code": "Given(%r!^I have the following (draft|post)s? within the \"(.*)\" directory:$!) do |type, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n\n    filename = type == \"draft\" ? \"#{title}.markdown\" : \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.markdown\"\n\n    path = File.join(folder, \"_#{type}s\", filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing posts",
+        "step_num": 5,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing posts",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing posts",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing posts",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing posts",
+        "step_num": 9,
+        "step_name": "the \"_site/puppies/rover.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing posts",
+        "step_num": 10,
+        "step_name": "I should see \"Random Content.\" in \"_site/2009/03/27/gathered-post.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with posts at the site root",
+        "step_num": 1,
+        "step_name": "I have a collections/_puppies directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with posts at the site root",
+        "step_num": 2,
+        "step_name": "I have the following document under the \"puppies\" collection within the \"collections\" directory",
+        "glue_code": "Given(%r!^I have the following documents? under the \"(.*)\" collection within the \"(.*)\" directory:$!) do |label, dir, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with posts at the site root",
+        "step_num": 3,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with posts at the site root",
+        "step_num": 4,
+        "step_name": "I have the following post",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with posts at the site root",
+        "step_num": 5,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with posts at the site root",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with posts at the site root",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with posts at the site root",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with posts at the site root",
+        "step_num": 9,
+        "step_name": "the \"_site/puppies/rover.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with posts at the site root",
+        "step_num": 10,
+        "step_name": "the \"_site/2009/03/27/post-at-root.html\" file should not exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with posts at the site root",
+        "step_num": 11,
+        "step_name": "the _site/_posts directory should not exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing drafts",
+        "step_num": 1,
+        "step_name": "I have a collections/_puppies directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing drafts",
+        "step_num": 2,
+        "step_name": "I have the following document under the \"puppies\" collection within the \"collections\" directory",
+        "glue_code": "Given(%r!^I have the following documents? under the \"(.*)\" collection within the \"(.*)\" directory:$!) do |label, dir, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing drafts",
+        "step_num": 3,
+        "step_name": "I have a collections/_drafts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing drafts",
+        "step_num": 4,
+        "step_name": "I have the following draft within the \"collections\" directory",
+        "glue_code": "Given(%r!^I have the following (draft|post)s? within the \"(.*)\" directory:$!) do |type, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n\n    filename = type == \"draft\" ? \"#{title}.markdown\" : \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.markdown\"\n\n    path = File.join(folder, \"_#{type}s\", filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing drafts",
+        "step_num": 5,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing drafts",
+        "step_num": 6,
+        "step_name": "I run jekyll build --drafts",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing drafts",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing drafts",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing drafts",
+        "step_num": 9,
+        "step_name": "the \"_site/puppies/rover.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing drafts",
+        "step_num": 10,
+        "step_name": "I should see \"Random Content.\" in \"_site/2009/03/27/gathered-draft.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir also containing drafts",
+        "step_num": 11,
+        "step_name": "the _site/collections directory should not exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with drafts at the site root",
+        "step_num": 1,
+        "step_name": "I have a collections/_puppies directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with drafts at the site root",
+        "step_num": 2,
+        "step_name": "I have the following document under the \"puppies\" collection within the \"collections\" directory",
+        "glue_code": "Given(%r!^I have the following documents? under the \"(.*)\" collection within the \"(.*)\" directory:$!) do |label, dir, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with drafts at the site root",
+        "step_num": 3,
+        "step_name": "I have a _drafts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with drafts at the site root",
+        "step_num": 4,
+        "step_name": "I have the following draft",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with drafts at the site root",
+        "step_num": 5,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with drafts at the site root",
+        "step_num": 6,
+        "step_name": "I run jekyll build --drafts",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with drafts at the site root",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with drafts at the site root",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with drafts at the site root",
+        "step_num": 9,
+        "step_name": "the \"_site/puppies/rover.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with drafts at the site root",
+        "step_num": 10,
+        "step_name": "the \"_site/2009/03/27/draft-at-root.html\" file should not exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 1,
+        "step_name": "I have a gathering/_puppies directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 2,
+        "step_name": "I have a gathering/_posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 3,
+        "step_name": "I have a gathering/_drafts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 4,
+        "step_name": "I have a _puppies directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 5,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 6,
+        "step_name": "I have a _drafts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 7,
+        "step_name": "I have the following document under the \"puppies\" collection within the \"gathering\" directory",
+        "glue_code": "Given(%r!^I have the following documents? under the \"(.*)\" collection within the \"(.*)\" directory:$!) do |label, dir, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 8,
+        "step_name": "I have the following document under the puppies collection",
+        "glue_code": "Given(%r!^I have the following documents? under the (.*) collection:$!) do |folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    filename = \"#{title}.md\"\n    dest_folder = \"_#{folder}\"\n\n    path = File.join(dest_folder, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 9,
+        "step_name": "I have the following post within the \"gathering\" directory",
+        "glue_code": "Given(%r!^I have the following (draft|post)s? within the \"(.*)\" directory:$!) do |type, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n\n    filename = type == \"draft\" ? \"#{title}.markdown\" : \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.markdown\"\n\n    path = File.join(folder, \"_#{type}s\", filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 10,
+        "step_name": "I have the following post",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 11,
+        "step_name": "I have the following draft within the \"gathering\" directory",
+        "glue_code": "Given(%r!^I have the following (draft|post)s? within the \"(.*)\" directory:$!) do |type, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n\n    filename = type == \"draft\" ? \"#{title}.markdown\" : \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.markdown\"\n\n    path = File.join(folder, \"_#{type}s\", filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 12,
+        "step_name": "I have the following draft",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 13,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 14,
+        "step_name": "I have a \"gathering/_puppies/static_file.txt\" file that contains \"Static content.\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 15,
+        "step_name": "I have a gathering/_puppies/nested directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 16,
+        "step_name": "I have a \"gathering/_puppies/nested/static_file.txt\" file that contains \"Nested Static content.\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 17,
+        "step_name": "I run jekyll build --drafts",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 18,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 19,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 20,
+        "step_name": "the \"_site/puppies/rover-in-gathering.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 21,
+        "step_name": "the \"_site/2009/03/27/post-in-gathering.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 22,
+        "step_name": "the \"_site/2009/03/27/draft-in-gathering.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 23,
+        "step_name": "the \"_site/2009/03/27/draft-at-root.html\" file should not exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 24,
+        "step_name": "the \"_site/puppies/rover-at-root.html\" file should not exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 25,
+        "step_name": "I should see exactly \"Static content.\" in \"_site/puppies/static_file.txt\"",
+        "glue_code": "Then(%r!^I should see exactly \"(.*)\" in \"(.*)\"$!) do |text, file|\n  step %(the \"#{file}\" file should exist)\n  expect(file_contents(file).strip).to eq text\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 26,
+        "step_name": "I should see exactly \"Nested Static content.\" in \"_site/puppies/nested/static_file.txt\"",
+        "glue_code": "Then(%r!^I should see exactly \"(.*)\" in \"(.*)\"$!) do |text, file|\n  step %(the \"#{file}\" file should exist)\n  expect(file_contents(file).strip).to eq text\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 27,
+        "step_name": "the _site/gathering directory should not exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "A complex site with collections posts and drafts at various locations",
+        "step_num": 28,
+        "step_name": "the _site/_posts directory should not exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection with a document that includes a relative document",
+        "step_num": 1,
+        "step_name": "I have a _puppies directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection with a document that includes a relative document",
+        "step_num": 2,
+        "step_name": "I have the following documents under the puppies collection",
+        "glue_code": "Given(%r!^I have the following documents? under the (.*) collection:$!) do |folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    filename = \"#{title}.md\"\n    dest_folder = \"_#{folder}\"\n\n    path = File.join(dest_folder, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection with a document that includes a relative document",
+        "step_num": 3,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection with a document that includes a relative document",
+        "step_num": 4,
+        "step_name": "I have the following post",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection with a document that includes a relative document",
+        "step_num": 5,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection with a document that includes a relative document",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection with a document that includes a relative document",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection with a document that includes a relative document",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection with a document that includes a relative document",
+        "step_num": 9,
+        "step_name": "the \"_site/puppies/rover.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection with a document that includes a relative document",
+        "step_num": 10,
+        "step_name": "I should see \"excerpt for all docs.\" in \"_site/puppies/rover.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection with a document that includes a relative document",
+        "step_num": 11,
+        "step_name": "I should see \"Random Content.\" in \"_site/2009/03/27/gathered-post.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with a document that includes a relative document",
+        "step_num": 1,
+        "step_name": "I have a collections/_puppies directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with a document that includes a relative document",
+        "step_num": 2,
+        "step_name": "I have the following documents under the \"puppies\" collection within the \"collections\" directory",
+        "glue_code": "Given(%r!^I have the following documents? under the \"(.*)\" collection within the \"(.*)\" directory:$!) do |label, dir, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with a document that includes a relative document",
+        "step_num": 3,
+        "step_name": "I have a collections/_posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with a document that includes a relative document",
+        "step_num": 4,
+        "step_name": "I have the following post within the \"collections\" directory",
+        "glue_code": "Given(%r!^I have the following (draft|post)s? within the \"(.*)\" directory:$!) do |type, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n\n    filename = type == \"draft\" ? \"#{title}.markdown\" : \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.markdown\"\n\n    path = File.join(folder, \"_#{type}s\", filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with a document that includes a relative document",
+        "step_num": 5,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with a document that includes a relative document",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with a document that includes a relative document",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with a document that includes a relative document",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with a document that includes a relative document",
+        "step_num": 9,
+        "step_name": "the \"_site/puppies/rover.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with a document that includes a relative document",
+        "step_num": 10,
+        "step_name": "I should see \"excerpt for all docs.\" in \"_site/puppies/rover.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Rendered collection in custom collections_dir with a document that includes a relative document",
+        "step_num": 11,
+        "step_name": "I should see \"Random Content.\" in \"_site/2009/03/27/gathered-post.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 1,
+        "step_name": "I have a gathering/_players/managers directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 2,
+        "step_name": "I have a gathering/_players/recruits directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 3,
+        "step_name": "I have a gathering/_players/standby directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 4,
+        "step_name": "I have the following documents nested inside \"managers\" directory under the \"players\" collection within the \"gathering\" directory",
+        "glue_code": "Given(%r!^I have the following documents? nested inside \"(.*)\" directory under the \"(.*)\" collection within the \"(.*)\" directory:$!) do |subdir, label, dir, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", subdir, \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 5,
+        "step_name": "I have the following documents nested inside \"recruits\" directory under the \"players\" collection within the \"gathering\" directory",
+        "glue_code": "Given(%r!^I have the following documents? nested inside \"(.*)\" directory under the \"(.*)\" collection within the \"(.*)\" directory:$!) do |subdir, label, dir, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", subdir, \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 6,
+        "step_name": "I have the following documents nested inside \"standby\" directory under the \"players\" collection within the \"gathering\" directory",
+        "glue_code": "Given(%r!^I have the following documents? nested inside \"(.*)\" directory under the \"(.*)\" collection within the \"(.*)\" directory:$!) do |subdir, label, dir, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", subdir, \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 7,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 8,
+        "step_name": "I have a \"index.md\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 9,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 10,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 11,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 12,
+        "step_name": "I should see \"<p>Tony Stark: Manager: true</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 13,
+        "step_name": "I should see \"<p>Tony Stark: Recruit: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 14,
+        "step_name": "I should see \"<p>Tony Stark: Villain: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 15,
+        "step_name": "I should see \"<p>Peter Parker: Manager: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 16,
+        "step_name": "I should see \"<p>Peter Parker: Recruit: true</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 17,
+        "step_name": "I should see \"<p>Peter Parker: Villain: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 18,
+        "step_name": "I should see \"<p>Steve Rogers: Manager: true</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 19,
+        "step_name": "I should see \"<p>Steve Rogers: Recruit: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 20,
+        "step_name": "I should see \"<p>Steve Rogers: Villain: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 21,
+        "step_name": "I should see \"<p>Wanda Maximoff: Manager: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 22,
+        "step_name": "I should see \"<p>Wanda Maximoff: Recruit: true</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 23,
+        "step_name": "I should see \"<p>Wanda Maximoff: Villain: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 24,
+        "step_name": "I should see \"<p>Thanos: Manager: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 25,
+        "step_name": "I should see \"<p>Thanos: Recruit: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 26,
+        "step_name": "I should see \"<p>Thanos: Villain: true</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 27,
+        "step_name": "I should see \"<p>Loki: Manager: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 28,
+        "step_name": "I should see \"<p>Loki: Recruit: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Front matter defaults and custom collections directory",
+        "step_num": 29,
+        "step_name": "I should see \"<p>Loki: Villain: false</p>\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page that contains \"Collections: {{ site.tutorials | map: 'title' | join: ', ' }}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 2,
+        "step_name": "I have fixture collections in \"gathering\" directory",
+        "glue_code": "Given(%r!^I have fixture collections(?: in \"(.*)\" directory)?$!) do |directory|\n  collections_dir = File.join(source_dir, directory.to_s)\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_methods\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_thanksgiving\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_tutorials\"), collections_dir\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 3,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 4,
+        "step_name": "I have a \"_layouts/tutorial.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 5,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 9,
+        "step_name": "I should see \"Collections: Getting Started, Let's Roll!, Dive-In and Publish Already!, Tip of the Iceberg, Extending with Plugins, Graduation Day\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 10,
+        "step_name": "I should not see \"Previous: Graduation Day\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 11,
+        "step_name": "I should not see \"Next: Tip of the Iceberg\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 12,
+        "step_name": "I should see \"Previous: Getting Started\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in all entries",
+        "step_num": 13,
+        "step_name": "I should see \"Next: Dive-In and Publish Already!\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page that contains \"Collections: {{ site.tutorials | map: 'title' | join: ', ' }}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 2,
+        "step_name": "I have fixture collections in \"gathering\" directory",
+        "glue_code": "Given(%r!^I have fixture collections(?: in \"(.*)\" directory)?$!) do |directory|\n  collections_dir = File.join(source_dir, directory.to_s)\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_methods\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_thanksgiving\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_tutorials\"), collections_dir\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 3,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 4,
+        "step_name": "I have a \"_layouts/tutorial.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 5,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 9,
+        "step_name": "I should see \"'approx_time' not defined\" in the build output",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in the build output$!) do |negative, text|\n  if negative.nil? || negative.empty?\n    expect(jekyll_run_output).to match Regexp.new(text)\n  else\n    expect(jekyll_run_output).not_to match Regexp.new(text)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 10,
+        "step_name": "I should see \"Collections: Extending with Plugins, Let's Roll!, Getting Started, Graduation Day, Dive-In and Publish Already!, Tip of the Iceberg\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 11,
+        "step_name": "I should see \"Previous: Getting Started\" in \"_site/tutorials/graduation-day.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Sort all entries by a Front Matter key defined in only some entries",
+        "step_num": 12,
+        "step_name": "I should see \"Next: Dive-In and Publish Already!\" in \"_site/tutorials/graduation-day.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page that contains \"Collections: {{ site.tutorials | map: 'title' | join: ', ' }}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 2,
+        "step_name": "I have fixture collections in \"gathering\" directory",
+        "glue_code": "Given(%r!^I have fixture collections(?: in \"(.*)\" directory)?$!) do |directory|\n  collections_dir = File.join(source_dir, directory.to_s)\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_methods\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_thanksgiving\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_tutorials\"), collections_dir\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 3,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 4,
+        "step_name": "I have a \"_layouts/tutorial.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 5,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 9,
+        "step_name": "I should see \"Collections: Getting Started, Tip of the Iceberg, Let's Roll!, Dive-In and Publish Already!, Graduation Day, Extending with Plugins\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 10,
+        "step_name": "I should not see \"Previous: Graduation Day\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 11,
+        "step_name": "I should not see \"Next: Tip of the Iceberg\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 12,
+        "step_name": "I should see \"Previous: Tip of the Iceberg\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort entries",
+        "step_num": 13,
+        "step_name": "I should see \"Next: Dive-In and Publish Already!\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page that contains \"Collections: {{ site.tutorials | map: 'title' | join: ', ' }}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 2,
+        "step_name": "I have fixture collections in \"gathering\" directory",
+        "glue_code": "Given(%r!^I have fixture collections(?: in \"(.*)\" directory)?$!) do |directory|\n  collections_dir = File.join(source_dir, directory.to_s)\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_methods\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_thanksgiving\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_tutorials\"), collections_dir\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 3,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 4,
+        "step_name": "I have a \"_layouts/tutorial.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 5,
+        "step_name": "I have a \"_config.yml\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 6,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 7,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 8,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 9,
+        "step_name": "I should see \"Collections: Getting Started, Let's Roll!, Dive-In and Publish Already!, Graduation Day, Extending with Plugins, Tip of the Iceberg\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 10,
+        "step_name": "I should not see \"Previous: Graduation Day\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 11,
+        "step_name": "I should not see \"Previous: Tip of the Iceberg\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 12,
+        "step_name": "I should not see \"Next: Tip of the Iceberg\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 13,
+        "step_name": "I should see \"Previous: Getting Started\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "collections_dir.feature",
+        "scenario": "Manually sort some entries",
+        "step_num": 14,
+        "step_name": "I should see \"Next: Dive-In and Publish Already!\" in \"_site/tutorials/lets-roll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    }
+]

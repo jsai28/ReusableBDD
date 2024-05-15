@@ -1,0 +1,1442 @@
+[
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 1,
+        "step_name": "I do not have a \"test_blank\" directory",
+        "glue_code": "Given(%r!^I do not have a \"(.*)\" directory$!) do |path|\n  Paths.test_dir.join(path).directory?\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 2,
+        "step_name": "I run jekyll new test_blank --blank",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 3,
+        "step_name": "the test_blank/_data directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 4,
+        "step_name": "the test_blank/_drafts directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 5,
+        "step_name": "the test_blank/_includes directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 6,
+        "step_name": "the test_blank/_layouts directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 7,
+        "step_name": "the test_blank/_posts directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 8,
+        "step_name": "the test_blank/_sass directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 9,
+        "step_name": "the test_blank/assets/css directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 10,
+        "step_name": "the \"test_blank/_layouts/default.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 11,
+        "step_name": "the \"test_blank/_sass/base.scss\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 12,
+        "step_name": "the \"test_blank/assets/css/main.scss\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 13,
+        "step_name": "the \"test_blank/_config.yml\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 14,
+        "step_name": "the \"test_blank/index.md\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 15,
+        "step_name": "I run jekyll build --source test_blank --destination test_blank/_site",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 16,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 17,
+        "step_name": "the test_blank/_site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 18,
+        "step_name": "I should see \"Start developing\" in \"test_blank/_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Blank site",
+        "step_num": 19,
+        "step_name": "I should see \"body {\" in \"test_blank/_site/assets/css/main.css\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" file that contains \"Basic Site\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site",
+        "step_num": 2,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site",
+        "step_num": 3,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site",
+        "step_num": 4,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site",
+        "step_num": 5,
+        "step_name": "I should see \"Basic Site\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with a post",
+        "step_num": 1,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with a post",
+        "step_num": 2,
+        "step_name": "I have the following post",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with a post",
+        "step_num": 3,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with a post",
+        "step_num": 4,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with a post",
+        "step_num": 5,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with a post",
+        "step_num": 6,
+        "step_name": "I should see \"My First Exploit\" in \"_site/2009/03/27/hackers.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a page",
+        "step_num": 1,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a page",
+        "step_num": 2,
+        "step_name": "I have an \"index.html\" page with layout \"default\" that contains \"Basic Site with Layout\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a page",
+        "step_num": 3,
+        "step_name": "I have a default layout that contains \"Page Layout: {{ content }}\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a page",
+        "step_num": 4,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a page",
+        "step_num": 5,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a page",
+        "step_num": 6,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a page",
+        "step_num": 7,
+        "step_name": "I should see \"Page Layout: Basic Site with Layout\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a post",
+        "step_num": 1,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a post",
+        "step_num": 2,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a post",
+        "step_num": 3,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a post",
+        "step_num": 4,
+        "step_name": "I have a default layout that contains \"Post Layout: {{ content }}\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a post",
+        "step_num": 5,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a post",
+        "step_num": 6,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a post",
+        "step_num": 7,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout and a post",
+        "step_num": 8,
+        "step_name": "I should see \"Post Layout: <p>The only winning move is not to play.</p>\" in \"_site/2009/03/27/wargames.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout inside a subfolder and a post",
+        "step_num": 1,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout inside a subfolder and a post",
+        "step_num": 2,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout inside a subfolder and a post",
+        "step_num": 3,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout inside a subfolder and a post",
+        "step_num": 4,
+        "step_name": "I have a post/simple layout that contains \"Post Layout: {{ content }}\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout inside a subfolder and a post",
+        "step_num": 5,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout inside a subfolder and a post",
+        "step_num": 6,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout inside a subfolder and a post",
+        "step_num": 7,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layout inside a subfolder and a post",
+        "step_num": 8,
+        "step_name": "I should see \"Post Layout: <p>The only winning move is not to play.</p>\" in \"_site/2009/03/27/wargames.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 1,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 2,
+        "step_name": "I have a page layout that contains \"Page {{ page.title }}: {{ content }}\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 3,
+        "step_name": "I have a post layout that contains \"Post {{ page.title }}: {{ content }}\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 4,
+        "step_name": "I have an \"index.html\" page with layout \"page\" that contains \"Site contains {{ site.pages.size }} pages and {{ site.posts.size }} posts\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 5,
+        "step_name": "I have a blog directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 6,
+        "step_name": "I have a \"blog/index.html\" page with layout \"page\" that contains \"blog category index page\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 7,
+        "step_name": "I have an \"about.html\" file that contains \"No replacement {{ site.posts.size }}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 8,
+        "step_name": "I have an \"another_file\" file that contains \"\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 9,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 10,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 11,
+        "step_name": "I have a category/_posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 12,
+        "step_name": "I have the following posts in \"category\"",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 13,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 14,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 15,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 16,
+        "step_name": "I should see \"Page : Site contains 2 pages and 4 posts\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 17,
+        "step_name": "I should see \"No replacement \\{\\{ site.posts.size \\}\\}\" in \"_site/about.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 18,
+        "step_name": "I should see \"\" in \"_site/another_file\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 19,
+        "step_name": "I should see \"Page : blog category index page\" in \"_site/blog/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 20,
+        "step_name": "I should see \"Post entry1: <p>content for entry1.</p>\" in \"_site/2009/03/27/entry1.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 21,
+        "step_name": "I should see \"Post entry2: <p>content for entry2.</p>\" in \"_site/2009/04/27/entry2.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 22,
+        "step_name": "I should see \"Post entry3: <p>content for entry3.</p>\" in \"_site/category/2009/05/27/entry3.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, pages, posts and files",
+        "step_num": 23,
+        "step_name": "I should see \"Post entry4: <p>content for entry4.</p>\" in \"_site/category/2009/06/27/entry4.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with include tag",
+        "step_num": 1,
+        "step_name": "I have a _includes directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with include tag",
+        "step_num": 2,
+        "step_name": "I have an \"index.html\" page that contains \"Basic Site with include tag: {% include about.textile %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with include tag",
+        "step_num": 3,
+        "step_name": "I have an \"_includes/about.textile\" file that contains \"Generated by Jekyll\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with include tag",
+        "step_num": 4,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with include tag",
+        "step_num": 5,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with include tag",
+        "step_num": 6,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with include tag",
+        "step_num": 7,
+        "step_name": "I should see \"Basic Site with include tag: Generated by Jekyll\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with subdir include tag",
+        "step_num": 1,
+        "step_name": "I have a _includes directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with subdir include tag",
+        "step_num": 2,
+        "step_name": "I have an \"_includes/about.textile\" file that contains \"Generated by Jekyll\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with subdir include tag",
+        "step_num": 3,
+        "step_name": "I have an info directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with subdir include tag",
+        "step_num": 4,
+        "step_name": "I have an \"info/index.html\" page that contains \"Basic Site with subdir include tag: {% include about.textile %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with subdir include tag",
+        "step_num": 5,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with subdir include tag",
+        "step_num": 6,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with subdir include tag",
+        "step_num": 7,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with subdir include tag",
+        "step_num": 8,
+        "step_name": "I should see \"Basic Site with subdir include tag: Generated by Jekyll\" in \"_site/info/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with nested include tag",
+        "step_num": 1,
+        "step_name": "I have a _includes directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with nested include tag",
+        "step_num": 2,
+        "step_name": "I have an \"_includes/about.textile\" file that contains \"Generated by {% include jekyll.textile %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with nested include tag",
+        "step_num": 3,
+        "step_name": "I have an \"_includes/jekyll.textile\" file that contains \"Jekyll\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with nested include tag",
+        "step_num": 4,
+        "step_name": "I have an \"index.html\" page that contains \"Basic Site with include tag: {% include about.textile %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with nested include tag",
+        "step_num": 5,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with nested include tag",
+        "step_num": 6,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with nested include tag",
+        "step_num": 7,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with nested include tag",
+        "step_num": 8,
+        "step_name": "I should see \"Basic Site with include tag: Generated by Jekyll\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with internal post linking",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page that contains \"URL: {% post_url 2008-01-01-entry2 %}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with internal post linking",
+        "step_num": 2,
+        "step_name": "I have a configuration file with \"permalink\" set to \"pretty\"",
+        "glue_code": "Given(%r!^I have a configuration file with \"(.*)\" set to \"(.*)\"$!) do |key, value|\n  config = \\\n    if source_dir.join(\"_config.yml\").exist?\n      SafeYAML.load_file(source_dir.join(\"_config.yml\"))\n    else\n      {}\n    end\n  config[key] = SafeYAML.load(value)\n  Jekyll.set_timezone(value) if key == \"timezone\"\n  File.write(\"_config.yml\", YAML.dump(config))\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with internal post linking",
+        "step_num": 3,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with internal post linking",
+        "step_num": 4,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with internal post linking",
+        "step_num": 5,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with internal post linking",
+        "step_num": 6,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with internal post linking",
+        "step_num": 7,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with internal post linking",
+        "step_num": 8,
+        "step_name": "I should see \"URL: /2008/01/01/entry2/\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with whitelisted dotfile",
+        "step_num": 1,
+        "step_name": "I have an \".htaccess\" file that contains \"SomeDirective\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with whitelisted dotfile",
+        "step_num": 2,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with whitelisted dotfile",
+        "step_num": 3,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with whitelisted dotfile",
+        "step_num": 4,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with whitelisted dotfile",
+        "step_num": 5,
+        "step_name": "I should see \"SomeDirective\" in \"_site/.htaccess\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "File was replaced by a directory",
+        "step_num": 1,
+        "step_name": "I have a \"test\" file that contains \"some stuff\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "File was replaced by a directory",
+        "step_num": 2,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "File was replaced by a directory",
+        "step_num": 3,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "File was replaced by a directory",
+        "step_num": 4,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "File was replaced by a directory",
+        "step_num": 5,
+        "step_name": "I delete the file \"test\"",
+        "glue_code": "When(%r!^I delete the file \"(.*)\"$!) do |file|\n  File.delete(file)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "File was replaced by a directory",
+        "step_num": 6,
+        "step_name": "I have a test directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "File was replaced by a directory",
+        "step_num": 7,
+        "step_name": "I have a \"test/index.html\" file that contains \"some other stuff\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file that contains \"(.*)\"$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "File was replaced by a directory",
+        "step_num": 8,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "File was replaced by a directory",
+        "step_num": 9,
+        "step_name": "the _site/test directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "File was replaced by a directory",
+        "step_num": 10,
+        "step_name": "I should see \"some other stuff\" in \"_site/test/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 1,
+        "step_name": "I have an \"index.html\" page with title \"index\" that contains \"Published page\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 2,
+        "step_name": "I have a \"public.html\" page with published \"true\" that contains \"Explicitly published page\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 3,
+        "step_name": "I have a \"secret.html\" page with published \"false\" that contains \"Unpublished page\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 4,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 5,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 6,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 7,
+        "step_name": "the \"_site/index.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 8,
+        "step_name": "the \"_site/public.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 9,
+        "step_name": "the \"_site/secret.html\" file should not exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 10,
+        "step_name": "I run jekyll build --unpublished",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 11,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 12,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 13,
+        "step_name": "the \"_site/index.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 14,
+        "step_name": "the \"_site/public.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with unpublished page",
+        "step_num": 15,
+        "step_name": "the \"_site/secret.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with page with future date",
+        "step_num": 1,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with page with future date",
+        "step_num": 2,
+        "step_name": "I have the following post",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with page with future date",
+        "step_num": 3,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with page with future date",
+        "step_num": 4,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with page with future date",
+        "step_num": 5,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with page with future date",
+        "step_num": 6,
+        "step_name": "I should see \"content for entry2\" in \"_site/2007/12/31/entry2.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with page with future date",
+        "step_num": 7,
+        "step_name": "the \"_site/2040/12/31/entry1.html\" file should not exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with page with future date",
+        "step_num": 8,
+        "step_name": "I run jekyll build --future",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with page with future date",
+        "step_num": 9,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with page with future date",
+        "step_num": 10,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with page with future date",
+        "step_num": 11,
+        "step_name": "the \"_site/2040/12/31/entry1.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 1,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 2,
+        "step_name": "I have a page layout that contains \"Page {{ page.title }}: {{ content }}\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 3,
+        "step_name": "I have a post layout that contains \"Post {{ page.title }}: {{ content }}Related posts: {{ site.related_posts | size }}\"",
+        "glue_code": "Given(%r!^I have an? (.*) (layout|theme) that contains \"(.*)\"$!) do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 4,
+        "step_name": "I have an \"index.html\" page with layout \"page\" that contains \"Site contains {{ site.pages.size }} pages and {{ site.posts.size }} posts; Related posts: {{ site.related_posts | size }}\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 5,
+        "step_name": "I have a _posts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 6,
+        "step_name": "I have the following posts",
+        "glue_code": "Given(%r!^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$!) do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end\n\n    path = File.join(before, dest_folder, after, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 7,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 8,
+        "step_name": "I should get a zero exit status",
+        "glue_code": "Then(%r!^I should get a zero exit(?:-| )status$!) do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 9,
+        "step_name": "the _site directory should exist",
+        "glue_code": "Then(%r!^the (.*) directory should +(not )?exist$!) do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 10,
+        "step_name": "I should see \"Page : Site contains 1 pages and 2 posts; Related posts: 0\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 11,
+        "step_name": "I should see \"Post entry1: <p>content for entry1.</p>\\nRelated posts: 1\" in \"_site/2009/03/27/entry1.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "create_sites.feature",
+        "scenario": "Basic site with layouts, posts and related posts",
+        "step_num": 12,
+        "step_name": "I should see \"Post entry2: <p>content for entry2.</p>\\nRelated posts: 1\" in \"_site/2009/04/27/entry2.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    }
+]

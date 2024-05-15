@@ -1,0 +1,272 @@
+[
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 1,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 2,
+        "step_name": "I have a \"_layouts/999.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 3,
+        "step_name": "I have an \"index.html\" page with layout \"custom\" that contains \"page content\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 4,
+        "step_name": "I have an \"index.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 5,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 6,
+        "step_name": "the \"_site/index.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 7,
+        "step_name": "I should see \"page content layout content\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 1,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 2,
+        "step_name": "I have a \"_layouts/custom.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 3,
+        "step_name": "I have an \"index.html\" page with layout \"custom\" that contains \"page content\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 4,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 5,
+        "step_name": "the \"_site/index.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Use custom layout data",
+        "step_num": 6,
+        "step_name": "I should see \"page content\\n foo: my custom data\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data",
+        "step_num": 1,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data",
+        "step_num": 2,
+        "step_name": "I have a \"_layouts/custom.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data",
+        "step_num": 3,
+        "step_name": "I have a \"_layouts/base.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data",
+        "step_num": 4,
+        "step_name": "I have an \"index.html\" page with layout \"custom\" that contains \"page content\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data",
+        "step_num": 5,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data",
+        "step_num": 6,
+        "step_name": "the \"_site/index.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data",
+        "step_num": 7,
+        "step_name": "I should see \"page content\\n foo: my custom data\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data and clear when not present",
+        "step_num": 1,
+        "step_name": "I have a _layouts directory",
+        "glue_code": "Given(%r!^I have an? (.*) directory$!) do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data and clear when not present",
+        "step_num": 2,
+        "step_name": "I have a \"_layouts/default.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data and clear when not present",
+        "step_num": 3,
+        "step_name": "I have a \"_layouts/special.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data and clear when not present",
+        "step_num": 4,
+        "step_name": "I have a \"_layouts/page.html\" file with content",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" file with content:$!) do |file, text|\n  File.write(file, text)\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data and clear when not present",
+        "step_num": 5,
+        "step_name": "I have an \"index.html\" page with layout \"special\" that contains \"page content\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data and clear when not present",
+        "step_num": 6,
+        "step_name": "I have an \"jekyll.html\" page with layout \"page\" that contains \"page content\"",
+        "glue_code": "Given(%r!^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$!) do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data and clear when not present",
+        "step_num": 7,
+        "step_name": "I run jekyll build",
+        "glue_code": "When(%r!^I run jekyll(.*)$!) do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data and clear when not present",
+        "step_num": 8,
+        "step_name": "the \"_site/index.html\" file should exist",
+        "glue_code": "Then(%r!^the \"(.*)\" file should +(not )?exist$!) do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data and clear when not present",
+        "step_num": 9,
+        "step_name": "I should see \"page content\\n foo: 'my special data' bar: 'im special'\" in \"_site/index.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    },
+    {
+        "feature_file": "layout_data.feature",
+        "scenario": "Inherit custom layout data and clear when not present",
+        "step_num": 10,
+        "step_name": "I should see \"page content\\n foo: '' bar: 'im page'\" in \"_site/jekyll.html\"",
+        "glue_code": "Then(%r!^I should (not )?see \"(.*)\" in \"(.*)\"$!) do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end\nend\n\n",
+        "glue_code_file": "step_definitions.rb",
+        "language": "ruby"
+    }
+]
