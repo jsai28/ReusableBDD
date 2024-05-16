@@ -5,6 +5,8 @@ import csv
 from behave.parser import parse_file
 
 def feature_parser(parsed_gcode_file, feature, write_directory, glue_code_file):
+    global total_test_cases
+
     with open(parsed_gcode_file, 'r') as json_file:
         step_patterns = json.load(json_file)
 
@@ -17,6 +19,7 @@ def feature_parser(parsed_gcode_file, feature, write_directory, glue_code_file):
     matched_steps = []
     total_step_count = 0
     for scenario in feature.scenarios:
+        total_test_cases += 1
         matched_scenario = {}
         step_num = 0
         steps = []
@@ -44,6 +47,7 @@ def feature_parser(parsed_gcode_file, feature, write_directory, glue_code_file):
         
         matched_steps.append({
                     "feature_file": os.path.basename(feature_file),
+                    "test_num": total_test_cases,
                     "test_case": scenario.name,
                     "steps": steps
                 })
@@ -60,10 +64,10 @@ def feature_parser(parsed_gcode_file, feature, write_directory, glue_code_file):
     print("----------------------------------------------------")
     print("\n")
 
-    return matched_steps, total_step_count, len(matched_steps), len(feature.scenarios)
+    return matched_steps, total_step_count, len(matched_steps)
 
 def json_to_csv(data, csv_file_path):
-    fieldnames = ['feature_file', 'test_case', 'steps']
+    fieldnames = ['feature_file', 'test_num', 'test_case', 'steps']
     with open(csv_file_path, 'w', newline='') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         
@@ -98,11 +102,10 @@ if __name__ == "__main__":
             feature = parse_file(feature_file)
 
             # run feature parser
-            matched_steps, step_count, num_matched_steps, test_cases = feature_parser(parsed_gcode_file, feature, write_directory, glue_code_file)
+            matched_steps, step_count, num_matched_steps= feature_parser(parsed_gcode_file, feature, write_directory, glue_code_file)
             combined_json.extend(matched_steps)
             total_step_count += step_count
             total_matched_steps += num_matched_steps
-            total_test_cases += test_cases
     
     print("----------FINISHED-------------")
     print("Total Step Count: ", total_step_count)

@@ -1,6 +1,7 @@
 [
     {
         "feature_file": "cache.feature",
+        "test_num": 1,
         "test_case": "Default Cache directory",
         "steps": [
             {
@@ -63,6 +64,7 @@
     },
     {
         "feature_file": "cache.feature",
+        "test_num": 2,
         "test_case": "Custom Cache directory",
         "steps": [
             {
@@ -132,6 +134,7 @@
     },
     {
         "feature_file": "cache.feature",
+        "test_num": 3,
         "test_case": "Disk usage in safe mode",
         "steps": [
             {
@@ -187,6 +190,7 @@
     },
     {
         "feature_file": "cache.feature",
+        "test_num": 4,
         "test_case": "Disabling disk usage in non-safe mode",
         "steps": [
             {
@@ -242,6 +246,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 5,
         "test_case": "Unrendered collection",
         "steps": [
             {
@@ -318,6 +323,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 6,
         "test_case": "Rendered collection",
         "steps": [
             {
@@ -415,6 +421,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 7,
         "test_case": "Rendered collection at a custom URL",
         "steps": [
             {
@@ -470,6 +477,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 8,
         "test_case": "Rendered document in a layout",
         "steps": [
             {
@@ -560,6 +568,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 9,
         "test_case": "Collections specified as an array",
         "steps": [
             {
@@ -622,6 +631,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 10,
         "test_case": "Collections specified as an hash",
         "steps": [
             {
@@ -684,6 +694,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 11,
         "test_case": "Rendered collection with document with future date",
         "steps": [
             {
@@ -774,6 +785,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 12,
         "test_case": "Access rendered collection with future dated document via Liquid",
         "steps": [
             {
@@ -878,6 +890,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 13,
         "test_case": "Access rendered and published collection documents via Liquid",
         "steps": [
             {
@@ -1066,6 +1079,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 14,
         "test_case": "Unrendered collection with future dated document",
         "steps": [
             {
@@ -1163,6 +1177,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 15,
         "test_case": "Access unrendered collection with future dated document via Liquid",
         "steps": [
             {
@@ -1267,6 +1282,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 16,
         "test_case": "Access unrendered but publishable collection documents via Liquid",
         "steps": [
             {
@@ -1455,6 +1471,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 17,
         "test_case": "Access rendered collection with future date and unpublished flag via Liquid",
         "steps": [
             {
@@ -1720,6 +1737,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 18,
         "test_case": "Access unrendered collection with future date and unpublished flag via Liquid",
         "steps": [
             {
@@ -1985,6 +2003,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 19,
         "test_case": "All the documents",
         "steps": [
             {
@@ -2047,6 +2066,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 20,
         "test_case": "Documents have an output attribute, which is the converted HTML",
         "steps": [
             {
@@ -2102,6 +2122,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 21,
         "test_case": "Documents have an output attribute, which is the converted HTML based on site.config",
         "steps": [
             {
@@ -2157,6 +2178,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 22,
         "test_case": "Filter documents by where",
         "steps": [
             {
@@ -2212,6 +2234,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 23,
         "test_case": "Sort by title",
         "steps": [
             {
@@ -2274,6 +2297,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 24,
         "test_case": "Sort by relative_path",
         "steps": [
             {
@@ -2336,6 +2360,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 25,
         "test_case": "Sort all entries by a Front Matter key defined in all entries",
         "steps": [
             {
@@ -2433,6 +2458,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 26,
         "test_case": "Sort all entries by a Front Matter key defined in only some entries",
         "steps": [
             {
@@ -2523,6 +2549,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 27,
         "test_case": "Manually sort entries",
         "steps": [
             {
@@ -2620,6 +2647,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 28,
         "test_case": "Manually sort some entries",
         "steps": [
             {
@@ -2724,6 +2752,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 29,
         "test_case": "Rendered collection with date/dateless filename",
         "steps": [
             {
@@ -2793,6 +2822,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 30,
         "test_case": "Rendered collection with custom permalinks and static file contents",
         "steps": [
             {
@@ -2841,6 +2871,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 31,
         "test_case": "Rendered collection with an extensionless document",
         "steps": [
             {
@@ -2889,6 +2920,7 @@
     },
     {
         "feature_file": "collections.feature",
+        "test_num": 32,
         "test_case": "Rendered collection with an extensionless document in a strict site",
         "steps": [
             {
@@ -2979,6 +3011,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 33,
         "test_case": "Custom collections_dir containing only posts",
         "steps": [
             {
@@ -3034,6 +3067,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 34,
         "test_case": "Rendered collection in custom collections_dir also containing posts",
         "steps": [
             {
@@ -3110,6 +3144,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 35,
         "test_case": "Rendered collection in custom collections_dir with posts at the site root",
         "steps": [
             {
@@ -3193,6 +3228,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 36,
         "test_case": "Rendered collection in custom collections_dir also containing drafts",
         "steps": [
             {
@@ -3276,6 +3312,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 37,
         "test_case": "Rendered collection in custom collections_dir with drafts at the site root",
         "steps": [
             {
@@ -3352,6 +3389,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 38,
         "test_case": "A complex site with collections posts and drafts at various locations",
         "steps": [
             {
@@ -3554,6 +3592,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 39,
         "test_case": "Rendered collection with a document that includes a relative document",
         "steps": [
             {
@@ -3637,6 +3676,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 40,
         "test_case": "Rendered collection in custom collections_dir with a document that includes a relative document",
         "steps": [
             {
@@ -3720,6 +3760,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 41,
         "test_case": "Front matter defaults and custom collections directory",
         "steps": [
             {
@@ -3929,6 +3970,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 42,
         "test_case": "Sort all entries by a Front Matter key defined in all entries",
         "steps": [
             {
@@ -4026,6 +4068,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 43,
         "test_case": "Sort all entries by a Front Matter key defined in only some entries",
         "steps": [
             {
@@ -4116,6 +4159,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 44,
         "test_case": "Manually sort entries",
         "steps": [
             {
@@ -4213,6 +4257,7 @@
     },
     {
         "feature_file": "collections_dir.feature",
+        "test_num": 45,
         "test_case": "Manually sort some entries",
         "steps": [
             {
@@ -4317,6 +4362,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 46,
         "test_case": "Blank site",
         "steps": [
             {
@@ -4456,6 +4502,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 47,
         "test_case": "Basic site",
         "steps": [
             {
@@ -4497,6 +4544,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 48,
         "test_case": "Basic site with a post",
         "steps": [
             {
@@ -4545,6 +4593,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 49,
         "test_case": "Basic site with layout and a page",
         "steps": [
             {
@@ -4600,6 +4649,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 50,
         "test_case": "Basic site with layout and a post",
         "steps": [
             {
@@ -4662,6 +4712,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 51,
         "test_case": "Basic site with layout inside a subfolder and a post",
         "steps": [
             {
@@ -4724,6 +4775,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 52,
         "test_case": "Basic site with layouts, pages, posts and files",
         "steps": [
             {
@@ -4891,6 +4943,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 53,
         "test_case": "Basic site with include tag",
         "steps": [
             {
@@ -4946,6 +4999,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 54,
         "test_case": "Basic site with subdir include tag",
         "steps": [
             {
@@ -5008,6 +5062,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 55,
         "test_case": "Basic site with nested include tag",
         "steps": [
             {
@@ -5070,6 +5125,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 56,
         "test_case": "Basic site with internal post linking",
         "steps": [
             {
@@ -5132,6 +5188,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 57,
         "test_case": "Basic site with whitelisted dotfile",
         "steps": [
             {
@@ -5173,6 +5230,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 58,
         "test_case": "File was replaced by a directory",
         "steps": [
             {
@@ -5249,6 +5307,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 59,
         "test_case": "Basic site with unpublished page",
         "steps": [
             {
@@ -5360,6 +5419,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 60,
         "test_case": "Basic site with page with future date",
         "steps": [
             {
@@ -5443,6 +5503,7 @@
     },
     {
         "feature_file": "create_sites.feature",
+        "test_num": 61,
         "test_case": "Basic site with layouts, posts and related posts",
         "steps": [
             {
@@ -5533,6 +5594,7 @@
     },
     {
         "feature_file": "data.feature",
+        "test_num": 62,
         "test_case": "autoload *.yaml files in _data directory",
         "steps": [
             {
@@ -5588,6 +5650,7 @@
     },
     {
         "feature_file": "data.feature",
+        "test_num": 63,
         "test_case": "autoload *.yml files in _data directory",
         "steps": [
             {
@@ -5643,6 +5706,7 @@
     },
     {
         "feature_file": "data.feature",
+        "test_num": 64,
         "test_case": "autoload *.json files in _data directory",
         "steps": [
             {
@@ -5698,6 +5762,7 @@
     },
     {
         "feature_file": "data.feature",
+        "test_num": 65,
         "test_case": "autoload *.csv files in _data directory",
         "steps": [
             {
@@ -5753,6 +5818,7 @@
     },
     {
         "feature_file": "data.feature",
+        "test_num": 66,
         "test_case": "autoload *.tsv files in _data directory",
         "steps": [
             {
@@ -5808,6 +5874,7 @@
     },
     {
         "feature_file": "data.feature",
+        "test_num": 67,
         "test_case": "autoload *.yml files in _data directory with space in file name",
         "steps": [
             {
@@ -5863,6 +5930,7 @@
     },
     {
         "feature_file": "data.feature",
+        "test_num": 68,
         "test_case": "autoload *.yaml files in subdirectories in _data directory",
         "steps": [
             {
@@ -5918,6 +5986,7 @@
     },
     {
         "feature_file": "data.feature",
+        "test_num": 69,
         "test_case": "folders should have precedence over files with the same name",
         "steps": [
             {
@@ -5980,6 +6049,7 @@
     },
     {
         "feature_file": "data.feature",
+        "test_num": 70,
         "test_case": "should be backward compatible with site.data in _config.yml",
         "steps": [
             {
@@ -6028,6 +6098,7 @@
     },
     {
         "feature_file": "drafts.feature",
+        "test_num": 71,
         "test_case": "Preview a draft",
         "steps": [
             {
@@ -6083,6 +6154,7 @@
     },
     {
         "feature_file": "drafts.feature",
+        "test_num": 72,
         "test_case": "Don't preview a draft",
         "steps": [
             {
@@ -6145,6 +6217,7 @@
     },
     {
         "feature_file": "drafts.feature",
+        "test_num": 73,
         "test_case": "Don't preview a draft that is not published",
         "steps": [
             {
@@ -6207,6 +6280,7 @@
     },
     {
         "feature_file": "drafts.feature",
+        "test_num": 74,
         "test_case": "Use page.path variable",
         "steps": [
             {
@@ -6262,6 +6336,7 @@
     },
     {
         "feature_file": "embed_filters.feature",
+        "test_num": 75,
         "test_case": "Convert date to XML schema",
         "steps": [
             {
@@ -6324,6 +6399,7 @@
     },
     {
         "feature_file": "embed_filters.feature",
+        "test_num": 76,
         "test_case": "Escape text for XML",
         "steps": [
             {
@@ -6386,6 +6462,7 @@
     },
     {
         "feature_file": "embed_filters.feature",
+        "test_num": 77,
         "test_case": "Calculate number of words",
         "steps": [
             {
@@ -6448,6 +6525,7 @@
     },
     {
         "feature_file": "embed_filters.feature",
+        "test_num": 78,
         "test_case": "Convert an array into a sentence",
         "steps": [
             {
@@ -6510,6 +6588,7 @@
     },
     {
         "feature_file": "embed_filters.feature",
+        "test_num": 79,
         "test_case": "Markdownify a given string",
         "steps": [
             {
@@ -6572,6 +6651,7 @@
     },
     {
         "feature_file": "embed_filters.feature",
+        "test_num": 80,
         "test_case": "Sort by an arbitrary variable",
         "steps": [
             {
@@ -6641,6 +6721,7 @@
     },
     {
         "feature_file": "embed_filters.feature",
+        "test_num": 81,
         "test_case": "Sort pages by the title",
         "steps": [
             {
@@ -6703,6 +6784,7 @@
     },
     {
         "feature_file": "embed_filters.feature",
+        "test_num": 82,
         "test_case": "Sort pages by the title ordering pages without title last",
         "steps": [
             {
@@ -6765,6 +6847,7 @@
     },
     {
         "feature_file": "embed_filters.feature",
+        "test_num": 83,
         "test_case": "Filter posts by given property and value",
         "steps": [
             {
@@ -6890,6 +6973,7 @@
     },
     {
         "feature_file": "frontmatter_defaults.feature",
+        "test_num": 84,
         "test_case": "Use default for frontmatter variables internally",
         "steps": [
             {
@@ -6973,6 +7057,7 @@
     },
     {
         "feature_file": "frontmatter_defaults.feature",
+        "test_num": 85,
         "test_case": "Use default for frontmatter variables in Liquid",
         "steps": [
             {
@@ -7042,6 +7127,7 @@
     },
     {
         "feature_file": "frontmatter_defaults.feature",
+        "test_num": 86,
         "test_case": "Override frontmatter defaults by path",
         "steps": [
             {
@@ -7167,6 +7253,7 @@
     },
     {
         "feature_file": "frontmatter_defaults.feature",
+        "test_num": 87,
         "test_case": "Use frontmatter variables by relative path",
         "steps": [
             {
@@ -7264,6 +7351,7 @@
     },
     {
         "feature_file": "frontmatter_defaults.feature",
+        "test_num": 88,
         "test_case": "Use frontmatter scopes for subdirectories",
         "steps": [
             {
@@ -7347,6 +7435,7 @@
     },
     {
         "feature_file": "frontmatter_defaults.feature",
+        "test_num": 89,
         "test_case": "Override frontmatter defaults by type",
         "steps": [
             {
@@ -7409,6 +7498,7 @@
     },
     {
         "feature_file": "frontmatter_defaults.feature",
+        "test_num": 90,
         "test_case": "Actual frontmatter overrides defaults",
         "steps": [
             {
@@ -7471,6 +7561,7 @@
     },
     {
         "feature_file": "frontmatter_defaults.feature",
+        "test_num": 91,
         "test_case": "Define permalink default for posts",
         "steps": [
             {
@@ -7512,6 +7603,7 @@
     },
     {
         "feature_file": "frontmatter_defaults.feature",
+        "test_num": 92,
         "test_case": "Use frontmatter defaults in collections",
         "steps": [
             {
@@ -7574,6 +7666,7 @@
     },
     {
         "feature_file": "frontmatter_defaults.feature",
+        "test_num": 93,
         "test_case": "Override frontmatter defaults inside a collection",
         "steps": [
             {
@@ -7636,6 +7729,7 @@
     },
     {
         "feature_file": "frontmatter_defaults.feature",
+        "test_num": 94,
         "test_case": "Deep merge frontmatter defaults",
         "steps": [
             {
@@ -7670,6 +7764,7 @@
     },
     {
         "feature_file": "highlighting.feature",
+        "test_num": 95,
         "test_case": "highlighting an apache configuration",
         "steps": [
             {
@@ -7704,6 +7799,7 @@
     },
     {
         "feature_file": "highlighting.feature",
+        "test_num": 96,
         "test_case": "marking lines 1 and 2 in a Ruby code block with valid syntax",
         "steps": [
             {
@@ -7752,6 +7848,7 @@
     },
     {
         "feature_file": "highlighting.feature",
+        "test_num": 97,
         "test_case": "marking a single line in a Ruby code block with invalid syntax",
         "steps": [
             {
@@ -7779,6 +7876,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 98,
         "test_case": "Run some code after site reset",
         "steps": [
             {
@@ -7827,6 +7925,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 99,
         "test_case": "Modify the payload before rendering the site",
         "steps": [
             {
@@ -7882,6 +7981,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 100,
         "test_case": "Modify the site contents after reading",
         "steps": [
             {
@@ -7951,6 +8051,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 101,
         "test_case": "Work with the site files after they've been written to disk",
         "steps": [
             {
@@ -8006,6 +8107,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 102,
         "test_case": "Alter a page right after it is initialized",
         "steps": [
             {
@@ -8061,6 +8163,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 103,
         "test_case": "Alter the payload for one page but not another",
         "steps": [
             {
@@ -8116,6 +8219,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 104,
         "test_case": "Modify the converted HTML content of a page before rendering layout",
         "steps": [
             {
@@ -8192,6 +8296,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 105,
         "test_case": "Modify page contents before writing to disk",
         "steps": [
             {
@@ -8233,6 +8338,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 106,
         "test_case": "Work with a page after writing it to disk",
         "steps": [
             {
@@ -8274,6 +8380,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 107,
         "test_case": "Alter a post right after it is initialized",
         "steps": [
             {
@@ -8336,6 +8443,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 108,
         "test_case": "Alter the payload for certain posts",
         "steps": [
             {
@@ -8391,6 +8499,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 109,
         "test_case": "Modify the converted HTML content of a post before rendering layout",
         "steps": [
             {
@@ -8474,6 +8583,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 110,
         "test_case": "Modify post contents before writing to disk",
         "steps": [
             {
@@ -8529,6 +8639,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 111,
         "test_case": "Work with a post after writing it to disk",
         "steps": [
             {
@@ -8584,6 +8695,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 112,
         "test_case": "Register a hook on multiple owners at the same time",
         "steps": [
             {
@@ -8646,6 +8758,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 113,
         "test_case": "Allow hooks to have a named priority",
         "steps": [
             {
@@ -8687,6 +8800,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 114,
         "test_case": "Alter a document right after it is initialized",
         "steps": [
             {
@@ -8763,6 +8877,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 115,
         "test_case": "Modify the converted HTML content of a document before rendering layout",
         "steps": [
             {
@@ -8853,6 +8968,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 116,
         "test_case": "Modify the converted HTML content of document of a particular collection before rendering layout",
         "steps": [
             {
@@ -8964,6 +9080,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 117,
         "test_case": "Update a document after rendering it, but before writing it to disk",
         "steps": [
             {
@@ -9033,6 +9150,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 118,
         "test_case": "Perform an action after every document is written",
         "steps": [
             {
@@ -9102,6 +9220,7 @@
     },
     {
         "feature_file": "hooks.feature",
+        "test_num": 119,
         "test_case": "Set a custom payload['page'] property",
         "steps": [
             {
@@ -9178,6 +9297,7 @@
     },
     {
         "feature_file": "include_relative_tag.feature",
+        "test_num": 120,
         "test_case": "Include a file relative to a post",
         "steps": [
             {
@@ -9240,6 +9360,7 @@
     },
     {
         "feature_file": "include_relative_tag.feature",
+        "test_num": 121,
         "test_case": "Include a nested file relative to a post",
         "steps": [
             {
@@ -9316,6 +9437,7 @@
     },
     {
         "feature_file": "include_relative_tag.feature",
+        "test_num": 122,
         "test_case": "Include a nested file relative to a post as an excerpt",
         "steps": [
             {
@@ -9406,6 +9528,7 @@
     },
     {
         "feature_file": "include_relative_tag.feature",
+        "test_num": 123,
         "test_case": "Include a nested file relative to a page at root",
         "steps": [
             {
@@ -9475,6 +9598,7 @@
     },
     {
         "feature_file": "include_tag.feature",
+        "test_num": 124,
         "test_case": "Include a file with parameters",
         "steps": [
             {
@@ -9635,6 +9759,7 @@
     },
     {
         "feature_file": "include_tag.feature",
+        "test_num": 125,
         "test_case": "Include a file from a variable",
         "steps": [
             {
@@ -9704,6 +9829,7 @@
     },
     {
         "feature_file": "include_tag.feature",
+        "test_num": 126,
         "test_case": "Include a variable file in a loop",
         "steps": [
             {
@@ -9766,6 +9892,7 @@
     },
     {
         "feature_file": "include_tag.feature",
+        "test_num": 127,
         "test_case": "Include a file with variables and filters",
         "steps": [
             {
@@ -9828,6 +9955,7 @@
     },
     {
         "feature_file": "include_tag.feature",
+        "test_num": 128,
         "test_case": "Include a file with partial variables",
         "steps": [
             {
@@ -9890,6 +10018,7 @@
     },
     {
         "feature_file": "include_tag.feature",
+        "test_num": 129,
         "test_case": "Include a file and rebuild when include content is changed",
         "steps": [
             {
@@ -9973,6 +10102,7 @@
     },
     {
         "feature_file": "include_tag.feature",
+        "test_num": 130,
         "test_case": "Include a file with multiple variables",
         "steps": [
             {
@@ -10028,6 +10158,7 @@
     },
     {
         "feature_file": "include_tag.feature",
+        "test_num": 131,
         "test_case": "Include a file-path with non-alphanumeric character sequences",
         "steps": [
             {
@@ -10195,6 +10326,7 @@
     },
     {
         "feature_file": "incremental_rebuild.feature",
+        "test_num": 132,
         "test_case": "Produce correct output site",
         "steps": [
             {
@@ -10285,6 +10417,7 @@
     },
     {
         "feature_file": "incremental_rebuild.feature",
+        "test_num": 133,
         "test_case": "Generate a metadata file",
         "steps": [
             {
@@ -10312,6 +10445,7 @@
     },
     {
         "feature_file": "incremental_rebuild.feature",
+        "test_num": 134,
         "test_case": "Rebuild when content is changed",
         "steps": [
             {
@@ -10395,6 +10529,7 @@
     },
     {
         "feature_file": "incremental_rebuild.feature",
+        "test_num": 135,
         "test_case": "Rebuild when layout is changed",
         "steps": [
             {
@@ -10492,6 +10627,7 @@
     },
     {
         "feature_file": "incremental_rebuild.feature",
+        "test_num": 136,
         "test_case": "Rebuild when an include is changed",
         "steps": [
             {
@@ -10589,6 +10725,7 @@
     },
     {
         "feature_file": "incremental_rebuild.feature",
+        "test_num": 137,
         "test_case": "Rebuild when a dependency of document in custom collection_dir is changed",
         "steps": [
             {
@@ -10700,6 +10837,7 @@
     },
     {
         "feature_file": "incremental_rebuild.feature",
+        "test_num": 138,
         "test_case": "A themed-site and incremental regeneration",
         "steps": [
             {
@@ -10811,6 +10949,7 @@
     },
     {
         "feature_file": "layout_data.feature",
+        "test_num": 139,
         "test_case": "Use custom layout data",
         "steps": [
             {
@@ -10866,6 +11005,7 @@
     },
     {
         "feature_file": "layout_data.feature",
+        "test_num": 140,
         "test_case": "Use custom layout data",
         "steps": [
             {
@@ -10914,6 +11054,7 @@
     },
     {
         "feature_file": "layout_data.feature",
+        "test_num": 141,
         "test_case": "Inherit custom layout data",
         "steps": [
             {
@@ -10969,6 +11110,7 @@
     },
     {
         "feature_file": "layout_data.feature",
+        "test_num": 142,
         "test_case": "Inherit custom layout data and clear when not present",
         "steps": [
             {
@@ -11045,6 +11187,7 @@
     },
     {
         "feature_file": "link_tag.feature",
+        "test_num": 143,
         "test_case": "Basic site with two pages",
         "steps": [
             {
@@ -11100,6 +11243,7 @@
     },
     {
         "feature_file": "link_tag.feature",
+        "test_num": 144,
         "test_case": "Basic site with custom page-permalinks",
         "steps": [
             {
@@ -11155,6 +11299,7 @@
     },
     {
         "feature_file": "link_tag.feature",
+        "test_num": 145,
         "test_case": "Basic site with custom site-wide-permalinks",
         "steps": [
             {
@@ -11217,6 +11362,7 @@
     },
     {
         "feature_file": "link_tag.feature",
+        "test_num": 146,
         "test_case": "Basic site with two pages and custom baseurl",
         "steps": [
             {
@@ -11279,6 +11425,7 @@
     },
     {
         "feature_file": "link_tag.feature",
+        "test_num": 147,
         "test_case": "Basic site with two pages and custom baseurl and permalinks",
         "steps": [
             {
@@ -11341,6 +11488,7 @@
     },
     {
         "feature_file": "link_tag.feature",
+        "test_num": 148,
         "test_case": "Linking to a ghost file",
         "steps": [
             {
@@ -11389,6 +11537,7 @@
     },
     {
         "feature_file": "link_tag.feature",
+        "test_num": 149,
         "test_case": "Complex site with a variety of files",
         "steps": [
             {
@@ -11479,6 +11628,7 @@
     },
     {
         "feature_file": "markdown.feature",
+        "test_num": 150,
         "test_case": "Markdown in list on index",
         "steps": [
             {
@@ -11555,6 +11705,7 @@
     },
     {
         "feature_file": "markdown.feature",
+        "test_num": 151,
         "test_case": "Markdown in pagination on index",
         "steps": [
             {
@@ -11624,6 +11775,7 @@
     },
     {
         "feature_file": "pagination.feature",
+        "test_num": 152,
         "test_case": "Paginate with N posts per page",
         "steps": [
             {
@@ -11700,6 +11852,7 @@
     },
     {
         "feature_file": "pagination.feature",
+        "test_num": 153,
         "test_case": "Setting a custom pagination path",
         "steps": [
             {
@@ -11776,6 +11929,7 @@
     },
     {
         "feature_file": "pagination.feature",
+        "test_num": 154,
         "test_case": "Setting a custom pagination path without an index.html in it",
         "steps": [
             {
@@ -11859,6 +12013,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 155,
         "test_case": "Use none permalink schema",
         "steps": [
             {
@@ -11914,6 +12069,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 156,
         "test_case": "Use pretty permalink schema",
         "steps": [
             {
@@ -11969,6 +12125,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 157,
         "test_case": "Use pretty permalink schema for pages",
         "steps": [
             {
@@ -12045,6 +12202,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 158,
         "test_case": "Use custom permalink schema with prefix",
         "steps": [
             {
@@ -12100,6 +12258,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 159,
         "test_case": "Use custom permalink schema with category",
         "steps": [
             {
@@ -12155,6 +12314,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 160,
         "test_case": "Use custom permalink schema with squished date",
         "steps": [
             {
@@ -12210,6 +12370,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 161,
         "test_case": "Use custom permalink schema with date and time",
         "steps": [
             {
@@ -12265,6 +12426,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 162,
         "test_case": "Use per-post permalink",
         "steps": [
             {
@@ -12320,6 +12482,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 163,
         "test_case": "Use per-post ending in .html",
         "steps": [
             {
@@ -12375,6 +12538,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 164,
         "test_case": "Use pretty permalink schema with cased file name",
         "steps": [
             {
@@ -12430,6 +12594,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 165,
         "test_case": "Use custom permalink schema with cased file name",
         "steps": [
             {
@@ -12485,6 +12650,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 166,
         "test_case": "Use pretty permalink schema with title containing underscore",
         "steps": [
             {
@@ -12540,6 +12706,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 167,
         "test_case": "Use a non-HTML file extension in the permalink",
         "steps": [
             {
@@ -12602,6 +12769,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 168,
         "test_case": "Using the same permalink twice",
         "steps": [
             {
@@ -12741,6 +12909,7 @@
     },
     {
         "feature_file": "permalinks.feature",
+        "test_num": 169,
         "test_case": "Redirecting from an existing permalink",
         "steps": [
             {
@@ -12817,6 +12986,7 @@
     },
     {
         "feature_file": "plugins.feature",
+        "test_num": 170,
         "test_case": "Add a gem-based plugin",
         "steps": [
             {
@@ -12872,6 +13042,7 @@
     },
     {
         "feature_file": "plugins.feature",
+        "test_num": 171,
         "test_case": "Add an empty whitelist to restrict all gems",
         "steps": [
             {
@@ -12927,6 +13098,7 @@
     },
     {
         "feature_file": "plugins.feature",
+        "test_num": 172,
         "test_case": "Add a whitelist to restrict some gems but allow others",
         "steps": [
             {
@@ -12989,6 +13161,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 173,
         "test_case": "Use post.title variable",
         "steps": [
             {
@@ -13051,6 +13224,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 174,
         "test_case": "Use post.url variable",
         "steps": [
             {
@@ -13113,6 +13287,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 175,
         "test_case": "Use page.name variable",
         "steps": [
             {
@@ -13175,6 +13350,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 176,
         "test_case": "Use post.date variable",
         "steps": [
             {
@@ -13237,6 +13413,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 177,
         "test_case": "Use post.date variable with invalid",
         "steps": [
             {
@@ -13278,6 +13455,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 178,
         "test_case": "Invalid date in filename",
         "steps": [
             {
@@ -13319,6 +13497,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 179,
         "test_case": "Use post.id variable",
         "steps": [
             {
@@ -13381,6 +13560,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 180,
         "test_case": "Use post.content variable",
         "steps": [
             {
@@ -13443,6 +13623,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 181,
         "test_case": "Use post.categories variable when category is in a folder",
         "steps": [
             {
@@ -13512,6 +13693,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 182,
         "test_case": "Use post.categories variable when category is in a folder and has category in YAML",
         "steps": [
             {
@@ -13581,6 +13763,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 183,
         "test_case": "Use post.categories variable when category is in a folder and has categories in YAML",
         "steps": [
             {
@@ -13650,6 +13833,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 184,
         "test_case": "Use post.categories variable when category is in a folder and duplicated category is in YAML",
         "steps": [
             {
@@ -13719,6 +13903,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 185,
         "test_case": "Use post.categories when category is a composite of multiple words",
         "steps": [
             {
@@ -13795,6 +13980,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 186,
         "test_case": "Use post.slugified_categories to generate URL when category is a composite of multiple words",
         "steps": [
             {
@@ -13878,6 +14064,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 187,
         "test_case": "Use post.tags variable",
         "steps": [
             {
@@ -13940,6 +14127,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 188,
         "test_case": "Use post.categories variable when categories are in folders",
         "steps": [
             {
@@ -14016,6 +14204,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 189,
         "test_case": "Use post.categories variable when categories are in folders with mixed case",
         "steps": [
             {
@@ -14092,6 +14281,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 190,
         "test_case": "Use post.categories variable when category is in YAML",
         "steps": [
             {
@@ -14154,6 +14344,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 191,
         "test_case": "Use post.categories variable when category is in YAML and is mixed-case",
         "steps": [
             {
@@ -14216,6 +14407,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 192,
         "test_case": "Use post.categories variable when categories are in YAML",
         "steps": [
             {
@@ -14278,6 +14470,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 193,
         "test_case": "Use post.categories variable when categories are in YAML and are duplicated",
         "steps": [
             {
@@ -14340,6 +14533,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 194,
         "test_case": "Superdirectories of _posts applied to post.categories",
         "steps": [
             {
@@ -14402,6 +14596,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 195,
         "test_case": "Subdirectories of _posts not applied to post.categories",
         "steps": [
             {
@@ -14464,6 +14659,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 196,
         "test_case": "Use post.categories variable when categories are in YAML with mixed case",
         "steps": [
             {
@@ -14533,6 +14729,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 197,
         "test_case": "Use page.render_with_liquid variable",
         "steps": [
             {
@@ -14595,6 +14792,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 198,
         "test_case": "Use page.path variable",
         "steps": [
             {
@@ -14643,6 +14841,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 199,
         "test_case": "Cannot override page.path variable",
         "steps": [
             {
@@ -14691,6 +14890,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 200,
         "test_case": "Disable a post from being published",
         "steps": [
             {
@@ -14753,6 +14953,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 201,
         "test_case": "Use a custom variable",
         "steps": [
             {
@@ -14815,6 +15016,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 202,
         "test_case": "Use a variable which is a reserved keyword in Ruby",
         "steps": [
             {
@@ -14877,6 +15079,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 203,
         "test_case": "Previous and next posts title",
         "steps": [
             {
@@ -14946,6 +15149,7 @@
     },
     {
         "feature_file": "post_data.feature",
+        "test_num": 204,
         "test_case": "Deprecate calling data keys directly via Ruby",
         "steps": [
             {
@@ -15036,6 +15240,7 @@
     },
     {
         "feature_file": "post_excerpts.feature",
+        "test_num": 205,
         "test_case": "An excerpt without a layout",
         "steps": [
             {
@@ -15091,6 +15296,7 @@
     },
     {
         "feature_file": "post_excerpts.feature",
+        "test_num": 206,
         "test_case": "An excerpt from a post with a layout",
         "steps": [
             {
@@ -15195,6 +15401,7 @@
     },
     {
         "feature_file": "post_excerpts.feature",
+        "test_num": 207,
         "test_case": "An excerpt with Liquid constructs from a post with a layout",
         "steps": [
             {
@@ -15306,6 +15513,7 @@
     },
     {
         "feature_file": "post_excerpts.feature",
+        "test_num": 208,
         "test_case": "An excerpt from a post with a layout which has context",
         "steps": [
             {
@@ -15410,6 +15618,7 @@
     },
     {
         "feature_file": "post_excerpts.feature",
+        "test_num": 209,
         "test_case": "Excerpts from posts having 'render_with_liquid' in their front matter",
         "steps": [
             {
@@ -15507,6 +15716,7 @@
     },
     {
         "feature_file": "post_excerpts.feature",
+        "test_num": 210,
         "test_case": "Excerpts from posts with reference-style Markdown links",
         "steps": [
             {
@@ -15611,6 +15821,7 @@
     },
     {
         "feature_file": "post_url_tag.feature",
+        "test_num": 211,
         "test_case": "A site that is using the defaults for permalink",
         "steps": [
             {
@@ -15666,6 +15877,7 @@
     },
     {
         "feature_file": "post_url_tag.feature",
+        "test_num": 212,
         "test_case": "Site with site-wide custom permalink setting",
         "steps": [
             {
@@ -15728,6 +15940,7 @@
     },
     {
         "feature_file": "post_url_tag.feature",
+        "test_num": 213,
         "test_case": "Site with custom permalink settings on each post",
         "steps": [
             {
@@ -15790,6 +16003,7 @@
     },
     {
         "feature_file": "post_url_tag.feature",
+        "test_num": 214,
         "test_case": "Site with no posts",
         "steps": [
             {
@@ -15831,6 +16045,7 @@
     },
     {
         "feature_file": "post_url_tag.feature",
+        "test_num": 215,
         "test_case": "Site with a future-dated post",
         "steps": [
             {
@@ -15893,6 +16108,7 @@
     },
     {
         "feature_file": "post_url_tag.feature",
+        "test_num": 216,
         "test_case": "Site with configured baseurl",
         "steps": [
             {
@@ -15955,6 +16171,7 @@
     },
     {
         "feature_file": "post_url_tag.feature",
+        "test_num": 217,
         "test_case": "Posts with categories",
         "steps": [
             {
@@ -16045,6 +16262,7 @@
     },
     {
         "feature_file": "post_url_tag.feature",
+        "test_num": 218,
         "test_case": "Duplicate posts with categories",
         "steps": [
             {
@@ -16121,6 +16339,7 @@
     },
     {
         "feature_file": "post_url_tag.feature",
+        "test_num": 219,
         "test_case": "Deprecated usage to link nested post",
         "steps": [
             {
@@ -16183,6 +16402,7 @@
     },
     {
         "feature_file": "post_url_tag.feature",
+        "test_num": 220,
         "test_case": "Nested posts in a directory with name containing spaces",
         "steps": [
             {
@@ -16266,6 +16486,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 221,
         "test_case": "Rendering a site with parentheses in its path name",
         "steps": [
             {
@@ -16349,6 +16570,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 222,
         "test_case": "When receiving bad Liquid",
         "steps": [
             {
@@ -16390,6 +16612,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 223,
         "test_case": "When receiving a liquid syntax error in included file",
         "steps": [
             {
@@ -16445,6 +16668,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 224,
         "test_case": "When receiving a generic liquid error in included file",
         "steps": [
             {
@@ -16500,6 +16724,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 225,
         "test_case": "Rendering a default site containing a file with rogue Liquid constructs",
         "steps": [
             {
@@ -16534,6 +16759,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 226,
         "test_case": "Rendering a default site containing a file with a non-existent Liquid variable",
         "steps": [
             {
@@ -16575,6 +16801,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 227,
         "test_case": "Rendering a custom site containing a file with a non-existent Liquid variable",
         "steps": [
             {
@@ -16616,6 +16843,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 228,
         "test_case": "Rendering a custom site containing a file with a non-existent Liquid filter",
         "steps": [
             {
@@ -16657,6 +16885,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 229,
         "test_case": "Render Liquid and place in layout",
         "steps": [
             {
@@ -16705,6 +16934,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 230,
         "test_case": "Don't place asset files in layout",
         "steps": [
             {
@@ -16774,6 +17004,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 231,
         "test_case": "Ignore defaults and don't place pages and documents with layout set to 'none'",
         "steps": [
             {
@@ -16892,6 +17123,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 232,
         "test_case": "Don't place pages and documents with layout set to 'none'",
         "steps": [
             {
@@ -17003,6 +17235,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 233,
         "test_case": "Render liquid in Sass",
         "steps": [
             {
@@ -17051,6 +17284,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 234,
         "test_case": "Not render liquid in CoffeeScript without explicitly including jekyll-coffeescript",
         "steps": [
             {
@@ -17092,6 +17326,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 235,
         "test_case": "Render liquid in CoffeeScript with jekyll-coffeescript enabled",
         "steps": [
             {
@@ -17140,6 +17375,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 236,
         "test_case": "Rendering Liquid expressions that return strings containing Liquid expressions",
         "steps": [
             {
@@ -17195,6 +17431,7 @@
     },
     {
         "feature_file": "rendering.feature",
+        "test_num": 237,
         "test_case": "Render content of another page",
         "steps": [
             {
@@ -17271,6 +17508,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 238,
         "test_case": "Change source directory",
         "steps": [
             {
@@ -17326,6 +17564,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 239,
         "test_case": "Change destination directory",
         "steps": [
             {
@@ -17367,6 +17606,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 240,
         "test_case": "Similarly named source and destination",
         "steps": [
             {
@@ -17422,6 +17662,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 241,
         "test_case": "Exclude files inline",
         "steps": [
             {
@@ -17498,6 +17739,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 242,
         "test_case": "Exclude files with YAML array",
         "steps": [
             {
@@ -17574,6 +17816,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 243,
         "test_case": "Copy over excluded files when their directory is explicitly included",
         "steps": [
             {
@@ -17685,6 +17928,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 244,
         "test_case": "Copy over excluded files only when they are explicitly included",
         "steps": [
             {
@@ -17782,6 +18026,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 245,
         "test_case": "Copy over excluded wild-card files only when they are explicitly included",
         "steps": [
             {
@@ -17956,6 +18201,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 246,
         "test_case": "Process included files only once",
         "steps": [
             {
@@ -18109,6 +18355,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 247,
         "test_case": "Use Kramdown for markup",
         "steps": [
             {
@@ -18157,6 +18404,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 248,
         "test_case": "Highlight code with rouge",
         "steps": [
             {
@@ -18212,6 +18460,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 249,
         "test_case": "Rouge renders code block once",
         "steps": [
             {
@@ -18253,6 +18502,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 250,
         "test_case": "Set time and no future dated posts",
         "steps": [
             {
@@ -18350,6 +18600,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 251,
         "test_case": "Set time and future dated posts allowed",
         "steps": [
             {
@@ -18447,6 +18698,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 252,
         "test_case": "Generate proper dates with explicitly set timezone (same as posts' time)",
         "steps": [
             {
@@ -18572,6 +18824,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 253,
         "test_case": "Generate proper dates with explicitly set timezone (different than posts' time)",
         "steps": [
             {
@@ -18683,6 +18936,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 254,
         "test_case": "Generate proper dates with explicitly set timezone (using non-half hour offset )",
         "steps": [
             {
@@ -18794,6 +19048,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 255,
         "test_case": "Limit the number of posts generated by most recent date",
         "steps": [
             {
@@ -18863,6 +19118,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 256,
         "test_case": "Using a different layouts directory",
         "steps": [
             {
@@ -18960,6 +19216,7 @@
     },
     {
         "feature_file": "site_configuration.feature",
+        "test_num": 257,
         "test_case": "arbitrary file reads via layouts",
         "steps": [
             {
@@ -19015,6 +19272,7 @@
     },
     {
         "feature_file": "site_data.feature",
+        "test_num": 258,
         "test_case": "Use page variable in a page",
         "steps": [
             {
@@ -19056,6 +19314,7 @@
     },
     {
         "feature_file": "site_data.feature",
+        "test_num": 259,
         "test_case": "Use page.path variable in a page",
         "steps": [
             {
@@ -19104,6 +19363,7 @@
     },
     {
         "feature_file": "site_data.feature",
+        "test_num": 260,
         "test_case": "Override page.path",
         "steps": [
             {
@@ -19145,6 +19405,7 @@
     },
     {
         "feature_file": "site_data.feature",
+        "test_num": 261,
         "test_case": "Use site.time variable",
         "steps": [
             {
@@ -19186,6 +19447,7 @@
     },
     {
         "feature_file": "site_data.feature",
+        "test_num": 262,
         "test_case": "Use site.posts variable for latest post",
         "steps": [
             {
@@ -19241,6 +19503,7 @@
     },
     {
         "feature_file": "site_data.feature",
+        "test_num": 263,
         "test_case": "Use site.posts variable in a loop",
         "steps": [
             {
@@ -19296,6 +19559,7 @@
     },
     {
         "feature_file": "site_data.feature",
+        "test_num": 264,
         "test_case": "Use site.categories.code variable",
         "steps": [
             {
@@ -19351,6 +19615,7 @@
     },
     {
         "feature_file": "site_data.feature",
+        "test_num": 265,
         "test_case": "Use site.tags variable",
         "steps": [
             {
@@ -19406,6 +19671,7 @@
     },
     {
         "feature_file": "site_data.feature",
+        "test_num": 266,
         "test_case": "Order Posts by name when on the same date",
         "steps": [
             {
@@ -19461,6 +19727,7 @@
     },
     {
         "feature_file": "site_data.feature",
+        "test_num": 267,
         "test_case": "Use configuration date in site payload",
         "steps": [
             {
@@ -19509,6 +19776,7 @@
     },
     {
         "feature_file": "site_data.feature",
+        "test_num": 268,
         "test_case": "Access Jekyll version via jekyll.version",
         "steps": [
             {
@@ -19550,6 +19818,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 269,
         "test_case": "Generating a new theme scaffold",
         "steps": [
             {
@@ -19577,6 +19846,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 270,
         "test_case": "Generating a new theme scaffold with a code of conduct",
         "steps": [
             {
@@ -19611,6 +19881,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 271,
         "test_case": "A theme with SCSS",
         "steps": [
             {
@@ -19652,6 +19923,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 272,
         "test_case": "Overriding a theme with SCSS",
         "steps": [
             {
@@ -19707,6 +19979,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 273,
         "test_case": "A theme with an include",
         "steps": [
             {
@@ -19776,6 +20049,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 274,
         "test_case": "A theme without data",
         "steps": [
             {
@@ -19838,6 +20112,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 275,
         "test_case": "A theme with data overridden by data in source directory",
         "steps": [
             {
@@ -19907,6 +20182,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 276,
         "test_case": "A theme with a layout",
         "steps": [
             {
@@ -19983,6 +20259,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 277,
         "test_case": "A theme with assets",
         "steps": [
             {
@@ -20052,6 +20329,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 278,
         "test_case": "A theme with *just* layouts",
         "steps": [
             {
@@ -20121,6 +20399,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 279,
         "test_case": "Requiring dependencies of a theme",
         "steps": [
             {
@@ -20162,6 +20441,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 280,
         "test_case": "Complicated site that puts it all together",
         "steps": [
             {
@@ -20308,6 +20588,7 @@
     },
     {
         "feature_file": "theme.feature",
+        "test_num": 281,
         "test_case": "Complicated site that puts it all together in respect to data folders",
         "steps": [
             {
@@ -20384,6 +20665,7 @@
     },
     {
         "feature_file": "theme_configuration.feature",
+        "test_num": 282,
         "test_case": "Easy onboarding with a pre-configured theme",
         "steps": [
             {
@@ -20432,6 +20714,7 @@
     },
     {
         "feature_file": "theme_configuration.feature",
+        "test_num": 283,
         "test_case": "Disabling import of theme configuration entirely",
         "steps": [
             {
@@ -20480,6 +20763,7 @@
     },
     {
         "feature_file": "theme_configuration.feature",
+        "test_num": 284,
         "test_case": "A pre-configured theme with valid config file overriding Jekyll defaults",
         "steps": [
             {
@@ -20563,6 +20847,7 @@
     },
     {
         "feature_file": "theme_gem.feature",
+        "test_num": 285,
         "test_case": "Generating a new Jekyll Theme",
         "steps": [
             {
@@ -20590,6 +20875,7 @@
     },
     {
         "feature_file": "theme_gem.feature",
+        "test_num": 286,
         "test_case": "Checking if a bonafide Theme gem will be built from generated scaffolding",
         "steps": [
             {
