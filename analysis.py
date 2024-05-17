@@ -3,10 +3,6 @@ import zlib
 import numpy as np
 import matplotlib.pyplot as plt
 
-data_file = './data/jekyll/jekyll_data_v2.json'
-with open(data_file, 'r') as f:
-	test_data = json.load(f)
-
 def calculate_ncd(data1, data2):
     """Calculate the Normalized Compression Distance (NCD) between two strings."""
     combined_length = len(data1) + len(data2)
@@ -15,51 +11,50 @@ def calculate_ncd(data1, data2):
     compressed_combined = zlib.compress((data1 + data2).encode())
     return (len(compressed_combined) - min(len(compressed1), len(compressed2))) / combined_length
 
-# Concatenate step_num and step_name for each test case
-step_name_strings = []
-for test_case in test_data:
-    step_name_string = ""
-    for step in test_case["steps"]:
-        step_name_string += f"{step['step_num']}: {step['step_name']}\n"
-    step_name_strings.append(step_name_string)
+def stringify_test_cases(test_data, data_key):
+	test_strings = []
+	for test_case in test_data:
+		step_name_string = ""
+		for step in test_case["steps"]:
+			step_name_string += f"{step['step_num']}: {step[data_key]}\n"
+		test_strings.append(step_name_string)
+	
+	return test_strings
 
-# Concatenate step_num and glue_code for each test case
-glue_code_strings = []
-for test_case in test_data:
-    glue_code_string = ""
-    for step in test_case["steps"]:
-        glue_code_string += f"{step['step_num']}: {step['glue_code']}\n"
-    glue_code_strings.append(glue_code_string)
+def calculate_pairwise_ncd(test_strings):
+	ncd_matrix = np.zeros((len(test_strings), len(test_strings)))
+	for i in range(len(test_strings)):
+		for j in range(i+1, len(test_strings)):
+			ncd = calculate_ncd(test_strings[i], test_strings[j])
+			ncd_matrix[i, j] = ncd
+			ncd_matrix[j, i] = ncd  # Since NCD is symmetric
+	
+	return ncd_matrix
 
-# Calculate NCD for step_name
-step_name_ncd_matrix = np.zeros((len(step_name_strings), len(step_name_strings)))
-for i in range(len(step_name_strings)):
-    for j in range(i+1, len(step_name_strings)):
-        ncd = calculate_ncd(step_name_strings[i], step_name_strings[j])
-        step_name_ncd_matrix[i, j] = ncd
-        step_name_ncd_matrix[j, i] = ncd  # Since NCD is symmetric
+def plot_heatmaps(step_matrix1, glue_matrix2):
+	# Create subplots for the heatmaps
+	fig, axs = plt.subplots(1, 2, figsize=(20, 8))
 
-# Calculate NCD for glue_code
-glue_code_ncd_matrix = np.zeros((len(glue_code_strings), len(glue_code_strings)))
-for i in range(len(glue_code_strings)):
-    for j in range(i+1, len(glue_code_strings)):
-        ncd = calculate_ncd(glue_code_strings[i], glue_code_strings[j])
-        glue_code_ncd_matrix[i, j] = ncd
-        glue_code_ncd_matrix[j, i] = ncd  # Since NCD is symmetric
+	# Plot heatmap for step_name
+	axs[0].imshow(step_matrix1, cmap='hot', interpolation='nearest')
+	axs[0].set_title('NCD Heatmap for Step Name')
+	axs[0].set_xlabel('Test Case Index')
+	axs[0].set_ylabel('Test Case Index')
 
-# Create subplots for the heatmaps
-fig, axs = plt.subplots(1, 2, figsize=(20, 8))
+	# Plot heatmap for glue_code
+	axs[1].imshow(glue_matrix2, cmap='hot', interpolation='nearest')
+	axs[1].set_title('NCD Heatmap for Glue Code')
+	axs[1].set_xlabel('Test Case Index')
+	axs[1].set_ylabel('Test Case Index')
 
-# Plot heatmap for step_name
-axs[0].imshow(step_name_ncd_matrix, cmap='hot', interpolation='nearest')
-axs[0].set_title('NCD Heatmap for Step Name')
-axs[0].set_xlabel('Test Case Index')
-axs[0].set_ylabel('Test Case Index')
+	plt.show()
 
-# Plot heatmap for glue_code
-axs[1].imshow(glue_code_ncd_matrix, cmap='hot', interpolation='nearest')
-axs[1].set_title('NCD Heatmap for Glue Code')
-axs[1].set_xlabel('Test Case Index')
-axs[1].set_ylabel('Test Case Index')
+if __name__ == "__main__":
+	data_file = './data/jekyll/jekyll_data_v2.json'
+	with open(data_file, 'r') as f:
+		test_data = json.load(f)
+	
+	test_step_strings, test_glue_strings = stringify_test_cases(test_data, 'step_name'), stringify_test_cases(test_data, 'glue_code')
+	step_ncd_matrix, glue_ncd_matrix = calculate_pairwise_ncd(test_step_strings), calculate_pairwise_ncd(test_glue_strings)
+	plot_heatmaps(step_ncd_matrix, glue_ncd_matrix)
 
-plt.show()
