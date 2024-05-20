@@ -83,9 +83,8 @@ def json_to_csv(data, csv_file_path):
 if __name__ == "__main__":
     # feature file paths
     feature_directory = './repos/jekyll/features'
-    combined_directory = "./data/jekyll"
+    combined_directory = "./"
     combined_data_filename = "jekyll_data_v3"
-    write_directory = "./data/jekyll/features"
     glue_code_file = './repos/jekyll/features/step_definitions.rb'
     parsed_gcode_file = 'parsed_stepdefinitions_v3.json'
     language = "ruby"
