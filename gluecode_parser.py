@@ -32,7 +32,14 @@ def parser_updated(glue_code_file, parsed_gcode_file):
     for step_definition in step_definitions:
         match = re.search(r'\(%r!(.*?)!\)', step_definition)
         if match:
-            step_patterns[match.group(1).strip()] = {"Glue Code": step_definition}
+            glue_code_match = re.search(r'(do\s+.*?\send)', step_definition, re.DOTALL)
+            if glue_code_match:
+                glue_code = glue_code_match.group(1).strip()
+                step_patterns[match.group(1).strip()] = {"Glue Code": glue_code}
+            else:
+                print("GLUE CODE NOT FOUND FOR: ")
+                print(step_definition)
+                print("--------------------")
         else:
             print("MATCH NOT FOUND FOR: ")
             print(step_definition)
@@ -44,7 +51,7 @@ def parser_updated(glue_code_file, parsed_gcode_file):
 
 if __name__ == "__main__":
     glue_code_file = './repos/jekyll/features/step_definitions.rb'
-    parsed_gcode_file = 'parsed_stepdefinitions2.json'
+    parsed_gcode_file = 'parsed_stepdefinitions_v3.json'
 
     #parse_step_definitions(glue_code_file, parsed_gcode_file)
     parser_updated(glue_code_file, parsed_gcode_file)

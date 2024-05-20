@@ -1,0 +1,122 @@
+{
+    "^I have a blank site in \"(.*)\"$": {
+        "Glue Code": "do |path|\n  unless File.exist?(path)\n    then FileUtils.mkdir_p(path)\n  end"
+    },
+    "^I do not have a \"(.*)\" directory$": {
+        "Glue Code": "do not have a \"(.*)\" directory$!) do |path|\n  Paths.test_dir.join(path).directory?\nend"
+    },
+    "^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$": {
+        "Glue Code": "do |file, key, value, text|\n  File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA\nend"
+    },
+    "^I have an? \"(.*)\" file that contains \"(.*)\"$": {
+        "Glue Code": "do |file, text|\n  File.write(file, text)\nend"
+    },
+    "^I have an? (.*) (layout|theme) that contains \"(.*)\"$": {
+        "Glue Code": "do |name, type, text|\n  folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)\nend"
+    },
+    "^I have an? \"(.*)\" file with content:$": {
+        "Glue Code": "do |file, text|\n  File.write(file, text)\nend"
+    },
+    "^I have an? \"(.*)\" page with content:$": {
+        "Glue Code": "do |file, text|\n  File.write(file, <<~DATA)\n    ---\n    ---\n\n    #{text}\n  DATA\nend"
+    },
+    "^I have an? (.*) directory$": {
+        "Glue Code": "do |dir|\n  unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)\n  end"
+    },
+    "^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$": {
+        "Glue Code": "do |status, direction, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n    end"
+    },
+    "^I have the following (draft|post)s? within the \"(.*)\" directory:$": {
+        "Glue Code": "do |type, folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n\n    filename = type == \"draft\" ? \"#{title}.markdown\" : \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.markdown\"\n\n    path = File.join(folder, \"_#{type}s\", filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end"
+    },
+    "^I have the following documents? under the (.*) collection:$": {
+        "Glue Code": "do |folder, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    filename = \"#{title}.md\"\n    dest_folder = \"_#{folder}\"\n\n    path = File.join(dest_folder, filename)\n    File.write(path, file_content_from_hash(input_hash))\n  end"
+    },
+    "^I have the following documents? under the \"(.*)\" collection within the \"(.*)\" directory:$": {
+        "Glue Code": "do |label, dir, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))\n  end"
+    },
+    "^I have the following documents? nested inside \"(.*)\" directory under the \"(.*)\" collection within the \"(.*)\" directory:$": {
+        "Glue Code": "do |subdir, label, dir, table|\n  table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", subdir, \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))\n  end"
+    },
+    "^I have a configuration file with \"(.*)\" set to \"(.*)\"$": {
+        "Glue Code": "do |key, value|\n  config = \\\n    if source_dir.join(\"_config.yml\").exist?\n      SafeYAML.load_file(source_dir.join(\"_config.yml\"))\n    else\n      {}\n    end"
+    },
+    "^I have a configuration file with:$": {
+        "Glue Code": "do |table|\n  table.hashes.each do |row|\n    step %(I have a configuration file with \"#{row[\"key\"]}\" set to \"#{row[\"value\"]}\")\n  end"
+    },
+    "^I have a configuration file with \"([^\\\"]*)\" set to:$": {
+        "Glue Code": "do |key, table|\n  File.open(\"_config.yml\", \"w\") do |f|\n    f.write(\"#{key}:\\n\")\n    table.hashes.each do |row|\n      f.write(\"- #{row[\"value\"]}\\n\")\n    end"
+    },
+    "^I have fixture collections(?: in \"(.*)\" directory)?$": {
+        "Glue Code": "do |directory|\n  collections_dir = File.join(source_dir, directory.to_s)\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_methods\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_thanksgiving\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_tutorials\"), collections_dir\nend"
+    },
+    "^I wait (\\d+) second(s?)$": {
+        "Glue Code": "do |time, _|\n  sleep(time.to_f)\nend"
+    },
+    "^I run jekyll(.*)$": {
+        "Glue Code": "do |args|\n  run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end"
+    },
+    "^I run bundle(.*)$": {
+        "Glue Code": "do |args|\n  run_bundle(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end"
+    },
+    "^I run gem(.*)$": {
+        "Glue Code": "do |args|\n  run_rubygem(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\"\n  end"
+    },
+    "^I run git add .$": {
+        "Glue Code": "do\n  run_in_shell(\"git\", \"add\", \".\", \"--verbose\")\nend"
+    },
+    "^I decide to build the theme gem$": {
+        "Glue Code": "do\n  Dir.chdir(Paths.theme_gem_dir)\n  [\n    \"_includes/blank.html\",\n    \"_sass/blank.scss\",\n    \"assets/blank.scss\",\n    \"_config.yml\"\n  ].each do |filename|\n    File.new(filename, \"w\")\n  end"
+    },
+    "^I change \"(.*)\" to contain \"(.*)\"$": {
+        "Glue Code": "do |file, text|\n  File.open(file, \"a\") do |f|\n    f.write(text)\n  end"
+    },
+    "^I delete the file \"(.*)\"$": {
+        "Glue Code": "do |file|\n  File.delete(file)\nend"
+    },
+    "^the (.*) directory should +(not )?exist$": {
+        "Glue Code": "do |dir, negative|\n  if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist\n  end"
+    },
+    "^I should (not )?see \"(.*)\" in \"(.*)\"$": {
+        "Glue Code": "do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end"
+    },
+    "^I should (not )?see \"(.*)\" in \"(.*)\" if on Windows$": {
+        "Glue Code": "do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    if Jekyll::Utils::Platforms.really_windows?\n      expect(file_contents(file)).to match regexp\n    else\n      expect(file_contents(file)).not_to match regexp\n    end"
+    },
+    "^I should (not )?see \"(.*)\" in \"(.*)\" unless Windows$": {
+        "Glue Code": "do |negative, text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    if Jekyll::Utils::Platforms.really_windows?\n      expect(file_contents(file)).not_to match regexp\n    else\n      expect(file_contents(file)).to match regexp\n    end"
+    },
+    "^I should see date \"(.*)\" in \"(.*)\" unless Windows$": {
+        "Glue Code": "do |text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text)\n  if Jekyll::Utils::Platforms.really_windows? && !dst_active?\n    expect(file_contents(file)).not_to match regexp\n  else\n    expect(file_contents(file)).to match regexp\n  end"
+    },
+    "^I should see date \"(.*)\" in \"(.*)\" if on Windows$": {
+        "Glue Code": "do |text, file|\n  step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text)\n  if Jekyll::Utils::Platforms.really_windows? && !dst_active?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp\n  end"
+    },
+    "^I should see exactly \"(.*)\" in \"(.*)\"$": {
+        "Glue Code": "do |text, file|\n  step %(the \"#{file}\" file should exist)\n  expect(file_contents(file).strip).to eq text\nend"
+    },
+    "^I should see escaped \"(.*)\" in \"(.*)\"$": {
+        "Glue Code": "do |text, file|\n  step %(I should see \"#{Regexp.escape(text)}\" in \"#{file}\")\nend"
+    },
+    "^the \"(.*)\" file should +(not )?exist$": {
+        "Glue Code": "do |file, negative|\n  if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist\n  end"
+    },
+    "^I should see today's time in \"(.*)\"$": {
+        "Glue Code": "do |file|\n  step %(I should see \"#{seconds_agnostic_time(Time.now)}\" in \"#{file}\")\nend"
+    },
+    "^I should see today's date in \"(.*)\"$": {
+        "Glue Code": "do |file|\n  step %(I should see \"#{Date.today}\" in \"#{file}\")\nend"
+    },
+    "^I should (not )?see \"(.*)\" in the build output$": {
+        "Glue Code": "do |negative, text|\n  if negative.nil? || negative.empty?\n    expect(jekyll_run_output).to match Regexp.new(text)\n  else\n    expect(jekyll_run_output).not_to match Regexp.new(text)\n  end"
+    },
+    "^I should get an updated git index$": {
+        "Glue Code": "do\n  index = %w(\n    .gitignore\n    Gemfile\n    LICENSE.txt\n    README.md\n    _config.yml\n    _includes/blank.html\n    _layouts/default.html\n    _layouts/page.html\n    _layouts/post.html\n    _sass/blank.scss\n    assets/blank.scss\n    my-cool-theme.gemspec\n  )\n  index.each do |file|\n    expect(jekyll_run_output).to match file\n  end"
+    },
+    "^I should get a zero exit(?:-| )status$": {
+        "Glue Code": "do\n  step %(I should see \"EXIT STATUS: 0\" in the build output)\nend"
+    },
+    "^I should get a non-zero exit(?:-| )status$": {
+        "Glue Code": "do\n  step %(I should not see \"EXIT STATUS: 0\" in the build output)\nend"
+    }
+}

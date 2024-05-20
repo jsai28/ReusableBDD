@@ -84,10 +84,10 @@ if __name__ == "__main__":
     # feature file paths
     feature_directory = './repos/jekyll/features'
     combined_directory = "./data/jekyll"
-    combined_data_filename = "jekyll_data_v2"
+    combined_data_filename = "jekyll_data_v3"
     write_directory = "./data/jekyll/features"
     glue_code_file = './repos/jekyll/features/step_definitions.rb'
-    parsed_gcode_file = 'parsed_stepdefinitions2.json'
+    parsed_gcode_file = 'parsed_stepdefinitions_v3.json'
     language = "ruby"
 
     combined_json = []
