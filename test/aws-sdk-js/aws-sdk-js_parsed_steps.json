@@ -1,0 +1,5375 @@
+[
+    {
+        "feature_file": "acm.feature",
+        "test_num": 1,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listCertificates\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"CertificateSummaryList\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "acm.feature",
+        "test_num": 2,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeCertificate\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "apigateway.feature",
+        "test_num": 3,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"getRestApis\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"items\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "apigateway.feature",
+        "test_num": 4,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"getRestApi\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"NotFoundException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "autoscaling.feature",
+        "test_num": 5,
+        "test_case": "Managing auto scaling groups",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a launch configuration with name \"launch-config-integ\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I describe launch configurations",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the list should contain the launch configuration \"launch-config-integ\"",
+                "step_definition": "this.assert.contains(this.data.LaunchConfigurations, function(configuration) {\n      return configuration.LaunchConfigurationName === name;",
+                "step_definition_file": "autoscaling.js"
+            },
+            {
+                "step_num": 4,
+                "step_name": "I delete the launch configuration \"launch-config-integ\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "autoscaling.feature",
+        "test_num": 6,
+        "test_case": "Paginating responses",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a launch configuration with name \"launch-config-integ-1\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create a launch configuration with name \"launch-config-integ-2\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I paginate the \"describeLaunchConfigurations\" operation with limit 1",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I should get more than one page",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "I should get numPages - 1 markers",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "the last page should not contain a marker",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 7,
+                "step_name": "I delete the launch configuration \"launch-config-integ-1\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 8,
+                "step_name": "I delete the launch configuration \"launch-config-integ-2\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "autoscaling.feature",
+        "test_num": 7,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a launch configuration with name \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationError\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the error message should contain",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudformation.feature",
+        "test_num": 8,
+        "test_case": "Describing stacks",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeStacks\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Stacks\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudformation.feature",
+        "test_num": 9,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a CloudFormation stack with name prefix \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationError\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudformation.feature",
+        "test_num": 10,
+        "test_case": "Paginating responses",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I paginate the \"listStacks\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I should get at least one page",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the last page should not contain a marker",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudfront.feature",
+        "test_num": 11,
+        "test_case": "Listing distributions",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I list CloudFront distributions",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the result at DistributionList should contain a property Quantity with a number",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the result at DistributionList should contain a property Items with an Array",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudfront.feature",
+        "test_num": 12,
+        "test_case": "Creating a distribution",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a CloudFront distribution with name prefix \"aws-js-sdk\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"NoSuchOrigin\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the status code should be 404",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudfront.feature",
+        "test_num": 13,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a CloudFront distribution with name prefix \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidArgument\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudsearch.feature",
+        "test_num": 14,
+        "test_case": "Describing domain",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeDomains\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"DomainStatusList\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudsearch.feature",
+        "test_num": 15,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a domain with name prefix \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationError\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudtrail.feature",
+        "test_num": 16,
+        "test_case": "Describing trails",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I describe trails",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the status code should be 200",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudtrail.feature",
+        "test_num": 17,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a trail with an invalid name",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidTrailNameException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the error message should contain",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudwatch.feature",
+        "test_num": 18,
+        "test_case": "Alarms",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a CloudWatch alarm with prefix \"aws-js-sdk-alarm\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I list the CloudWatch alarms",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the list should contain the CloudWatch alarm",
+                "step_definition": "var name = this.cloudWatchAlarm.AlarmName;\n    this.assert.contains(this.data.MetricAlarms, function(alarm) {\n      return alarm.AlarmName === name;",
+                "step_definition_file": "cloudwatch.js"
+            },
+            {
+                "step_num": 4,
+                "step_name": "I delete the CloudWatch alarm",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudwatch.feature",
+        "test_num": 19,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a CloudWatch alarm with name \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationError\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudwatchevents.feature",
+        "test_num": 20,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listRules\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Rules\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudwatchevents.feature",
+        "test_num": 21,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeRule\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ResourceNotFoundException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudwatchlogs.feature",
+        "test_num": 22,
+        "test_case": "Log Groups",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a CloudWatch logGroup with prefix \"aws-js-sdk\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I list the CloudWatch logGroups",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the list should contain the CloudWatch logGroup",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I delete the CloudWatch logGroup",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cloudwatchlogs.feature",
+        "test_num": 23,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a CloudWatch logGroup with prefix \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidParameterException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "codecommit.feature",
+        "test_num": 24,
+        "test_case": "Listing repositories",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listRepositories\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"repositories\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "codecommit.feature",
+        "test_num": 25,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listBranches\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"RepositoryDoesNotExistException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "codedeploy.feature",
+        "test_num": 26,
+        "test_case": "Listing Applicaitons",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listApplications\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"applications\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "codedeploy.feature",
+        "test_num": 27,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"createApplication\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ApplicationNameRequiredException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "codepipeline.feature",
+        "test_num": 28,
+        "test_case": "Listing repositories",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listPipelines\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"pipelines\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "codepipeline.feature",
+        "test_num": 29,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"getPipeline\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"PipelineNotFoundException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cognitoidentity.feature",
+        "test_num": 30,
+        "test_case": "Identity Pools",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a Cognito identity pool with prefix \"awssdkjs\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I describe the Cognito identity pool ID",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the status code should be 200",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I delete the Cognito identity pool",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cognitoidentity.feature",
+        "test_num": 31,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a Cognito identity pool with prefix \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cognitosync.feature",
+        "test_num": 32,
+        "test_case": "Identity Pool Usage",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I list Cognito identity pool usage",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the status code should be 200",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "cognitosync.feature",
+        "test_num": 33,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I list Cognito data sets with identity pool id \"INVALID\" and identity id \"A:B:C\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error message should contain",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "configservice.feature",
+        "test_num": 34,
+        "test_case": "Listing delivery channels",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeDeliveryChannels\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"DeliveryChannels\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "configservice.feature",
+        "test_num": 35,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"putDeliveryChannel\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "datapipeline.feature",
+        "test_num": 36,
+        "test_case": "Listing pipelines",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listPipelines\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"pipelineIdList\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "datapipeline.feature",
+        "test_num": 37,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a Data Pipeline with name prefix \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the error message should match",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "devicefarm.feature",
+        "test_num": 38,
+        "test_case": "Listing devices",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listDevices\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"devices\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "devicefarm.feature",
+        "test_num": 39,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"getDevice\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"NotFoundException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "directconnect.feature",
+        "test_num": 40,
+        "test_case": "describe connections",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeConnections\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"connections\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "directconnect.feature",
+        "test_num": 41,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a Direct Connect connection with an invalid location",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"DirectConnectClientException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "directoryservice.feature",
+        "test_num": 42,
+        "test_case": "Listing directories",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeDirectories\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"DirectoryDescriptions\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "directoryservice.feature",
+        "test_num": 43,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"createDirectory\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "dms.feature",
+        "test_num": 44,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeEndpoints\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Endpoints\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "dms.feature",
+        "test_num": 45,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"startReplicationTask\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidParameterValueException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "crc32.feature",
+        "test_num": 46,
+        "test_case": "Retry on corrupted request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "my first request is corrupted with CRC checking ON",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be retried",
+                "step_definition": "if (retry && this.response.retryCount > 0) callback.fail('Request was incorrectly retried');\n    if (!retry && this.response.retryCount == 0) callback.fail('Request was incorrectly retried');\n    callback();",
+                "step_definition_file": "dynamodb.js"
+            },
+            {
+                "step_num": 3,
+                "step_name": "the request should not fail with a CRC checking error",
+                "step_definition": "if (failed && this.error) callback.fail(this.error);\n    if (!failed && !this.error) callback.fail('Did not fail when should have');\n    callback();",
+                "step_definition_file": "dynamodb.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "crc32.feature",
+        "test_num": 47,
+        "test_case": "Failed retries on corrupted request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "all of my requests are corrupted with CRC checking ON",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request is retried the maximum number of times",
+                "step_definition": "if (this.response.retryCount != 2) callback.fail('Incorrect retry count');\n    callback();",
+                "step_definition_file": "dynamodb.js"
+            },
+            {
+                "step_num": 3,
+                "step_name": "the request should fail with a CRC checking error",
+                "step_definition": "if (failed && this.error) callback.fail(this.error);\n    if (!failed && !this.error) callback.fail('Did not fail when should have');\n    callback();",
+                "step_definition_file": "dynamodb.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "crc32.feature",
+        "test_num": 48,
+        "test_case": "Ignore corrupted request with CRC checking OFF",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "my first request is corrupted with CRC checking OFF",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should not be retried",
+                "step_definition": "if (retry && this.response.retryCount > 0) callback.fail('Request was incorrectly retried');\n    if (!retry && this.response.retryCount == 0) callback.fail('Request was incorrectly retried');\n    callback();",
+                "step_definition_file": "dynamodb.js"
+            },
+            {
+                "step_num": 3,
+                "step_name": "the request should not fail with a CRC checking error",
+                "step_definition": "if (failed && this.error) callback.fail(this.error);\n    if (!failed && !this.error) callback.fail('Did not fail when should have');\n    callback();",
+                "step_definition_file": "dynamodb.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "tables.feature",
+        "test_num": 49,
+        "test_case": "Creating a table",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a table",
+                "step_definition": "var world = this;\n    this.tableName = this.uniqueName(\"aws-sdk-js-integration-\");\n    createTable(world, callback);",
+                "step_definition_file": "dynamodb.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "the table should eventually exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "tables.feature",
+        "test_num": 50,
+        "test_case": "Item CRUD",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I have a table",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put the item",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the item with id \"foo\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "it should have attribute \"data.S\" containing \"b\u00e5r\"",
+                "step_definition": "this.assert.equal(jmespath.search(this.data.Item, attr), value);\n    next();",
+                "step_definition_file": "dynamodb.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "tables.feature",
+        "test_num": 51,
+        "test_case": "UTF-8 support",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I try to delete an item with key \"f\u00f8\u00f8\" from table \"table\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ResourceNotFoundException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "tables.feature",
+        "test_num": 52,
+        "test_case": "Improper table deletion",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I try to delete a table with an empty table parameter",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the status code should be 400",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "tables.feature",
+        "test_num": 53,
+        "test_case": "Recursive Attributes",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I have a table",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put the item",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the item with id \"fooRecursive\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "it should have attribute \"data.M.attr1.L[1].L[0].M.attr12.S\" containing \"value2\"",
+                "step_definition": "this.assert.equal(jmespath.search(this.data.Item, attr), value);\n    next();",
+                "step_definition_file": "dynamodb.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "tables.feature",
+        "test_num": 54,
+        "test_case": "Deleting the created table",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I delete the table",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the table should eventually not exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "dynamodbstreams.feature",
+        "test_num": 55,
+        "test_case": "Listing streams",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listStreams\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Streams\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "dynamodbstreams.feature",
+        "test_num": 56,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeStream\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "ec2.feature",
+        "test_num": 57,
+        "test_case": "DescribeRegions",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I describe EC2 regions \"us-east-1, us-west-1\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the EC2 endpoint for \"us-east-1\" should be \"ec2.us-east-1.amazonaws.com\"",
+                "step_definition": "this.assert.contains(this.data.Regions, function(region) {\n      return region.Endpoint === endpoint;",
+                "step_definition_file": "ec2.js"
+            },
+            {
+                "step_num": 3,
+                "step_name": "the EC2 endpoint for \"us-west-1\" should be \"ec2.us-west-1.amazonaws.com\"",
+                "step_definition": "this.assert.contains(this.data.Regions, function(region) {\n      return region.Endpoint === endpoint;",
+                "step_definition_file": "ec2.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "ec2.feature",
+        "test_num": 58,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I describe the EC2 instance \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"MissingParameter\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the status code should be 400",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "ec2.feature",
+        "test_num": 59,
+        "test_case": "Encrypted CopySnapshot",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I attempt to copy an encrypted snapshot across regions",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the copy snapshot attempt should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "ec2.feature",
+        "test_num": 60,
+        "test_case": "Paginating responses",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I paginate the \"describeReservedInstancesOfferings\" operation with limit 20 and max pages 3",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I should get 3 pages",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "ecr.feature",
+        "test_num": 61,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeRepositories\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"repositories\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "ecr.feature",
+        "test_num": 62,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listImages\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"RepositoryNotFoundException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "ecs.feature",
+        "test_num": 63,
+        "test_case": "Listing clusters",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listClusters\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"clusterArns\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "ecs.feature",
+        "test_num": 64,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"stopTask\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the status code should be 400",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "efs.feature",
+        "test_num": 65,
+        "test_case": "Listing file systems",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeFileSystems\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"FileSystems\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "efs.feature",
+        "test_num": 66,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"deleteFileSystem\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "elasticache.feature",
+        "test_num": 67,
+        "test_case": "Creating and deleting cache parameter groups",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a cache parameter group with name prefix \"aws-js-sdk\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the cache parameter group name is in the result",
+                "step_definition": "var name = this.data.CacheParameterGroup.CacheParameterGroupName;\n    this.assert.equal(name, this.cacheGroupName);\n    callback();",
+                "step_definition_file": "elasticache.js"
+            },
+            {
+                "step_num": 3,
+                "step_name": "I describe the cache parameter groups",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the value at \"CacheParameterGroups\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the cache parameter group should be described",
+                "step_definition": "var item = this.data.CacheParameterGroups[0];\n    this.assert.equal(item.CacheParameterGroupName, this.cacheGroupName);\n    callback();",
+                "step_definition_file": "elasticache.js"
+            },
+            {
+                "step_num": 6,
+                "step_name": "I delete the cache parameter group",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "elasticache.feature",
+        "test_num": 68,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a cache parameter group with name prefix \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidParameterValue\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the error message should contain",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "elasticbeanstalk.feature",
+        "test_num": 69,
+        "test_case": "Creating applications and application versions",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create an Elastic Beanstalk application with name prefix \"aws-js-sdk\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create an Elastic Beanstalk application version with label \"1.0.0\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I describe the Elastic Beanstalk application",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the result should contain the Elastic Beanstalk application version",
+                "step_definition": "this.assert.deepEqual(this.data.Applications[0].Versions, [this.appVersion]);\n    callback();",
+                "step_definition_file": "elasticbeanstalk.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "the result should contain the Elastic Beanstalk application name",
+                "step_definition": "this.assert.equal(this.data.Applications[0].ApplicationName, this.appName);\n    callback();",
+                "step_definition_file": "elasticbeanstalk.js"
+            },
+            {
+                "step_num": 6,
+                "step_name": "I delete the Elastic Beanstalk application",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "elasticbeanstalk.feature",
+        "test_num": 70,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create an Elastic Beanstalk application with name prefix \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationError\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the error message should match",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "elastictranscoder.feature",
+        "test_num": 71,
+        "test_case": "Pipeline CRUD",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create an IAM role with name prefix \"aws-sdk-js\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create a bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I create an Elastic Transcoder pipeline with name prefix \"aws-sdk-js\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I list pipelines",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the list should contain the pipeline",
+                "step_definition": "var id = this.pipelineId;\n    this.assert.contains(this.data.Pipelines, function (pipeline) {\n      return pipeline.Id === id;",
+                "step_definition_file": "elastictranscoder.js"
+            },
+            {
+                "step_num": 6,
+                "step_name": "I pause the pipeline",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 7,
+                "step_name": "I read the pipeline",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 8,
+                "step_name": "the pipeline status should be \"Paused\"",
+                "step_definition": "this.assert.equal(this.data.Pipeline.Status, status);\n    callback();",
+                "step_definition_file": "elastictranscoder.js"
+            },
+            {
+                "step_num": 9,
+                "step_name": "I delete the pipeline",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 10,
+                "step_name": "I delete the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 11,
+                "step_name": "I delete the IAM role",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "elastictranscoder.feature",
+        "test_num": 72,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create an Elastic Transcoder pipeline with name prefix \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "elb.feature",
+        "test_num": 73,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeLoadBalancers\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "elb.feature",
+        "test_num": 74,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a load balancer with name prefix \"verylongelasticloadbalancername\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationError\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the status code should be 400",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "elbv2.feature",
+        "test_num": 75,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeTargetGroups\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"TargetGroups\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "elbv2.feature",
+        "test_num": 76,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeTags\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationError\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "emr.feature",
+        "test_num": 77,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listClusters\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Clusters\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "emr.feature",
+        "test_num": 78,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run an EMR job flow with invalid parameters",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "es.feature",
+        "test_num": 79,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listDomainNames\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"DomainNames\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "es.feature",
+        "test_num": 80,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeElasticsearchDomain\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ResourceNotFoundException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "gamelift.feature",
+        "test_num": 81,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listBuilds\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Builds\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "gamelift.feature",
+        "test_num": 82,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeAlias\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidRequestException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "glacier.feature",
+        "test_num": 83,
+        "test_case": "Creating a vault",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I have a Glacier vault",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I describe the Glacier vault",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the result should contain a property NumberOfArchives with a number",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "glacier.feature",
+        "test_num": 84,
+        "test_case": "Uploading an archive",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I have a Glacier vault",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I upload a 0.25MB Glacier archive to the vault",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the result should contain the Glacier archive ID",
+                "step_definition": "this.archiveId = this.data.archiveId;\n    callback();",
+                "step_definition_file": "glacier.js"
+            },
+            {
+                "step_num": 4,
+                "step_name": "the result should contain the same tree hash checksum",
+                "step_definition": "var hash = this.response.request.httpRequest.headers['x-amz-sha256-tree-hash'];\n    this.assert.equal(this.data.checksum, hash);\n    callback();",
+                "step_definition_file": "glacier.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I delete the Glacier archive",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "glacier.feature",
+        "test_num": 85,
+        "test_case": "Multi-part upload",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I have a Glacier vault",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I initiate a Glacier multi-part upload on a 2.5MB archive in 1MB chunks",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the result should contain the Glacier multi-part upload ID",
+                "step_definition": "this.uploadId = this.data.uploadId;\n    callback();",
+                "step_definition_file": "glacier.js"
+            },
+            {
+                "step_num": 4,
+                "step_name": "I send the Glacier archive data in chunks",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "I complete the Glacier multi-part upload",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "the result should contain the Glacier archive ID",
+                "step_definition": "this.archiveId = this.data.archiveId;\n    callback();",
+                "step_definition_file": "glacier.js"
+            },
+            {
+                "step_num": 7,
+                "step_name": "the result should contain the same tree hash checksum",
+                "step_definition": "var hash = this.response.request.httpRequest.headers['x-amz-sha256-tree-hash'];\n    this.assert.equal(this.data.checksum, hash);\n    callback();",
+                "step_definition_file": "glacier.js"
+            },
+            {
+                "step_num": 8,
+                "step_name": "I delete the Glacier archive",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "glacier.feature",
+        "test_num": 86,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I have a Glacier vault",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I upload a 0.05MB Glacier archive to the vault with incorrect checksum",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the error code should be \"InvalidParameterValueException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the error message should match",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "I upload a 0.05MB Glacier archive to the vault with invalid checksum",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "the error code should be \"InvalidParameterValueException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 7,
+                "step_name": "the error message should equal",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "iam.feature",
+        "test_num": 87,
+        "test_case": "Users",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I have an IAM username \"js-test\"",
+                "step_definition": "this.iamUserArn = '';\n    this.iamUser = this.uniqueName(name);\n    callback();",
+                "step_definition_file": "iam.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create an IAM user with the username",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the IAM user",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the IAM user should exist",
+                "step_definition": "this.assert.equal(this.data.User.UserName, this.iamUser);\n    callback();",
+                "step_definition_file": "iam.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I delete the IAM user",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "iam.feature",
+        "test_num": 88,
+        "test_case": "Roles",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create an IAM role with name prefix \"aws-sdk-js\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the IAM role should exist",
+                "step_definition": "this.assert.compare(this.iamRoleArn.length, '>', 0);\n    callback();",
+                "step_definition_file": "iam.js"
+            },
+            {
+                "step_num": 3,
+                "step_name": "I delete the IAM role",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "iam.feature",
+        "test_num": 89,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I have an IAM username \"js-test-dupe\"",
+                "step_definition": "this.iamUserArn = '';\n    this.iamUser = this.uniqueName(name);\n    callback();",
+                "step_definition_file": "iam.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create an IAM user with the username",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I create an IAM user with the username",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the error code should be \"EntityAlreadyExists\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "I delete the IAM user",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "inspector.feature",
+        "test_num": 90,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listRulesPackages\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"rulesPackageArns\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "inspector.feature",
+        "test_num": 91,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"stopAssessmentRun\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidInputException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "iot.feature",
+        "test_num": 92,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listPolicies\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"policies\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "iot.feature",
+        "test_num": 93,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeCertificate\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidRequestException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "kinesis.feature",
+        "test_num": 94,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I try to describe a stream in Kinesis",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ResourceNotFoundException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "kms.feature",
+        "test_num": 95,
+        "test_case": "List keys",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listKeys\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Keys\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "kms.feature",
+        "test_num": 96,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"createAlias\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "lambda.feature",
+        "test_num": 97,
+        "test_case": "Listing functions",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listFunctions\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Functions\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "lambda.feature",
+        "test_num": 98,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"invoke\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ResourceNotFoundException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "machinelearning.feature",
+        "test_num": 99,
+        "test_case": "Describing MLModels",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeMLModels\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Results\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "machinelearning.feature",
+        "test_num": 100,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"getBatchPrediction\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ResourceNotFoundException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "mobileanalytics.feature",
+        "test_num": 101,
+        "test_case": "Putting events",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"putEvents\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "mobileanalytics.feature",
+        "test_num": 102,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"putEvents\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"BadRequestException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "opsworks.feature",
+        "test_num": 103,
+        "test_case": "Creating and deleting user profiles",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I have an IAM username \"aws-js-sdk\"",
+                "step_definition": "this.iamUserArn = '';\n    this.iamUser = this.uniqueName(name);\n    callback();",
+                "step_definition_file": "iam.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create an IAM user with the username",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I create an OpsWorks user profile with the IAM user ARN",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the IAM user ARN is in the result",
+                "step_definition": "this.assert.equal(this.data.IamUserArn, this.iamUserArn);\n    callback();",
+                "step_definition_file": "opsworks.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I describe the OpsWorks user profiles",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "the IAM user ARN should be in the result",
+                "step_definition": "this.assert.equal(this.data.UserProfiles[0].IamUserArn, this.iamUserArn);\n    callback();",
+                "step_definition_file": "opsworks.js"
+            },
+            {
+                "step_num": 7,
+                "step_name": "the name should be equal to the IAM username",
+                "step_definition": "this.assert.equal(this.data.UserProfiles[0].Name, this.iamUser);\n    callback();",
+                "step_definition_file": "opsworks.js"
+            },
+            {
+                "step_num": 8,
+                "step_name": "the SSH username should be equal to the IAM username",
+                "step_definition": "this.assert.equal(this.data.UserProfiles[0].SshUsername, this.iamUser);\n    callback();",
+                "step_definition_file": "opsworks.js"
+            },
+            {
+                "step_num": 9,
+                "step_name": "I delete the OpsWorks user profile",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 10,
+                "step_name": "I delete the IAM user",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "opsworks.feature",
+        "test_num": 104,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I have an IAM username \"\"",
+                "step_definition": "this.iamUserArn = '';\n    this.iamUser = this.uniqueName(name);\n    callback();",
+                "step_definition_file": "iam.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create an OpsWorks user profile with the IAM user ARN",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the status code should be 400",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "rds.feature",
+        "test_num": 105,
+        "test_case": "Describe DB security group",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeDBSecurityGroups\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"DBSecurityGroups\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the value at \"DBSecurityGroups\" should contain \"DBSecurityGroupDescription\" with \"default\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "rds.feature",
+        "test_num": 106,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a RDS security group with prefix name \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidParameterValue\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the status code should be 400",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "rds.feature",
+        "test_num": 107,
+        "test_case": "Paginating responses",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I paginate the \"describeReservedDBInstancesOfferings\" operation with limit 100",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I should get more than one page",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I should get numPages - 1 markers",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the last page should not contain a marker",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "rds.feature",
+        "test_num": 108,
+        "test_case": "Paginating responses (with callback)",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I paginate the \"describeReservedDBInstancesOfferings\" operation asynchronously with limit 100",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I should be able to asynchronously paginate all pages",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "redshift.feature",
+        "test_num": 109,
+        "test_case": "Describe cluster parameter groups",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeClusterParameterGroups\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"ParameterGroups\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "redshift.feature",
+        "test_num": 110,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a Redshift cluster parameter group with prefix name \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidParameterValue\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the error message should contain",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "route53.feature",
+        "test_num": 111,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listHostedZones\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"HostedZones\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "route53.feature",
+        "test_num": 112,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"getHostedZone\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"NoSuchHostedZone\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "route53domains.feature",
+        "test_num": 113,
+        "test_case": "Feature",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I list Route53 domains",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Domains\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "route53domains.feature",
+        "test_num": 114,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I try to register a Route53 domain with invalid parameters",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidInput\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "buckets.feature",
+        "test_num": 115,
+        "test_case": "CRUD buckets using the classic endpoint",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I am using the S3 \"us-east-1\" region",
+                "step_definition": "this.s3 = new this.AWS.S3({region: region",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create a bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the bucket should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I delete the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the bucket should not exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "buckets.feature",
+        "test_num": 116,
+        "test_case": "CRUD buckets using a regional endpoint",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I am using the S3 \"us-west-2\" region",
+                "step_definition": "this.s3 = new this.AWS.S3({region: region",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create a bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the bucket should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I delete the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the bucket should not exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "buckets.feature",
+        "test_num": 117,
+        "test_case": "Support us-east-1 regional endpoint",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I am using the S3 us-east-1 regional endpoint",
+                "step_definition": "this.s3 = new this.AWS.S3({region: 'us-east-1', s3UsEast1RegionalEndpoint: 'regional'",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create a bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the bucket should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I delete the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the bucket should not exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "buckets.feature",
+        "test_num": 118,
+        "test_case": "Bucket CORS",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put a bucket CORS configuration",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the bucket CORS configuration",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the AllowedMethods list should inclue \"DELETE POST PUT\"",
+                "step_definition": "this.assert.equal(this.data.CORSRules[0].AllowedMethods.sort().join(' '), 'DELETE POST PUT');\n    callback();",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "the AllowedOrigin value should equal \"http://example.com\"",
+                "step_definition": "this.assert.equal(this.data.CORSRules[0].AllowedOrigins[0], value);\n    callback();",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 6,
+                "step_name": "the AllowedHeader value should equal \"*\"",
+                "step_definition": "this.assert.equal(this.data.CORSRules[0].AllowedHeaders[0], value);\n    callback();",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 7,
+                "step_name": "the ExposeHeader value should equal \"x-amz-server-side-encryption\"",
+                "step_definition": "this.assert.equal(this.data.CORSRules[0].ExposeHeaders[0], value);\n    callback();",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 8,
+                "step_name": "the MaxAgeSeconds value should equal 5000",
+                "step_definition": "this.assert.equal(this.data.CORSRules[0].MaxAgeSeconds, parseInt(value));\n    callback();",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 9,
+                "step_name": "I delete the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "buckets.feature",
+        "test_num": 119,
+        "test_case": "Bucket lifecycles",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put a transition lifecycle configuration on the bucket with prefix \"/\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the transition lifecycle configuration on the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the lifecycle configuration should have transition days of 0",
+                "step_definition": "this.assert.equal(this.data.Rules[0].Transition.Days, 0);\n    callback();",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "the lifecycle configuration should have transition storage class of \"GLACIER\"",
+                "step_definition": "this.assert.equal(this.data.Rules[0].Transition.StorageClass, value);\n    callback();",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 6,
+                "step_name": "I delete the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "buckets.feature",
+        "test_num": 120,
+        "test_case": "Bucket Tagging",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put a bucket tag with key \"KEY\" and value \"VALUE\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the bucket tagging",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the first tag in the tag set should have key and value \"KEY\", \"VALUE\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "I delete the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "buckets.feature",
+        "test_num": 121,
+        "test_case": "Access bucket following 307 redirects",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I am using the S3 \"us-east-1\" region with signatureVersion \"s3\"",
+                "step_definition": "this.s3 = new this.AWS.S3({region: region, signatureVersion: signatureVersion",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create a bucket with the location constraint \"EU\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the bucket should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the bucket should have a location constraint of \"EU\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "I delete the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "buckets.feature",
+        "test_num": 122,
+        "test_case": "Working with bucket names that contain '.'",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a bucket with a DNS compatible name that contains a dot",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the bucket should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I delete the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the bucket should not exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "buckets.feature",
+        "test_num": 123,
+        "test_case": "Operating on a bucket using path style",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I force path style requests",
+                "step_definition": "this.s3 = new this.AWS.S3({s3ForcePathStyle: true",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create a bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I put \"abc\" to the key \"hello\" in the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the bucket name should be in the request path",
+                "step_definition": "var path = this.response.request.httpRequest.path.split('/');\n    this.assert.equal(path[1], this.bucket);\n    callback();",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "the bucket name should not be in the request host",
+                "step_definition": "var host = this.response.request.httpRequest.endpoint.host;\n    this.assert.compare(host.indexOf(this.bucket), '<', 0);\n    callback();",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 6,
+                "step_name": "I delete the object \"hello\" from the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 7,
+                "step_name": "I delete the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "buckets.feature",
+        "test_num": 124,
+        "test_case": "Follow 307 redirect on new buckets",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I am using the S3 \"us-east-1\" region with signatureVersion \"s3\"",
+                "step_definition": "this.s3 = new this.AWS.S3({region: region, signatureVersion: signatureVersion",
+                "step_definition_file": "buckets.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create a bucket with the location constraint \"us-west-2\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I put a large buffer to the key \"largeobject\" in the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the object \"largeobject\" should exist in the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "I delete the object \"largeobject\" from the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "I delete the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "managed_upload.feature",
+        "test_num": 125,
+        "test_case": "Uploading an empty buffer",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use S3 managed upload to upload an empty buffer to the key \"empty_upload_buffer\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the multipart upload should succeed",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"empty_upload_buffer\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the ContentLength should equal 0",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "managed_upload.feature",
+        "test_num": 126,
+        "test_case": "Uploading a small buffer",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use S3 managed upload to upload a small buffer to the key \"small_upload_buffer\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the multipart upload should succeed",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"small_upload_buffer\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the ContentLength should equal 1048576",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "managed_upload.feature",
+        "test_num": 127,
+        "test_case": "Uploading a large buffer",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use S3 managed upload to upload a large buffer to the key \"large_upload_buffer\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the multipart upload should succeed",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"large_upload_buffer\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the ContentLength should equal 20971520",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "managed_upload.feature",
+        "test_num": 128,
+        "test_case": "Uploading an empty stream",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use S3 managed upload to upload an empty stream to the key \"empty_upload_stream\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the multipart upload should succeed",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"empty_upload_stream\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the ContentLength should equal 0",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "managed_upload.feature",
+        "test_num": 129,
+        "test_case": "Uploading a small stream",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use S3 managed upload to upload a small stream to the key \"small_upload_stream\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the multipart upload should succeed",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I should get progress events",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the object \"small_upload_stream\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the ContentLength should equal 1048576",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "managed_upload.feature",
+        "test_num": 130,
+        "test_case": "Uploading a large stream",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use S3 managed upload to upload a large stream to the key \"large_upload_stream\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the multipart upload should succeed",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I should get progress events",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the object \"large_upload_stream\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the ContentLength should equal 20971520",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "managed_upload.feature",
+        "test_num": 131,
+        "test_case": "Verifying uploaded data integrity",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I generate the MD5 checksum of a 20MB buffer",
+                "step_definition": "this.uploadBuffer = this.createBuffer(size);\n    this.sentContentMD5 = this.AWS.util.crypto.md5(this.uploadBuffer, 'base64');\n    next();",
+                "step_definition_file": "managed_upload.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I use S3 managed upload to upload the buffer to the key \"checksummed_data\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"checksummed_data\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I get the object \"checksummed_data\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the HTTP response should have a content length of 20971520",
+                "step_definition": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 6,
+                "step_name": "the MD5 checksum of the response data should equal the generated checksum",
+                "step_definition": "var receivedContentMD5 = this.AWS.util.crypto.md5(this.data.Body.toString(), 'base64');\n    this.assert.equal(receivedContentMD5, this.sentContentMD5);\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "managed_upload.feature",
+        "test_num": 132,
+        "test_case": "Resuming an upload",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use S3 managed upload to upload some 20MB buffer to the key \"broken_buffer\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I abort the upload",
+                "step_definition": "this.managedUpload.abort();\n    callback();",
+                "step_definition_file": "managed_upload.js"
+            },
+            {
+                "step_num": 3,
+                "step_name": "I receive a \"RequestAbortedError\" error",
+                "step_definition": "this.assert.equal(this.error.name, errName);\n    callback();",
+                "step_definition_file": "managed_upload.js"
+            },
+            {
+                "step_num": 4,
+                "step_name": "I resume the upload",
+                "step_definition": "var self = this;\n    self.managedUpload.send(function(err, data) {\n      self.error = err;\n      self.data = data;\n      callback();",
+                "step_definition_file": "managed_upload.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "the object \"broken_buffer\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "the ContentLength should equal 20971520",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "managed_upload.feature",
+        "test_num": 133,
+        "test_case": "Resuming a partial upload",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use S3 managed upload to partially upload some 20MB buffer to the key \"partial_buffer\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I receive a \"RequestAbortedError\" error",
+                "step_definition": "this.assert.equal(this.error.name, errName);\n    callback();",
+                "step_definition_file": "managed_upload.js"
+            },
+            {
+                "step_num": 3,
+                "step_name": "I resume the upload",
+                "step_definition": "var self = this;\n    self.managedUpload.send(function(err, data) {\n      self.error = err;\n      self.data = data;\n      callback();",
+                "step_definition_file": "managed_upload.js"
+            },
+            {
+                "step_num": 4,
+                "step_name": "the object \"partial_buffer\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the ContentLength should equal 20971520",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "uploadPart should have been called 5 times",
+                "step_definition": "this.assert.equal(this.progressEvents.length, count);\n    callback();",
+                "step_definition_file": "managed_upload.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 134,
+        "test_case": "CRUD objects",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put \"world\" to the key \"hello\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"hello\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the object \"hello\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the object \"hello\" should contain \"world\"",
+                "step_definition": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I put \"new world\" to the key \"hello\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "the object \"hello\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 7,
+                "step_name": "I get the object \"hello\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 8,
+                "step_name": "the object \"hello\" should contain \"new world\"",
+                "step_definition": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 9,
+                "step_name": "I delete the object \"hello\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 10,
+                "step_name": "the object \"hello\" should not exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 135,
+        "test_case": "Content length",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put \"foo\" to the key \"contentlength\" with ContentLength 3",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"contentlength\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the object \"contentlength\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the object \"contentlength\" should contain \"foo\"",
+                "step_definition": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 136,
+        "test_case": "Putting a multi-byte string to an object",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put \"\u00e5\u00df\u2202\u0192\u00a9\" to the key \"multi\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"multi\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the object \"multi\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the object \"multi\" should contain \"\u00e5\u00df\u2202\u0192\u00a9\"",
+                "step_definition": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "the HTTP response should have a content length of 11",
+                "step_definition": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 137,
+        "test_case": "Copying an object",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put \"world\" to the key \"hello\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I copy the object \"hello\" to \"byebye\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"byebye\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I get the object \"byebye\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the object \"byebye\" should contain \"world\"",
+                "step_definition": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 6,
+                "step_name": "I delete the object \"byebye\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 138,
+        "test_case": "Private ACL",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put \"world\" to the private key \"hello\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I get the object \"hello\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"hello\" should contain \"world\"",
+                "step_definition": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 4,
+                "step_name": "I delete the object \"hello\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 139,
+        "test_case": "Putting nothing to an object",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put \"\" to the key \"blank\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"blank\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the object \"blank\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the object \"blank\" should contain \"\"",
+                "step_definition": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "the HTTP response should have a content length of 0",
+                "step_definition": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 140,
+        "test_case": "Putting and getting an empty buffer",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put an empty buffer to the key \"emptybuffer\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"emptybuffer\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the object \"emptybuffer\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the HTTP response should have a content length of 0",
+                "step_definition": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 141,
+        "test_case": "Putting and getting a small buffer",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put a small buffer to the key \"smallbuffer\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"smallbuffer\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the object \"smallbuffer\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the HTTP response should have a content length of 1048576",
+                "step_definition": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 142,
+        "test_case": "Putting and getting a large buffer",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put a large buffer to the key \"largebuffer\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"largebuffer\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the object \"largebuffer\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the HTTP response should have a content length of 20971520",
+                "step_definition": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 143,
+        "test_case": "Putting and getting an empty file",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put an empty file to the key \"emptyfile\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"emptyfile\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the object \"emptyfile\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the HTTP response should have a content length of 0",
+                "step_definition": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 144,
+        "test_case": "Putting and getting a small file",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put a small file to the key \"smallfile\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"smallfile\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the object \"smallfile\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the HTTP response should have a content length of 1048576",
+                "step_definition": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 145,
+        "test_case": "Putting and getting a large file",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put a large file to the key \"largefile\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"largefile\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the object \"largefile\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the HTTP response should have a content length of 20971520",
+                "step_definition": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 146,
+        "test_case": "Verifying data integrity",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I generate the MD5 checksum of \"SOME SAMPLE DATA\"",
+                "step_definition": "this.sentContentMD5 = this.AWS.util.crypto.md5(data, 'base64');\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"SOME SAMPLE DATA\" to the key \"checksummed_data\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"checksummed_data\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I get the object \"checksummed_data\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the object \"checksummed_data\" should contain \"SOME SAMPLE DATA\"",
+                "step_definition": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 6,
+                "step_name": "the HTTP response should have a content length of 16",
+                "step_definition": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 7,
+                "step_name": "the MD5 checksum of the response data should equal the generated checksum",
+                "step_definition": "var receivedContentMD5 = this.AWS.util.crypto.md5(this.data.Body.toString(), 'base64');\n    this.assert.equal(receivedContentMD5, this.sentContentMD5);\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 147,
+        "test_case": "Putting to a pre-signed URL",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I get a pre-signed URL to PUT the key \"presigned\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I access the URL via HTTP PUT with data \"PRESIGNED BODY CONTENTS\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get a pre-signed URL to GET the key \"presigned\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I access the URL via HTTP GET",
+                "step_definition": "var world = this;\n    this.data = '';\n    require('https').get(this.signedUrl, function (res) {\n      res.on('data', function (chunk) {\n        world.data += chunk.toString();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "the HTTP response should equal \"PRESIGNED BODY CONTENTS\"",
+                "step_definition": "this.assert.equal(this.data, data);\n    callback();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 148,
+        "test_case": "Pre-signed URLs with checksum",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I get a pre-signed URL to PUT the key \"hello\" with data \"CHECKSUMMED\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I access the URL via HTTP PUT with data \"NOT CHECKSUMMED\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the HTTP response should contain \"SignatureDoesNotMatch\"",
+                "step_definition": "this.assert.match(this.data, data);\n    callback();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 149,
+        "test_case": "POSTing an object with a presigned form",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a presigned form to POST the key \"presignedPost\" with the data \"PRESIGNED POST CONTENTS\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I POST the form",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"presignedPost\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I get the object \"presignedPost\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "the object \"presignedPost\" should contain \"PRESIGNED POST CONTENTS\"",
+                "step_definition": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 6,
+                "step_name": "the HTTP response should have a content length of 23",
+                "step_definition": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 150,
+        "test_case": "Streaming objects",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put \"STREAMING CONTENT\" to the key \"streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"streaming_object\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I stream key \"streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the streamed data should contain \"STREAMING CONTENT\"",
+                "step_definition": "this.assert.equal(this.result.replace('\\n', ''), data);\n    callback();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I stream2 key \"streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "the streamed data should contain \"STREAMING CONTENT\"",
+                "step_definition": "this.assert.equal(this.result.replace('\\n', ''), data);\n    callback();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 151,
+        "test_case": "Streaming empty objects",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put an empty buffer to the key \"empty_streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"empty_streaming_object\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I stream key \"empty_streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the streamed data content length should equal 0",
+                "step_definition": "this.assert.equal(this.result.length, length);\n    callback();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I stream2 key \"empty_streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "the streamed data content length should equal 0",
+                "step_definition": "this.assert.equal(this.result.length, length);\n    callback();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 152,
+        "test_case": "Streaming small objects",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put a small buffer to the key \"small_streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"small_streaming_object\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I stream key \"small_streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the streamed data content length should equal 1048576",
+                "step_definition": "this.assert.equal(this.result.length, length);\n    callback();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I stream2 key \"small_streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "the streamed data content length should equal 1048576",
+                "step_definition": "this.assert.equal(this.result.length, length);\n    callback();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 153,
+        "test_case": "Streaming large objects",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put a large buffer to the key \"large_streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"large_streaming_object\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I stream key \"large_streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the streamed data content length should equal 20971520",
+                "step_definition": "this.assert.equal(this.result.length, length);\n    callback();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I stream2 key \"large_streaming_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "the streamed data content length should equal 20971520",
+                "step_definition": "this.assert.equal(this.result.length, length);\n    callback();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 154,
+        "test_case": "Progress events",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put a 2MB buffer to the key \"progress_object\" with progress events",
+                "step_definition": "var self = this;\n    var body = self.createBuffer(size);\n    this.progress = [];\n    var req = this.s3.putObject({Bucket: this.sharedBucket, Key: key, Body: body",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "more than 0 \"httpUploadProgress\" event should fire",
+                "step_definition": "this.assert.compare(this.progress.length, '>', numEvents);\n    callback();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 3,
+                "step_name": "the \"total\" value of the progress event should equal 2MB",
+                "step_definition": "this.assert.equal(this.progress[0][prop], mb * 1024 * 1024);\n    callback();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 4,
+                "step_name": "the \"loaded\" value of the first progress event should be greater than 10 bytes",
+                "step_definition": "this.assert.compare(this.progress[0][prop], '>', bytes);\n    callback();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I read the key \"progress_object\" with progress events",
+                "step_definition": "var self = this;\n    this.progress = [];\n    var req = this.s3.getObject({Bucket: this.sharedBucket, Key: key",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 6,
+                "step_name": "more than 0 \"httpDownloadProgress\" event should fire",
+                "step_definition": "this.assert.compare(this.progress.length, '>', numEvents);\n    callback();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 7,
+                "step_name": "the \"total\" value of the progress event should equal 2MB",
+                "step_definition": "this.assert.equal(this.progress[0][prop], mb * 1024 * 1024);\n    callback();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 8,
+                "step_name": "the \"loaded\" value of the first progress event should be greater than 10 bytes",
+                "step_definition": "this.assert.compare(this.progress[0][prop], '>', bytes);\n    callback();",
+                "step_definition_file": "objects.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 155,
+        "test_case": "Proxy support",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put \"world\" to the key \"proxy_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the object \"proxy_object\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I get the object \"proxy_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "the object \"proxy_object\" should contain \"world\"",
+                "step_definition": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I delete the object \"proxy_object\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "the object \"proxy_object\" should not exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 7,
+                "step_name": "I teardown the local proxy server",
+                "step_definition": "this.service = this.s3 = new this.AWS.S3();\n    this.proxyServer.close(callback);",
+                "step_definition_file": "proxy.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 156,
+        "test_case": "Paginating responses",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "an empty bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"data\" to the key \"obj0\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I put \"data\" to the key \"obj1\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 4,
+                "step_name": "I put \"data\" to the key \"obj2\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 5,
+                "step_name": "I put \"data\" to the key \"obj3\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 6,
+                "step_name": "I put \"data\" to the key \"obj4\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 7,
+                "step_name": "I put \"data\" to the key \"obj5\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 8,
+                "step_name": "I put \"data\" to the key \"obj6\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 9,
+                "step_name": "I put \"data\" to the key \"obj7\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 10,
+                "step_name": "I put \"data\" to the key \"obj8\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 11,
+                "step_name": "I put \"data\" to the key \"obj9\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 12,
+                "step_name": "the object \"obj9\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 13,
+                "step_name": "I setup the listObjects request for the bucket",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 14,
+                "step_name": "I paginate the \"listObjects\" operation with limit 3",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 15,
+                "step_name": "I should get 4 pages",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 157,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I put \"data\" to the invalid key \"\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"UriParameterError\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 158,
+        "test_case": "Sigv4 Bucket with trailing slash",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use signatureVersion \"v4\"",
+                "step_definition": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"\" to the key \"\" with bucket suffix \"/\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"/\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 159,
+        "test_case": "Sigv4 Bucket with dobule trailing slashes",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use signatureVersion \"v4\"",
+                "step_definition": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"\" to the key \"\" with bucket suffix \"//\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"//\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 160,
+        "test_case": "Sigv4 Bucket with slashes without trailing slash",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use signatureVersion \"v4\"",
+                "step_definition": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"\" to the key \"\" with bucket suffix \"/a/b\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"a/b/\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 161,
+        "test_case": "Sigv4 Bucket with slashes with Key",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use signatureVersion \"v4\"",
+                "step_definition": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"\" to the key \"foo\" with bucket suffix \"/a/b\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"a/b/foo\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 162,
+        "test_case": "Sigv4 Bucket with trailing slashes with Key",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use signatureVersion \"v4\"",
+                "step_definition": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"\" to the key \"foo\" with bucket suffix \"/a/b/\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"a/b//foo\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 163,
+        "test_case": "Sigv2 Bucket with trailing slash",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use signatureVersion \"v2\"",
+                "step_definition": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"\" to the key \"\" with bucket suffix \"/\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"/\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 164,
+        "test_case": "Sigv2 Bucket with double trailing slashes",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use signatureVersion \"v2\"",
+                "step_definition": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"\" to the key \"\" with bucket suffix \"//\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"//\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 165,
+        "test_case": "Sigv2 Bucket with slashes without trailing slash",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use signatureVersion \"v2\"",
+                "step_definition": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"\" to the key \"\" with bucket suffix \"/a/b\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"a/b/\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 166,
+        "test_case": "Sigv2 Bucket with slashes with Key",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use signatureVersion \"v2\"",
+                "step_definition": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"\" to the key \"foo\" with bucket suffix \"/a/b\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"a/b/foo\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "objects.feature",
+        "test_num": 167,
+        "test_case": "Sigv2 Bucket with trailing slashes with Key",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I use signatureVersion \"v2\"",
+                "step_definition": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "step_definition_file": "objects.js"
+            },
+            {
+                "step_num": 2,
+                "step_name": "I put \"\" to the key \"foo\" with bucket suffix \"/a/b/\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the object \"a/b//foo\" should exist",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "ses.feature",
+        "test_num": 168,
+        "test_case": "Check quota",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I check quota",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the result should include number \"SentLast24Hours\"",
+                "step_definition": "if (this.data[attr] === undefined) next.fail(\"Missing \" + attr);\n    if (typeof this.data[attr] !== type) next.fail(\"Incorrect type \" + attr);\n    next();",
+                "step_definition_file": "ses.js"
+            },
+            {
+                "step_num": 3,
+                "step_name": "the result should include number \"MaxSendRate\"",
+                "step_definition": "if (this.data[attr] === undefined) next.fail(\"Missing \" + attr);\n    if (typeof this.data[attr] !== type) next.fail(\"Incorrect type \" + attr);\n    next();",
+                "step_definition_file": "ses.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "ses.feature",
+        "test_num": 169,
+        "test_case": "Verify email",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I ask to verify the email address \"foo@example.com\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the status code should be 200",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "ses.feature",
+        "test_num": 170,
+        "test_case": "Rescue SES InvalidParameterValue",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I ask to verify the email address \"abc123\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I should get the error",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "sns.feature",
+        "test_num": 171,
+        "test_case": "Topics",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create an SNS topic with name \"aws-js-sdk-integration-topic\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I list the SNS topics",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the list should contain the topic ARN",
+                "step_definition": "var arn = this.topicArn;\n    this.assert.contains(this.data.Topics, function(topic) {\n      return topic.TopicArn === arn;",
+                "step_definition_file": "sns.js"
+            },
+            {
+                "step_num": 4,
+                "step_name": "I delete the SNS topic",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "sns.feature",
+        "test_num": 172,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I get SNS topic attributes with an invalid ARN",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidParameter\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "messages.feature",
+        "test_num": 173,
+        "test_case": "Send an SQS message",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a queue with the prefix name \"aws-js-sdk\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I send the message \"HELLO\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the result should include a message ID",
+                "step_definition": "this.assert.compare(this.data.MessageId.length, '>', 0);\n    callback();",
+                "step_definition_file": "messages.js"
+            },
+            {
+                "step_num": 4,
+                "step_name": "the result should have an MD5 digest of \"eb61eead90e3b899c6bcbe27ac581660\"",
+                "step_definition": "this.assert.equal(this.data.MD5OfMessageBody, digest);\n    callback();",
+                "step_definition_file": "messages.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I should eventually be able to receive \"HELLO\" from the queue",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "messages.feature",
+        "test_num": 174,
+        "test_case": "Binary payloads",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a queue with the prefix name \"aws-js-sdk\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I send the message \"HELLO\" with a binary attribute",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the result should include a message ID",
+                "step_definition": "this.assert.compare(this.data.MessageId.length, '>', 0);\n    callback();",
+                "step_definition_file": "messages.js"
+            },
+            {
+                "step_num": 4,
+                "step_name": "the result should have an MD5 digest of \"eb61eead90e3b899c6bcbe27ac581660\"",
+                "step_definition": "this.assert.equal(this.data.MD5OfMessageBody, digest);\n    callback();",
+                "step_definition_file": "messages.js"
+            },
+            {
+                "step_num": 5,
+                "step_name": "I should eventually be able to receive \"HELLO\" from the queue with a binary attribute",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "queues.feature",
+        "test_num": 175,
+        "test_case": "Creating and deleting queues",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a queue with the prefix name \"aws-js-sdk\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create a queue with the prefix name \"aws-js-sdk\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "list queues should eventually return the queue urls",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "queues.feature",
+        "test_num": 176,
+        "test_case": "Making a queue request across regions",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I have a \"SQS\" service in the \"us-west-1\" region",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "I create a queue with the prefix name \"aws-js-sdk\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "I have a \"SQS\" service in the \"us-east-1\" region",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "ssm.feature",
+        "test_num": 177,
+        "test_case": "Listing Documents",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listDocuments\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"DocumentIdentifiers\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "ssm.feature",
+        "test_num": 178,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeDocument\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidDocument\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "storagegateway.feature",
+        "test_num": 179,
+        "test_case": "Listing Gateways",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listGateways\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Gateways\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "storagegateway.feature",
+        "test_num": 180,
+        "test_case": "Activating a Gateway",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I try to activate a Storage Gateway",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"InvalidGatewayRequestException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the status code should be 400",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "sts.feature",
+        "test_num": 181,
+        "test_case": "Get a session token",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I get an STS session token with a duration of 900 seconds",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the result should contain an access key ID and secret access key",
+                "step_definition": "this.assert.compare(this.data.Credentials.AccessKeyId.length, '>', 0);\n    this.assert.compare(this.data.Credentials.SecretAccessKey.length, '>', 0);\n    callback();",
+                "step_definition_file": "sts.js"
+            }
+        ]
+    },
+    {
+        "feature_file": "sts.feature",
+        "test_num": 182,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I get an STS session token with a duration of 60 seconds",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationError\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "support.feature",
+        "test_num": 183,
+        "test_case": "Describe Services",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I describe Support services",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"services\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "support.feature",
+        "test_num": 184,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I create a case with an invalid category",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "swf.feature",
+        "test_num": 185,
+        "test_case": "Listing domains",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listDomains\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"domainInfos\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "swf.feature",
+        "test_num": 186,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeDomain\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"UnknownResourceFault\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "waf.feature",
+        "test_num": 187,
+        "test_case": "Making a request",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"listRules\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Rules\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "workspaces.feature",
+        "test_num": 188,
+        "test_case": "Describing workspaces",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"describeWorkspaces\" operation",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the request should be successful",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 3,
+                "step_name": "the value at \"Workspaces\" should be a list",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    },
+    {
+        "feature_file": "workspaces.feature",
+        "test_num": 189,
+        "test_case": "Error handling",
+        "steps": [
+            {
+                "step_num": 1,
+                "step_name": "I run the \"rebuildWorkspaces\" operation with params",
+                "step_definition": null,
+                "step_definition_file": null
+            },
+            {
+                "step_num": 2,
+                "step_name": "the error code should be \"ValidationException\"",
+                "step_definition": null,
+                "step_definition_file": null
+            }
+        ]
+    }
+]

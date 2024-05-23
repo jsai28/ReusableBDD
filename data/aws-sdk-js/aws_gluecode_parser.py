@@ -31,7 +31,7 @@ def glue_code_parser(step_files, parsed_gcode_file):
             params = match[2].strip()
             code = match[3].strip()
             
-            step_patterns[regex] = {"Glue Code": code}
+            step_patterns[regex[1:-1]] = {"Glue Code": code}
     
     with open(parsed_gcode_file, 'w') as json_file:
         json.dump(step_patterns, json_file, indent=4)

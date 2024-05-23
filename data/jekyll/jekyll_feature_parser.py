@@ -4,7 +4,7 @@ import json
 import csv
 from behave.parser import parse_file
 
-def feature_parser(parsed_gcode_file, feature, write_directory, glue_code_file):
+def feature_parser(parsed_gcode_file, feature, glue_code_file):
     global total_test_cases
 
     with open(parsed_gcode_file, 'r') as json_file:
@@ -83,7 +83,7 @@ def json_to_csv(data, csv_file_path):
 if __name__ == "__main__":
     # feature file paths
     feature_directory = './repos/jekyll/features'
-    combined_directory = "./"
+    combined_directory = "./data/jekyll"
     combined_data_filename = "jekyll_data_v3"
     glue_code_file = './repos/jekyll/features/step_definitions.rb'
     parsed_gcode_file = 'parsed_stepdefinitions_v3.json'
@@ -101,7 +101,7 @@ if __name__ == "__main__":
             feature = parse_file(feature_file)
 
             # run feature parser
-            matched_steps, step_count, num_matched_steps= feature_parser(parsed_gcode_file, feature, write_directory, glue_code_file)
+            matched_steps, step_count, num_matched_steps= feature_parser(parsed_gcode_file, feature, glue_code_file)
             combined_json.extend(matched_steps)
             total_step_count += step_count
             total_matched_steps += num_matched_steps
