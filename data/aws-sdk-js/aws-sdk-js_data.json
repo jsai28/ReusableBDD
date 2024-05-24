@@ -107,7 +107,7 @@
             {
                 "step_num": 3,
                 "step_name": "the list should contain the launch configuration \"launch-config-integ\"",
-                "glue_code": "this.assert.contains(this.data.LaunchConfigurations, function(configuration) {\n      return configuration.LaunchConfigurationName === name;",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -444,7 +444,7 @@
             {
                 "step_num": 3,
                 "step_name": "the list should contain the CloudWatch alarm",
-                "glue_code": "var name = this.cloudWatchAlarm.AlarmName;\n    this.assert.contains(this.data.MetricAlarms, function(alarm) {\n      return alarm.AlarmName === name;",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -1072,13 +1072,13 @@
             {
                 "step_num": 2,
                 "step_name": "the request should be retried",
-                "glue_code": "if (retry && this.response.retryCount > 0) callback.fail('Request was incorrectly retried');\n    if (!retry && this.response.retryCount == 0) callback.fail('Request was incorrectly retried');\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 3,
                 "step_name": "the request should not fail with a CRC checking error",
-                "glue_code": "if (failed && this.error) callback.fail(this.error);\n    if (!failed && !this.error) callback.fail('Did not fail when should have');\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -1097,13 +1097,13 @@
             {
                 "step_num": 2,
                 "step_name": "the request is retried the maximum number of times",
-                "glue_code": "if (this.response.retryCount != 2) callback.fail('Incorrect retry count');\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 3,
                 "step_name": "the request should fail with a CRC checking error",
-                "glue_code": "if (failed && this.error) callback.fail(this.error);\n    if (!failed && !this.error) callback.fail('Did not fail when should have');\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -1122,13 +1122,13 @@
             {
                 "step_num": 2,
                 "step_name": "the request should not be retried",
-                "glue_code": "if (retry && this.response.retryCount > 0) callback.fail('Request was incorrectly retried');\n    if (!retry && this.response.retryCount == 0) callback.fail('Request was incorrectly retried');\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 3,
                 "step_name": "the request should not fail with a CRC checking error",
-                "glue_code": "if (failed && this.error) callback.fail(this.error);\n    if (!failed && !this.error) callback.fail('Did not fail when should have');\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -1141,7 +1141,7 @@
             {
                 "step_num": 1,
                 "step_name": "I create a table",
-                "glue_code": "var world = this;\n    this.tableName = this.uniqueName(\"aws-sdk-js-integration-\");\n    createTable(world, callback);",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -1178,7 +1178,7 @@
             {
                 "step_num": 4,
                 "step_name": "it should have attribute \"data.S\" containing \"b\u00e5r\"",
-                "glue_code": "this.assert.equal(jmespath.search(this.data.Item, attr), value);\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -1259,7 +1259,7 @@
             {
                 "step_num": 5,
                 "step_name": "it should have attribute \"data.M.attr1.L[1].L[0].M.attr12.S\" containing \"value2\"",
-                "glue_code": "this.assert.equal(jmespath.search(this.data.Item, attr), value);\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -1341,13 +1341,13 @@
             {
                 "step_num": 2,
                 "step_name": "the EC2 endpoint for \"us-east-1\" should be \"ec2.us-east-1.amazonaws.com\"",
-                "glue_code": "this.assert.contains(this.data.Regions, function(region) {\n      return region.Endpoint === endpoint;",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 3,
                 "step_name": "the EC2 endpoint for \"us-west-1\" should be \"ec2.us-west-1.amazonaws.com\"",
-                "glue_code": "this.assert.contains(this.data.Regions, function(region) {\n      return region.Endpoint === endpoint;",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -1561,7 +1561,7 @@
             {
                 "step_num": 2,
                 "step_name": "the cache parameter group name is in the result",
-                "glue_code": "var name = this.data.CacheParameterGroup.CacheParameterGroupName;\n    this.assert.equal(name, this.cacheGroupName);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -1579,7 +1579,7 @@
             {
                 "step_num": 5,
                 "step_name": "the cache parameter group should be described",
-                "glue_code": "var item = this.data.CacheParameterGroups[0];\n    this.assert.equal(item.CacheParameterGroupName, this.cacheGroupName);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -1641,13 +1641,13 @@
             {
                 "step_num": 4,
                 "step_name": "the result should contain the Elastic Beanstalk application version",
-                "glue_code": "this.assert.deepEqual(this.data.Applications[0].Versions, [this.appVersion]);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 5,
                 "step_name": "the result should contain the Elastic Beanstalk application name",
-                "glue_code": "this.assert.equal(this.data.Applications[0].ApplicationName, this.appName);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -1715,7 +1715,7 @@
             {
                 "step_num": 5,
                 "step_name": "the list should contain the pipeline",
-                "glue_code": "var id = this.pipelineId;\n    this.assert.contains(this.data.Pipelines, function (pipeline) {\n      return pipeline.Id === id;",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -1733,7 +1733,7 @@
             {
                 "step_num": 8,
                 "step_name": "the pipeline status should be \"Paused\"",
-                "glue_code": "this.assert.equal(this.data.Pipeline.Status, status);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2040,13 +2040,13 @@
             {
                 "step_num": 3,
                 "step_name": "the result should contain the Glacier archive ID",
-                "glue_code": "this.archiveId = this.data.archiveId;\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 4,
                 "step_name": "the result should contain the same tree hash checksum",
-                "glue_code": "var hash = this.response.request.httpRequest.headers['x-amz-sha256-tree-hash'];\n    this.assert.equal(this.data.checksum, hash);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2077,7 +2077,7 @@
             {
                 "step_num": 3,
                 "step_name": "the result should contain the Glacier multi-part upload ID",
-                "glue_code": "this.uploadId = this.data.uploadId;\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2095,13 +2095,13 @@
             {
                 "step_num": 6,
                 "step_name": "the result should contain the Glacier archive ID",
-                "glue_code": "this.archiveId = this.data.archiveId;\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 7,
                 "step_name": "the result should contain the same tree hash checksum",
-                "glue_code": "var hash = this.response.request.httpRequest.headers['x-amz-sha256-tree-hash'];\n    this.assert.equal(this.data.checksum, hash);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2169,7 +2169,7 @@
             {
                 "step_num": 1,
                 "step_name": "I have an IAM username \"js-test\"",
-                "glue_code": "this.iamUserArn = '';\n    this.iamUser = this.uniqueName(name);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2187,7 +2187,7 @@
             {
                 "step_num": 4,
                 "step_name": "the IAM user should exist",
-                "glue_code": "this.assert.equal(this.data.User.UserName, this.iamUser);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2212,7 +2212,7 @@
             {
                 "step_num": 2,
                 "step_name": "the IAM role should exist",
-                "glue_code": "this.assert.compare(this.iamRoleArn.length, '>', 0);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2231,7 +2231,7 @@
             {
                 "step_num": 1,
                 "step_name": "I have an IAM username \"js-test-dupe\"",
-                "glue_code": "this.iamUserArn = '';\n    this.iamUser = this.uniqueName(name);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2545,7 +2545,7 @@
             {
                 "step_num": 1,
                 "step_name": "I have an IAM username \"aws-js-sdk\"",
-                "glue_code": "this.iamUserArn = '';\n    this.iamUser = this.uniqueName(name);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2563,7 +2563,7 @@
             {
                 "step_num": 4,
                 "step_name": "the IAM user ARN is in the result",
-                "glue_code": "this.assert.equal(this.data.IamUserArn, this.iamUserArn);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2575,19 +2575,19 @@
             {
                 "step_num": 6,
                 "step_name": "the IAM user ARN should be in the result",
-                "glue_code": "this.assert.equal(this.data.UserProfiles[0].IamUserArn, this.iamUserArn);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 7,
                 "step_name": "the name should be equal to the IAM username",
-                "glue_code": "this.assert.equal(this.data.UserProfiles[0].Name, this.iamUser);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 8,
                 "step_name": "the SSH username should be equal to the IAM username",
-                "glue_code": "this.assert.equal(this.data.UserProfiles[0].SshUsername, this.iamUser);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2612,7 +2612,7 @@
             {
                 "step_num": 1,
                 "step_name": "I have an IAM username \"\"",
-                "glue_code": "this.iamUserArn = '';\n    this.iamUser = this.uniqueName(name);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2887,7 +2887,7 @@
             {
                 "step_num": 1,
                 "step_name": "I am using the S3 \"us-east-1\" region",
-                "glue_code": "this.s3 = new this.AWS.S3({region: region",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2924,7 +2924,7 @@
             {
                 "step_num": 1,
                 "step_name": "I am using the S3 \"us-west-2\" region",
-                "glue_code": "this.s3 = new this.AWS.S3({region: region",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -2961,7 +2961,7 @@
             {
                 "step_num": 1,
                 "step_name": "I am using the S3 us-east-1 regional endpoint",
-                "glue_code": "this.s3 = new this.AWS.S3({region: 'us-east-1', s3UsEast1RegionalEndpoint: 'regional'",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3016,31 +3016,31 @@
             {
                 "step_num": 4,
                 "step_name": "the AllowedMethods list should inclue \"DELETE POST PUT\"",
-                "glue_code": "this.assert.equal(this.data.CORSRules[0].AllowedMethods.sort().join(' '), 'DELETE POST PUT');\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 5,
                 "step_name": "the AllowedOrigin value should equal \"http://example.com\"",
-                "glue_code": "this.assert.equal(this.data.CORSRules[0].AllowedOrigins[0], value);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 6,
                 "step_name": "the AllowedHeader value should equal \"*\"",
-                "glue_code": "this.assert.equal(this.data.CORSRules[0].AllowedHeaders[0], value);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 7,
                 "step_name": "the ExposeHeader value should equal \"x-amz-server-side-encryption\"",
-                "glue_code": "this.assert.equal(this.data.CORSRules[0].ExposeHeaders[0], value);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 8,
                 "step_name": "the MaxAgeSeconds value should equal 5000",
-                "glue_code": "this.assert.equal(this.data.CORSRules[0].MaxAgeSeconds, parseInt(value));\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3077,13 +3077,13 @@
             {
                 "step_num": 4,
                 "step_name": "the lifecycle configuration should have transition days of 0",
-                "glue_code": "this.assert.equal(this.data.Rules[0].Transition.Days, 0);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 5,
                 "step_name": "the lifecycle configuration should have transition storage class of \"GLACIER\"",
-                "glue_code": "this.assert.equal(this.data.Rules[0].Transition.StorageClass, value);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3139,7 +3139,7 @@
             {
                 "step_num": 1,
                 "step_name": "I am using the S3 \"us-east-1\" region with signatureVersion \"s3\"",
-                "glue_code": "this.s3 = new this.AWS.S3({region: region, signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3207,7 +3207,7 @@
             {
                 "step_num": 1,
                 "step_name": "I force path style requests",
-                "glue_code": "this.s3 = new this.AWS.S3({s3ForcePathStyle: true",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3225,13 +3225,13 @@
             {
                 "step_num": 4,
                 "step_name": "the bucket name should be in the request path",
-                "glue_code": "var path = this.response.request.httpRequest.path.split('/');\n    this.assert.equal(path[1], this.bucket);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 5,
                 "step_name": "the bucket name should not be in the request host",
-                "glue_code": "var host = this.response.request.httpRequest.endpoint.host;\n    this.assert.compare(host.indexOf(this.bucket), '<', 0);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3256,7 +3256,7 @@
             {
                 "step_num": 1,
                 "step_name": "I am using the S3 \"us-east-1\" region with signatureVersion \"s3\"",
-                "glue_code": "this.s3 = new this.AWS.S3({region: region, signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3497,7 +3497,7 @@
             {
                 "step_num": 1,
                 "step_name": "I generate the MD5 checksum of a 20MB buffer",
-                "glue_code": "this.uploadBuffer = this.createBuffer(size);\n    this.sentContentMD5 = this.AWS.util.crypto.md5(this.uploadBuffer, 'base64');\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3521,13 +3521,13 @@
             {
                 "step_num": 5,
                 "step_name": "the HTTP response should have a content length of 20971520",
-                "glue_code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 6,
                 "step_name": "the MD5 checksum of the response data should equal the generated checksum",
-                "glue_code": "var receivedContentMD5 = this.AWS.util.crypto.md5(this.data.Body.toString(), 'base64');\n    this.assert.equal(receivedContentMD5, this.sentContentMD5);\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -3546,19 +3546,19 @@
             {
                 "step_num": 2,
                 "step_name": "I abort the upload",
-                "glue_code": "this.managedUpload.abort();\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 3,
                 "step_name": "I receive a \"RequestAbortedError\" error",
-                "glue_code": "this.assert.equal(this.error.name, errName);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 4,
                 "step_name": "I resume the upload",
-                "glue_code": "var self = this;\n    self.managedUpload.send(function(err, data) {\n      self.error = err;\n      self.data = data;\n      callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3589,13 +3589,13 @@
             {
                 "step_num": 2,
                 "step_name": "I receive a \"RequestAbortedError\" error",
-                "glue_code": "this.assert.equal(this.error.name, errName);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 3,
                 "step_name": "I resume the upload",
-                "glue_code": "var self = this;\n    self.managedUpload.send(function(err, data) {\n      self.error = err;\n      self.data = data;\n      callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3613,7 +3613,7 @@
             {
                 "step_num": 6,
                 "step_name": "uploadPart should have been called 5 times",
-                "glue_code": "this.assert.equal(this.progressEvents.length, count);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -3644,7 +3644,7 @@
             {
                 "step_num": 4,
                 "step_name": "the object \"hello\" should contain \"world\"",
-                "glue_code": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3668,7 +3668,7 @@
             {
                 "step_num": 8,
                 "step_name": "the object \"hello\" should contain \"new world\"",
-                "glue_code": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3711,7 +3711,7 @@
             {
                 "step_num": 4,
                 "step_name": "the object \"contentlength\" should contain \"foo\"",
-                "glue_code": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -3742,13 +3742,13 @@
             {
                 "step_num": 4,
                 "step_name": "the object \"multi\" should contain \"\u00e5\u00df\u2202\u0192\u00a9\"",
-                "glue_code": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 5,
                 "step_name": "the HTTP response should have a content length of 11",
-                "glue_code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -3785,7 +3785,7 @@
             {
                 "step_num": 5,
                 "step_name": "the object \"byebye\" should contain \"world\"",
-                "glue_code": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3816,7 +3816,7 @@
             {
                 "step_num": 3,
                 "step_name": "the object \"hello\" should contain \"world\"",
-                "glue_code": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -3853,13 +3853,13 @@
             {
                 "step_num": 4,
                 "step_name": "the object \"blank\" should contain \"\"",
-                "glue_code": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 5,
                 "step_name": "the HTTP response should have a content length of 0",
-                "glue_code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -3890,7 +3890,7 @@
             {
                 "step_num": 4,
                 "step_name": "the HTTP response should have a content length of 0",
-                "glue_code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -3921,7 +3921,7 @@
             {
                 "step_num": 4,
                 "step_name": "the HTTP response should have a content length of 1048576",
-                "glue_code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -3952,7 +3952,7 @@
             {
                 "step_num": 4,
                 "step_name": "the HTTP response should have a content length of 20971520",
-                "glue_code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -3983,7 +3983,7 @@
             {
                 "step_num": 4,
                 "step_name": "the HTTP response should have a content length of 0",
-                "glue_code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4014,7 +4014,7 @@
             {
                 "step_num": 4,
                 "step_name": "the HTTP response should have a content length of 1048576",
-                "glue_code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4045,7 +4045,7 @@
             {
                 "step_num": 4,
                 "step_name": "the HTTP response should have a content length of 20971520",
-                "glue_code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4058,7 +4058,7 @@
             {
                 "step_num": 1,
                 "step_name": "I generate the MD5 checksum of \"SOME SAMPLE DATA\"",
-                "glue_code": "this.sentContentMD5 = this.AWS.util.crypto.md5(data, 'base64');\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4082,19 +4082,19 @@
             {
                 "step_num": 5,
                 "step_name": "the object \"checksummed_data\" should contain \"SOME SAMPLE DATA\"",
-                "glue_code": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 6,
                 "step_name": "the HTTP response should have a content length of 16",
-                "glue_code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 7,
                 "step_name": "the MD5 checksum of the response data should equal the generated checksum",
-                "glue_code": "var receivedContentMD5 = this.AWS.util.crypto.md5(this.data.Body.toString(), 'base64');\n    this.assert.equal(receivedContentMD5, this.sentContentMD5);\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4125,13 +4125,13 @@
             {
                 "step_num": 4,
                 "step_name": "I access the URL via HTTP GET",
-                "glue_code": "var world = this;\n    this.data = '';\n    require('https').get(this.signedUrl, function (res) {\n      res.on('data', function (chunk) {\n        world.data += chunk.toString();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 5,
                 "step_name": "the HTTP response should equal \"PRESIGNED BODY CONTENTS\"",
-                "glue_code": "this.assert.equal(this.data, data);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4156,7 +4156,7 @@
             {
                 "step_num": 3,
                 "step_name": "the HTTP response should contain \"SignatureDoesNotMatch\"",
-                "glue_code": "this.assert.match(this.data, data);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4193,13 +4193,13 @@
             {
                 "step_num": 5,
                 "step_name": "the object \"presignedPost\" should contain \"PRESIGNED POST CONTENTS\"",
-                "glue_code": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 6,
                 "step_name": "the HTTP response should have a content length of 23",
-                "glue_code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4230,7 +4230,7 @@
             {
                 "step_num": 4,
                 "step_name": "the streamed data should contain \"STREAMING CONTENT\"",
-                "glue_code": "this.assert.equal(this.result.replace('\\n', ''), data);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4242,7 +4242,7 @@
             {
                 "step_num": 6,
                 "step_name": "the streamed data should contain \"STREAMING CONTENT\"",
-                "glue_code": "this.assert.equal(this.result.replace('\\n', ''), data);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4273,7 +4273,7 @@
             {
                 "step_num": 4,
                 "step_name": "the streamed data content length should equal 0",
-                "glue_code": "this.assert.equal(this.result.length, length);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4285,7 +4285,7 @@
             {
                 "step_num": 6,
                 "step_name": "the streamed data content length should equal 0",
-                "glue_code": "this.assert.equal(this.result.length, length);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4316,7 +4316,7 @@
             {
                 "step_num": 4,
                 "step_name": "the streamed data content length should equal 1048576",
-                "glue_code": "this.assert.equal(this.result.length, length);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4328,7 +4328,7 @@
             {
                 "step_num": 6,
                 "step_name": "the streamed data content length should equal 1048576",
-                "glue_code": "this.assert.equal(this.result.length, length);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4359,7 +4359,7 @@
             {
                 "step_num": 4,
                 "step_name": "the streamed data content length should equal 20971520",
-                "glue_code": "this.assert.equal(this.result.length, length);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4371,7 +4371,7 @@
             {
                 "step_num": 6,
                 "step_name": "the streamed data content length should equal 20971520",
-                "glue_code": "this.assert.equal(this.result.length, length);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4384,49 +4384,49 @@
             {
                 "step_num": 1,
                 "step_name": "I put a 2MB buffer to the key \"progress_object\" with progress events",
-                "glue_code": "var self = this;\n    var body = self.createBuffer(size);\n    this.progress = [];\n    var req = this.s3.putObject({Bucket: this.sharedBucket, Key: key, Body: body",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 2,
                 "step_name": "more than 0 \"httpUploadProgress\" event should fire",
-                "glue_code": "this.assert.compare(this.progress.length, '>', numEvents);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 3,
                 "step_name": "the \"total\" value of the progress event should equal 2MB",
-                "glue_code": "this.assert.equal(this.progress[0][prop], mb * 1024 * 1024);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 4,
                 "step_name": "the \"loaded\" value of the first progress event should be greater than 10 bytes",
-                "glue_code": "this.assert.compare(this.progress[0][prop], '>', bytes);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 5,
                 "step_name": "I read the key \"progress_object\" with progress events",
-                "glue_code": "var self = this;\n    this.progress = [];\n    var req = this.s3.getObject({Bucket: this.sharedBucket, Key: key",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 6,
                 "step_name": "more than 0 \"httpDownloadProgress\" event should fire",
-                "glue_code": "this.assert.compare(this.progress.length, '>', numEvents);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 7,
                 "step_name": "the \"total\" value of the progress event should equal 2MB",
-                "glue_code": "this.assert.equal(this.progress[0][prop], mb * 1024 * 1024);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 8,
                 "step_name": "the \"loaded\" value of the first progress event should be greater than 10 bytes",
-                "glue_code": "this.assert.compare(this.progress[0][prop], '>', bytes);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4457,7 +4457,7 @@
             {
                 "step_num": 4,
                 "step_name": "the object \"proxy_object\" should contain \"world\"",
-                "glue_code": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4475,7 +4475,7 @@
             {
                 "step_num": 7,
                 "step_name": "I teardown the local proxy server",
-                "glue_code": "this.service = this.s3 = new this.AWS.S3();\n    this.proxyServer.close(callback);",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4604,7 +4604,7 @@
             {
                 "step_num": 1,
                 "step_name": "I use signatureVersion \"v4\"",
-                "glue_code": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4629,7 +4629,7 @@
             {
                 "step_num": 1,
                 "step_name": "I use signatureVersion \"v4\"",
-                "glue_code": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4654,7 +4654,7 @@
             {
                 "step_num": 1,
                 "step_name": "I use signatureVersion \"v4\"",
-                "glue_code": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4679,7 +4679,7 @@
             {
                 "step_num": 1,
                 "step_name": "I use signatureVersion \"v4\"",
-                "glue_code": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4704,7 +4704,7 @@
             {
                 "step_num": 1,
                 "step_name": "I use signatureVersion \"v4\"",
-                "glue_code": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4729,7 +4729,7 @@
             {
                 "step_num": 1,
                 "step_name": "I use signatureVersion \"v2\"",
-                "glue_code": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4754,7 +4754,7 @@
             {
                 "step_num": 1,
                 "step_name": "I use signatureVersion \"v2\"",
-                "glue_code": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4779,7 +4779,7 @@
             {
                 "step_num": 1,
                 "step_name": "I use signatureVersion \"v2\"",
-                "glue_code": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4804,7 +4804,7 @@
             {
                 "step_num": 1,
                 "step_name": "I use signatureVersion \"v2\"",
-                "glue_code": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4829,7 +4829,7 @@
             {
                 "step_num": 1,
                 "step_name": "I use signatureVersion \"v2\"",
-                "glue_code": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4860,13 +4860,13 @@
             {
                 "step_num": 2,
                 "step_name": "the result should include number \"SentLast24Hours\"",
-                "glue_code": "if (this.data[attr] === undefined) next.fail(\"Missing \" + attr);\n    if (typeof this.data[attr] !== type) next.fail(\"Incorrect type \" + attr);\n    next();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 3,
                 "step_name": "the result should include number \"MaxSendRate\"",
-                "glue_code": "if (this.data[attr] === undefined) next.fail(\"Missing \" + attr);\n    if (typeof this.data[attr] !== type) next.fail(\"Incorrect type \" + attr);\n    next();",
+                "glue_code": null,
                 "language": "js"
             }
         ]
@@ -4929,7 +4929,7 @@
             {
                 "step_num": 3,
                 "step_name": "the list should contain the topic ARN",
-                "glue_code": "var arn = this.topicArn;\n    this.assert.contains(this.data.Topics, function(topic) {\n      return topic.TopicArn === arn;",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -4979,13 +4979,13 @@
             {
                 "step_num": 3,
                 "step_name": "the result should include a message ID",
-                "glue_code": "this.assert.compare(this.data.MessageId.length, '>', 0);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 4,
                 "step_name": "the result should have an MD5 digest of \"eb61eead90e3b899c6bcbe27ac581660\"",
-                "glue_code": "this.assert.equal(this.data.MD5OfMessageBody, digest);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -5016,13 +5016,13 @@
             {
                 "step_num": 3,
                 "step_name": "the result should include a message ID",
-                "glue_code": "this.assert.compare(this.data.MessageId.length, '>', 0);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
                 "step_num": 4,
                 "step_name": "the result should have an MD5 digest of \"eb61eead90e3b899c6bcbe27ac581660\"",
-                "glue_code": "this.assert.equal(this.data.MD5OfMessageBody, digest);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             },
             {
@@ -5191,7 +5191,7 @@
             {
                 "step_num": 2,
                 "step_name": "the result should contain an access key ID and secret access key",
-                "glue_code": "this.assert.compare(this.data.Credentials.AccessKeyId.length, '>', 0);\n    this.assert.compare(this.data.Credentials.SecretAccessKey.length, '>', 0);\n    callback();",
+                "glue_code": null,
                 "language": "js"
             }
         ]

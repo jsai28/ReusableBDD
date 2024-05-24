@@ -1,224 +1,986 @@
 {
-    "^the list should contain the launch configuration \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.contains(this.data.LaunchConfigurations, function(configuration) {\n      return configuration.LaunchConfigurationName === name;"
-    },
-    "^the list should contain the CloudWatch alarm$": {
-        "Glue Code": "var name = this.cloudWatchAlarm.AlarmName;\n    this.assert.contains(this.data.MetricAlarms, function(alarm) {\n      return alarm.AlarmName === name;"
-    },
-    "^I create a table$": {
-        "Glue Code": "var world = this;\n    this.tableName = this.uniqueName(\"aws-sdk-js-integration-\");\n    createTable(world, callback);"
-    },
-    "^it should have attribute \"([^\"]*)\" containing \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.equal(jmespath.search(this.data.Item, attr), value);\n    next();"
-    },
-    "^the request should( not)? be retried$": {
-        "Glue Code": "if (retry && this.response.retryCount > 0) callback.fail('Request was incorrectly retried');\n    if (!retry && this.response.retryCount == 0) callback.fail('Request was incorrectly retried');\n    callback();"
-    },
-    "^the request is retried the maximum number of times$": {
-        "Glue Code": "if (this.response.retryCount != 2) callback.fail('Incorrect retry count');\n    callback();"
-    },
-    "^the request should( not)? fail with a CRC checking error$": {
-        "Glue Code": "if (failed && this.error) callback.fail(this.error);\n    if (!failed && !this.error) callback.fail('Did not fail when should have');\n    callback();"
-    },
-    "^the EC2 endpoint for \"([^\"]*)\" should be \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.contains(this.data.Regions, function(region) {\n      return region.Endpoint === endpoint;"
-    },
-    "^the cache parameter group name is in the result$": {
-        "Glue Code": "var name = this.data.CacheParameterGroup.CacheParameterGroupName;\n    this.assert.equal(name, this.cacheGroupName);\n    callback();"
-    },
-    "^the cache parameter group should be described$": {
-        "Glue Code": "var item = this.data.CacheParameterGroups[0];\n    this.assert.equal(item.CacheParameterGroupName, this.cacheGroupName);\n    callback();"
-    },
-    "^the result should contain the Elastic Beanstalk application version$": {
-        "Glue Code": "this.assert.deepEqual(this.data.Applications[0].Versions, [this.appVersion]);\n    callback();"
-    },
-    "^the result should contain the Elastic Beanstalk application name$": {
-        "Glue Code": "this.assert.equal(this.data.Applications[0].ApplicationName, this.appName);\n    callback();"
-    },
-    "^the list should contain the pipeline$": {
-        "Glue Code": "var id = this.pipelineId;\n    this.assert.contains(this.data.Pipelines, function (pipeline) {\n      return pipeline.Id === id;"
-    },
-    "^the pipeline status should be \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.equal(this.data.Pipeline.Status, status);\n    callback();"
-    },
-    "^the load balancer should be in the list$": {
-        "Glue Code": "var name = this.data.LoadBalancerDescriptions[0].LoadBalancerName;\n    this.assert.equal(name, this.loadBalancerName);\n    callback();"
-    },
-    "^the result should contain the Glacier archive ID$": {
-        "Glue Code": "this.archiveId = this.data.archiveId;\n    callback();"
-    },
-    "^the result should contain the same tree hash checksum$": {
-        "Glue Code": "var hash = this.response.request.httpRequest.headers['x-amz-sha256-tree-hash'];\n    this.assert.equal(this.data.checksum, hash);\n    callback();"
-    },
-    "^the result should contain the Glacier multi-part upload ID$": {
-        "Glue Code": "this.uploadId = this.data.uploadId;\n    callback();"
-    },
-    "^I have an IAM username \"([^\"]*)\"$": {
-        "Glue Code": "this.iamUserArn = '';\n    this.iamUser = this.uniqueName(name);\n    callback();"
-    },
-    "^the IAM user should exist$": {
-        "Glue Code": "this.assert.equal(this.data.User.UserName, this.iamUser);\n    callback();"
-    },
-    "^the IAM role should exist$": {
-        "Glue Code": "this.assert.compare(this.iamRoleArn.length, '>', 0);\n    callback();"
-    },
-    "^the IAM user ARN is in the result$": {
-        "Glue Code": "this.assert.equal(this.data.IamUserArn, this.iamUserArn);\n    callback();"
-    },
-    "^the IAM user ARN should be in the result$": {
-        "Glue Code": "this.assert.equal(this.data.UserProfiles[0].IamUserArn, this.iamUserArn);\n    callback();"
-    },
-    "^the name should be equal to the IAM username$": {
-        "Glue Code": "this.assert.equal(this.data.UserProfiles[0].Name, this.iamUser);\n    callback();"
-    },
-    "^the SSH username should be equal to the IAM username$": {
-        "Glue Code": "this.assert.equal(this.data.UserProfiles[0].SshUsername, this.iamUser);\n    callback();"
-    },
-    "^the result should contain the hosted zone ID$": {
-        "Glue Code": "this.hostedZoneId = this.data.HostedZone.Id;\n    callback();"
-    },
-    "^the result should contain the change ID$": {
-        "Glue Code": "this.changeInfoId = this.data.ChangeInfo.Id;\n    callback();"
-    },
-    "^the result should contain the hosted zone name$": {
-        "Glue Code": "this.assert.equal(this.data.HostedZone.Name, this.zoneName + '.');\n    callback();"
-    },
-    "^the change status should be PENDING or INSYNC$": {
-        "Glue Code": "this.assert.match(this.data.ChangeInfo.Status, /^(PENDING|INSYNC)$/);\n    callback();"
-    },
-    "^the result should contain multiple nameservers$": {
-        "Glue Code": "this.assert.compare(this.data.DelegationSet.NameServers.length, '>=', 0);\n    this.assert.equal(typeof this.data.DelegationSet.NameServers[0], 'string');\n    callback();"
-    },
-    "^the result should contain health check information$": {
-        "Glue Code": "this.healthCheckInfo = this.data.HealthCheck;\n    callback();"
-    },
-    "^the result should contain the health check ID$": {
-        "Glue Code": "this.healthCheckId = this.data.HealthCheck.Id;\n    callback();"
-    },
-    "^the result should contain the previous health check information$": {
-        "Glue Code": "this.assert.deepEqual(this.data.HealthCheck, this.healthCheckInfo);\n    callback();"
-    },
-    "^I am using the S3 \"([^\"]*)\" region$": {
-        "Glue Code": "this.s3 = new this.AWS.S3({region: region"
-    },
-    "^I am using the S3 \"([^\"]*)\" region with signatureVersion \"([^\"]*)\"$": {
-        "Glue Code": "this.s3 = new this.AWS.S3({region: region, signatureVersion: signatureVersion"
-    },
-    "^I am using the S3 us-east-1 regional endpoint$": {
-        "Glue Code": "this.s3 = new this.AWS.S3({region: 'us-east-1', s3UsEast1RegionalEndpoint: 'regional'"
-    },
-    "^the lifecycle configuration should have transition days of (\\d+)$": {
-        "Glue Code": "this.assert.equal(this.data.Rules[0].Transition.Days, 0);\n    callback();"
-    },
-    "^the lifecycle configuration should have transition storage class of \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.equal(this.data.Rules[0].Transition.StorageClass, value);\n    callback();"
-    },
-    "^the AllowedMethods list should inclue \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.equal(this.data.CORSRules[0].AllowedMethods.sort().join(' '), 'DELETE POST PUT');\n    callback();"
-    },
-    "^the AllowedOrigin value should equal \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.equal(this.data.CORSRules[0].AllowedOrigins[0], value);\n    callback();"
-    },
-    "^the AllowedHeader value should equal \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.equal(this.data.CORSRules[0].AllowedHeaders[0], value);\n    callback();"
-    },
-    "^the ExposeHeader value should equal \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.equal(this.data.CORSRules[0].ExposeHeaders[0], value);\n    callback();"
-    },
-    "^the MaxAgeSeconds value should equal (\\d+)$": {
-        "Glue Code": "this.assert.equal(this.data.CORSRules[0].MaxAgeSeconds, parseInt(value));\n    callback();"
-    },
-    "^I force path style requests$": {
-        "Glue Code": "this.s3 = new this.AWS.S3({s3ForcePathStyle: true"
-    },
-    "^the bucket name should be in the request path$": {
-        "Glue Code": "var path = this.response.request.httpRequest.path.split('/');\n    this.assert.equal(path[1], this.bucket);\n    callback();"
-    },
-    "^the bucket name should not be in the request host$": {
-        "Glue Code": "var host = this.response.request.httpRequest.endpoint.host;\n    this.assert.compare(host.indexOf(this.bucket), '<', 0);\n    callback();"
-    },
-    "^I generate the MD5 checksum of a (\\d+MB) buffer$": {
-        "Glue Code": "this.uploadBuffer = this.createBuffer(size);\n    this.sentContentMD5 = this.AWS.util.crypto.md5(this.uploadBuffer, 'base64');\n    next();"
-    },
-    "^I abort the upload$": {
-        "Glue Code": "this.managedUpload.abort();\n    callback();"
-    },
-    "^I receive a \"([^\"]*)\" error$": {
-        "Glue Code": "this.assert.equal(this.error.name, errName);\n    callback();"
-    },
-    "^I resume the upload$": {
-        "Glue Code": "var self = this;\n    self.managedUpload.send(function(err, data) {\n      self.error = err;\n      self.data = data;\n      callback();"
-    },
-    "^uploadPart should have been called (\\d+) times$": {
-        "Glue Code": "this.assert.equal(this.progressEvents.length, count);\n    callback();"
-    },
-    "^the object \"([^\"]*)\" should contain \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();"
-    },
-    "^the HTTP response should have a content length of (\\d+)$": {
-        "Glue Code": "this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();"
-    },
-    "^the streamed data should contain \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.equal(this.result.replace('\\n', ''), data);\n    callback();"
-    },
-    "^the streamed data content length should equal (\\d+)$": {
-        "Glue Code": "this.assert.equal(this.result.length, length);\n    callback();"
-    },
-    "^I access the URL via HTTP GET$": {
-        "Glue Code": "var world = this;\n    this.data = '';\n    require('https').get(this.signedUrl, function (res) {\n      res.on('data', function (chunk) {\n        world.data += chunk.toString();"
-    },
-    "^the HTTP response should equal \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.equal(this.data, data);\n    callback();"
-    },
-    "^the HTTP response should contain \"([^\"]*|)\"$": {
-        "Glue Code": "this.assert.match(this.data, data);\n    callback();"
-    },
-    "^I put (?:a |an )(empty|small|large|\\d+KB|\\d+MB) buffer to the key \"([^\"]*)\" with progress events$": {
-        "Glue Code": "var self = this;\n    var body = self.createBuffer(size);\n    this.progress = [];\n    var req = this.s3.putObject({Bucket: this.sharedBucket, Key: key, Body: body"
-    },
-    "^more than (\\d+) \"([^\"]*)\" event should fire$": {
-        "Glue Code": "this.assert.compare(this.progress.length, '>', numEvents);\n    callback();"
-    },
-    "^the \"([^\"]*)\" value of the progress event should equal (\\d+)MB$": {
-        "Glue Code": "this.assert.equal(this.progress[0][prop], mb * 1024 * 1024);\n    callback();"
-    },
-    "^the \"([^\"]*)\" value of the first progress event should be greater than (\\d+) bytes$": {
-        "Glue Code": "this.assert.compare(this.progress[0][prop], '>', bytes);\n    callback();"
-    },
-    "^I read the key \"([^\"]*)\" with progress events$": {
-        "Glue Code": "var self = this;\n    this.progress = [];\n    var req = this.s3.getObject({Bucket: this.sharedBucket, Key: key"
-    },
-    "^I generate the MD5 checksum of \"([^\"]*)\"$": {
-        "Glue Code": "this.sentContentMD5 = this.AWS.util.crypto.md5(data, 'base64');\n    next();"
-    },
-    "^the MD5 checksum of the response data should equal the generated checksum$": {
-        "Glue Code": "var receivedContentMD5 = this.AWS.util.crypto.md5(this.data.Body.toString(), 'base64');\n    this.assert.equal(receivedContentMD5, this.sentContentMD5);\n    next();"
-    },
-    "^I use signatureVersion \"([^\"]*)\"$": {
-        "Glue Code": "this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion"
-    },
-    "^I teardown the local proxy server$": {
-        "Glue Code": "this.service = this.s3 = new this.AWS.S3();\n    this.proxyServer.close(callback);"
-    },
-    "^the result should include (\\S+) \"([^\"]*)\"$": {
-        "Glue Code": "if (this.data[attr] === undefined) next.fail(\"Missing \" + attr);\n    if (typeof this.data[attr] !== type) next.fail(\"Incorrect type \" + attr);\n    next();"
-    },
-    "^the list should contain the topic ARN$": {
-        "Glue Code": "var arn = this.topicArn;\n    this.assert.contains(this.data.Topics, function(topic) {\n      return topic.TopicArn === arn;"
-    },
-    "^the result should include a message ID$": {
-        "Glue Code": "this.assert.compare(this.data.MessageId.length, '>', 0);\n    callback();"
-    },
-    "^the result should have an MD5 digest of \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.equal(this.data.MD5OfMessageBody, digest);\n    callback();"
-    },
-    "^the result should contain an access key ID and secret access key$": {
-        "Glue Code": "this.assert.compare(this.data.Credentials.AccessKeyId.length, '>', 0);\n    this.assert.compare(this.data.Credentials.SecretAccessKey.length, '>', 0);\n    callback();"
-    },
-    "^the Supported services list should contain a service with code \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.contains(this.data.services, function (svc) {\n      return svc.code == code;"
-    },
-    "^the Supported services list should contain a service with name \"([^\"]*)\"$": {
-        "Glue Code": "this.assert.contains(this.data.services, function (svc) {\n      return svc.name == name;"
-    }
+  "^I create a launch configuration with name \"([^\"]*)\"$": {
+    "Code": "function(name, callback) {\n    var params = {\n      ImageId: 'ami-1624987f',\n      InstanceType: 'm1.small',\n      LaunchConfigurationName: name\n    };\n    this.request(null, 'createLaunchConfiguration', params, callback, false);\n  }",
+    "File": "autoscaling.js"
+  },
+  "^I describe launch configurations$": {
+    "Code": "function(callback) {\n    this.request(null, 'describeLaunchConfigurations', {}, callback);\n  }",
+    "File": "autoscaling.js"
+  },
+  "^the list should contain the launch configuration \"([^\"]*)\"$": {
+    "Code": "function(name, callback) {\n    this.assert.contains(this.data.LaunchConfigurations, function(configuration) {\n      return configuration.LaunchConfigurationName === name;\n    });\n    callback();\n  }",
+    "File": "autoscaling.js"
+  },
+  "^I delete the launch configuration \"([^\"]*)\"$": {
+    "Code": "function(name, callback) {\n    var params = {LaunchConfigurationName: name};\n    this.request(null, 'deleteLaunchConfiguration', params, callback);\n  }",
+    "File": "autoscaling.js"
+  },
+  "^I create a CloudFormation stack with name prefix \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    this.stackName = this.uniqueName(prefix);\n    this.templateBody = '{\"Resources\":{\"member\":{\"Type\":\"AWS::SQS::Queue\"}}}';\n    var params = { TemplateBody: this.templateBody, StackName: this.stackName, EnableTerminationProtection: true };\n    this.request(null, 'createStack', params, callback, false);\n  }",
+    "File": "cloudformation.js"
+  },
+  "^I create a CloudFront distribution with name prefix \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    this.cfName = this.uniqueName(prefix);\n    this.cfCreateParams.CallerReference = this.cfName;\n    this.cfCreateParams.Origins.Items[0].Id = (this.cfName === '' ? 'origin' : 'InvalidOrigin');\n    this.request(null, 'createDistribution', { DistributionConfig: this.cfCreateParams }, callback, false);\n  }",
+    "File": "cloudfront.js"
+  },
+  "^I list CloudFront distributions$": {
+    "Code": "function(callback) {\n    this.request(null, 'listDistributions', {}, callback);\n  }",
+    "File": "cloudfront.js"
+  },
+  "^I create a domain with name prefix \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    this.domainName = this.uniqueName(prefix);\n    this.request(null, 'createDomain', {DomainName: this.domainName}, callback, false);\n  }",
+    "File": "cloudsearch.js"
+  },
+  "^I describe trails$": {
+    "Code": "function(callback) {\n    this.request(null, 'describeTrails', {}, callback);\n  }",
+    "File": "cloudtrail.js"
+  },
+  "^I create a trail with an invalid name$": {
+    "Code": "function(callback) {\n    this.request(null, 'createTrail', {Name: '', S3BucketName: ''}, callback, false);\n  }",
+    "File": "cloudtrail.js"
+  },
+  "^I create a CloudWatch alarm with (prefix|name) \"([^\"]*)\"$": {
+    "Code": "function(prefix, name, callback) {\n    var timestamp = new Date().getTime();\n    this.cloudWatchAlarm = {\n      AlarmName: name,\n      MetricName: 'aws-sdk-js-metric-' + timestamp,\n      Namespace: 'aws-sdk-js-namespace' + timestamp,\n      ComparisonOperator: 'GreaterThanThreshold',\n      EvaluationPeriods: 5,\n      Period: 60,\n      Statistic: 'Average',\n      Threshold: 50.0\n    };\n\n    if (prefix === 'prefix') {\n      this.cloudWatchAlarm.AlarmName += '-' + timestamp;\n    }\n\n    this.request(null, 'putMetricAlarm', this.cloudWatchAlarm,\n      callback, prefix === 'name' ? false : undefined);\n  }",
+    "File": "cloudwatch.js"
+  },
+  "^I list the CloudWatch alarms$": {
+    "Code": "function(callback) {\n    var params = {\n      MetricName: this.cloudWatchAlarm.MetricName,\n      Namespace: this.cloudWatchAlarm.Namespace\n    };\n    this.request(null, 'describeAlarmsForMetric', params, callback);\n  }",
+    "File": "cloudwatch.js"
+  },
+  "^the list should contain the CloudWatch alarm$": {
+    "Code": "function(callback) {\n    var name = this.cloudWatchAlarm.AlarmName;\n    this.assert.contains(this.data.MetricAlarms, function(alarm) {\n      return alarm.AlarmName === name;\n    });\n    callback();\n  }",
+    "File": "cloudwatch.js"
+  },
+  "^I delete the CloudWatch alarm$": {
+    "Code": "function(callback) {\n    this.request(null, 'deleteAlarms',\n      {AlarmNames: [this.cloudWatchAlarm.AlarmName]}, callback);\n  }",
+    "File": "cloudwatch.js"
+  },
+  "^I create a CloudWatch logGroup with prefix \"([^\"]*)\"$": {
+    "Code": "function (prefix, callback) {\n    var expectErr = prefix === \"\" ? false : undefined;\n    this.logGroupName = this.uniqueName(prefix);\n    this.request(null, 'createLogGroup', {logGroupName: this.logGroupName}, callback, expectErr);\n  }",
+    "File": "cloudwatchlogs.js"
+  },
+  "^I list the CloudWatch logGroups$": {
+    "Code": "function (callback) {\n    this.request(null, 'describeLogGroups', {logGroupNamePrefix: this.logGroupName}, callback);\n  }",
+    "File": "cloudwatchlogs.js"
+  },
+  "^the list should contain the CloudWatch logGroup$": {
+    "Code": "function (callback) {\n    var name = this.logGroupName;\n    this.assert.contains(this.data.logGroups, function(alarm) {\n      return alarm.logGroupName === name;\n    });\n    callback();\n  }",
+    "File": "cloudwatchlogs.js"
+  },
+  "^I delete the CloudWatch logGroup$": {
+    "Code": "function (callback) {\n    this.request(null, 'deleteLogGroup', {logGroupName: this.logGroupName}, callback);\n  }",
+    "File": "cloudwatchlogs.js"
+  },
+  "^I create a Cognito identity pool with prefix \"([^\"]*)\"$": {
+    "Code": "function (prefix, callback) {\n    var expectError = prefix === \"\" ? false : undefined;\n    var params = {IdentityPoolName: this.uniqueName(prefix, ''), AllowUnauthenticatedIdentities: true};\n    this.request(null, 'createIdentityPool', params, callback, expectError);\n  }",
+    "File": "cognitoidentity.js"
+  },
+  "^I describe the Cognito identity pool ID$": {
+    "Code": "function (callback) {\n    this.identityPoolId = this.data.IdentityPoolId;\n    this.request(null, 'describeIdentityPool', {IdentityPoolId: this.data.IdentityPoolId}, callback);\n  }",
+    "File": "cognitoidentity.js"
+  },
+  "^I delete the Cognito identity pool$": {
+    "Code": "function (callback) {\n    this.request(null, 'deleteIdentityPool', {IdentityPoolId: this.identityPoolId}, callback);\n  }",
+    "File": "cognitoidentity.js"
+  },
+  "^I list Cognito identity pool usage$": {
+    "Code": "function (callback) {\n    this.request(null, 'listIdentityPoolUsage', {}, callback);\n  }",
+    "File": "cognitosync.js"
+  },
+  "^I list Cognito data sets with identity pool id \"([^\"]*)\" and identity id \"([^\"]*)\"$": {
+    "Code": "function (idpid, idid, callback) {\n    var params = {IdentityPoolId: idpid, IdentityId: idid};\n    this.request(null, 'listDatasets', params, callback, false);\n  }",
+    "File": "cognitosync.js"
+  },
+  "^I create a Data Pipeline with name prefix \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    var params = {\n      name: this.uniqueName(prefix), uniqueId: this.uniqueName('aws-js-sdk')\n    };\n    this.request(null, 'createPipeline', params, callback, false);\n  }",
+    "File": "datapipeline.js"
+  },
+  "^I create a Direct Connect connection with an invalid location$": {
+    "Code": "function(callback) {\n    var params = {\n      bandwidth: '1Gbps',\n      location: 'INVALID_LOCATION',\n      connectionName: this.uniqueName('aws-sdk-js')\n    };\n    this.request(null, 'createConnection', params, callback, false);\n  }",
+    "File": "directconnect.js"
+  },
+  "^I have a table$": {
+    "Code": "function(callback) {\n    var world = this;\n    this.service.listTables(function(err, data) {\n      for (var i = 0; i < data.TableNames.length; i++) {\n        if (data.TableNames[i] == world.tableName) {\n          callback();\n          return;\n        }\n      }\n      createTable(world, callback);\n    });\n  }",
+    "File": "dynamodb.js"
+  },
+  "^I create a table$": {
+    "Code": "function(callback) {\n    var world = this;\n    this.tableName = this.uniqueName(\"aws-sdk-js-integration-\");\n    createTable(world, callback);\n  }",
+    "File": "dynamodb.js"
+  },
+  "^I put the item:$": {
+    "Code": "function(string, next) {\n    var params = {TableName: this.tableName, Item: JSON.parse(string)};\n    this.request(null, 'putItem', params, next);\n  }",
+    "File": "dynamodb.js"
+  },
+  "^the item with id \"([^\"]*)\" should exist$": {
+    "Code": "function(key, next) {\n    var world = this;\n    var params = {TableName: this.tableName, Key: {id: {S: key}}};\n    this.request(null, 'getItem', params, next);\n  }",
+    "File": "dynamodb.js"
+  },
+  "^it should have attribute \"([^\"]*)\" containing \"([^\"]*)\"$": {
+    "Code": "function(attr, value, next) {\n    this.assert.equal(jmespath.search(this.data.Item, attr), value);\n    next();\n  }",
+    "File": "dynamodb.js"
+  },
+  "^I delete the table$": {
+    "Code": "function(next) {\n    var params = {TableName: this.tableName};\n    this.request(null, 'deleteTable', params, next);\n  }",
+    "File": "dynamodb.js"
+  },
+  "^the table should eventually exist$": {
+    "Code": "function(callback) {\n    var params = {TableName: this.tableName};\n    this.service.waitFor('tableExists', params, callback);\n  }",
+    "File": "dynamodb.js"
+  },
+  "^the table should eventually not exist$": {
+    "Code": "function(callback) {\n    var params = {TableName: this.tableName};\n    this.service.waitFor('tableNotExists', params, callback);\n  }",
+    "File": "dynamodb.js"
+  },
+  "^my first request is corrupted with CRC checking (ON|OFF)$": {
+    "Code": "function(toggle, callback) {\n    var world = this;\n    this.service.config.dynamoDbCrc32 = toggle == 'ON' ? true : false;\n    var req = this.service.listTables();\n    this.service.config.dynamoDbCrc32 = true;\n    req.removeAllListeners('httpData');\n    req.on('httpData', function(chunk, resp) {\n      if (resp.retryCount == 0) {\n        resp.httpResponse.body = Buffer.from('{\"invalid\":\"response\"}');\n      } else {\n        world.AWS.EventListeners.Core.HTTP_DATA.call(this, chunk, resp);\n      }\n    });\n    req.on('complete', function(resp) {\n      world.error = resp.error;\n      world.response = resp;\n      if (resp.error) callback.fail(resp.error);\n      else callback();\n    });\n    req.send();\n  }",
+    "File": "dynamodb.js"
+  },
+  "^the request should( not)? be retried$": {
+    "Code": "function(retry, callback) {\n    if (retry && this.response.retryCount > 0) callback.fail('Request was incorrectly retried');\n    if (!retry && this.response.retryCount == 0) callback.fail('Request was incorrectly retried');\n    callback();\n  }",
+    "File": "dynamodb.js"
+  },
+  "^all of my requests are corrupted with CRC checking ON$": {
+    "Code": "function(callback) {\n    var world = this;\n    var req = this.service.listTables();\n    req.removeAllListeners('httpData');\n    req.on('httpData', function(chunk, resp) {\n      resp.httpResponse.body = Buffer.from('{\"invalid\":\"response\"}');\n    });\n    req.on('complete', function(resp) {\n      world.error = resp.error;\n      world.response = resp;\n      callback();\n    });\n    req.send();\n  }",
+    "File": "dynamodb.js"
+  },
+  "^the request is retried the maximum number of times$": {
+    "Code": "function(callback) {\n    if (this.response.retryCount != 2) callback.fail('Incorrect retry count');\n    callback();\n  }",
+    "File": "dynamodb.js"
+  },
+  "^the request should( not)? fail with a CRC checking error$": {
+    "Code": "function(failed, callback) {\n    if (failed && this.error) callback.fail(this.error);\n    if (!failed && !this.error) callback.fail('Did not fail when should have');\n    callback();\n  }",
+    "File": "dynamodb.js"
+  },
+  "^I try to delete an item with key \"([^\"]*)\" from table \"([^\"]*)\"$": {
+    "Code": "function(key, table, callback) {\n    var params = {TableName: table, Key: {HashKeyElement: {S: key}}};\n    this.request(null, 'deleteItem', params, callback, false);\n  }",
+    "File": "dynamodb.js"
+  },
+  "^I try to delete a table with an empty table parameter$": {
+    "Code": "function(callback) {\n    this.request(null, 'deleteTable', {TableName: ''}, callback, false);\n  }",
+    "File": "dynamodb.js"
+  },
+  "^I describe EC2 regions \"([^\"]*)\"$": {
+    "Code": "function(regions, callback) {\n    regions = regions.split(/\\s*,\\s*/);\n    this.request(null, 'describeRegions', {RegionNames: regions}, callback);\n  }",
+    "File": "ec2.js"
+  },
+  "^the EC2 endpoint for \"([^\"]*)\" should be \"([^\"]*)\"$": {
+    "Code": "function(region, endpoint, callback) {\n    this.assert.contains(this.data.Regions, function(region) {\n      return region.Endpoint === endpoint;\n    });\n    callback();\n  }",
+    "File": "ec2.js"
+  },
+  "^I describe the EC2 instance \"([^\"]*)\"$": {
+    "Code": "function(instanceId, callback) {\n    this.request(null, 'describeInstances', {InstanceIds: [instanceId]}, callback, false);\n  }",
+    "File": "ec2.js"
+  },
+  "^I attempt to copy an encrypted snapshot across regions$": {
+    "Code": "function (callback) {\n    var self = this;\n    var volId, srcSnapId, dstSnapId, params;\n    var sourceRegion = 'us-west-2';\n    var destRegion = 'us-east-1';\n    var srcEc2 = new this.AWS.EC2({region: sourceRegion});\n    var dstEc2 = new this.AWS.EC2({region: destRegion});\n\n    function teardown() {\n      if (volId) srcEc2.deleteVolume({VolumeId: volId}).send();\n      if (srcSnapId) srcEc2.deleteSnapshot({SnapshotId: srcSnapId}).send();\n      if (dstSnapId) dstEc2.deleteSnapshot({SnapshotId: dstSnapId}).send();\n    }\n\n    params = {AvailabilityZone:sourceRegion+'a',Size:10,Encrypted:true};\n    srcEc2.createVolume(params, function(err, data) {\n      if (err) { teardown(); return callback(err); }\n      volId = data.VolumeId;\n\n      srcEc2.waitFor('volumeAvailable', {VolumeIds: [volId]}, function(err) {\n        if (err) { teardown(); return callback(err); }\n\n        srcEc2.createSnapshot({VolumeId: volId}, function(err, data) {\n          if (err) { teardown(); return callback(err); }\n          srcSnapId = data.SnapshotId;\n\n          setTimeout(function() {\n            params = {SourceRegion: sourceRegion, SourceSnapshotId: srcSnapId};\n            dstEc2.copySnapshot(params, function(err, data) {\n              if (data) dstSnapId = data.SnapshotId;\n              self.success = true;\n              callback();\n              teardown();\n            });\n          }, 5000);\n        });\n      });\n    });\n  }",
+    "File": "ec2.js"
+  },
+  "^the copy snapshot attempt should be successful$": {
+    "Code": "function (callback) {\n    this.assert.equal(this.success, true);\n    callback();\n  }",
+    "File": "ec2.js"
+  },
+  "^I create a cache parameter group with name prefix \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    this.cacheGroupName = this.uniqueName(prefix);\n    var params = {\n      Description: 'Description',\n      CacheParameterGroupName: this.cacheGroupName,\n      CacheParameterGroupFamily: 'memcached1.4'\n    };\n    this.request(null, 'createCacheParameterGroup', params, callback, false);\n  }",
+    "File": "elasticache.js"
+  },
+  "^the cache parameter group name is in the result$": {
+    "Code": "function(callback) {\n    var name = this.data.CacheParameterGroup.CacheParameterGroupName;\n    this.assert.equal(name, this.cacheGroupName);\n    callback();\n  }",
+    "File": "elasticache.js"
+  },
+  "^I describe the cache parameter groups$": {
+    "Code": "function(callback) {\n    var params = {CacheParameterGroupName: this.cacheGroupName};\n    this.request(null, 'describeCacheParameterGroups', params, callback);\n  }",
+    "File": "elasticache.js"
+  },
+  "^the cache parameter group should be described$": {
+    "Code": "function(callback) {\n    var item = this.data.CacheParameterGroups[0];\n    this.assert.equal(item.CacheParameterGroupName, this.cacheGroupName);\n    callback();\n  }",
+    "File": "elasticache.js"
+  },
+  "^I delete the cache parameter group$": {
+    "Code": "function(callback) {\n    var params = {CacheParameterGroupName: this.cacheGroupName};\n    this.request(null, 'deleteCacheParameterGroup', params, callback);\n  }",
+    "File": "elasticache.js"
+  },
+  "^I create an Elastic Beanstalk application with name prefix \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    this.appName = this.uniqueName(prefix);\n    var params = { ApplicationName: this.appName };\n    this.request(null, 'createApplication', params, callback, false);\n  }",
+    "File": "elasticbeanstalk.js"
+  },
+  "^I create an Elastic Beanstalk application version with label \"([^\"]*)\"$": {
+    "Code": "function(label, callback) {\n    this.appVersion = label;\n    var params = { ApplicationName: this.appName, VersionLabel: this.appVersion };\n    this.request(null, 'createApplicationVersion', params, callback);\n  }",
+    "File": "elasticbeanstalk.js"
+  },
+  "^I describe the Elastic Beanstalk application$": {
+    "Code": "function(callback) {\n    var params = { ApplicationNames: [this.appName] };\n    this.request(null, 'describeApplications', params, callback);\n  }",
+    "File": "elasticbeanstalk.js"
+  },
+  "^the result should contain the Elastic Beanstalk application version$": {
+    "Code": "function(callback) {\n    this.assert.deepEqual(this.data.Applications[0].Versions, [this.appVersion]);\n    callback();\n  }",
+    "File": "elasticbeanstalk.js"
+  },
+  "^the result should contain the Elastic Beanstalk application name$": {
+    "Code": "function(callback) {\n    this.assert.equal(this.data.Applications[0].ApplicationName, this.appName);\n    callback();\n  }",
+    "File": "elasticbeanstalk.js"
+  },
+  "^I delete the Elastic Beanstalk application$": {
+    "Code": "function(callback) {\n    var params = { ApplicationName: this.appName };\n    this.request(null, 'deleteApplication', params, callback);\n  }",
+    "File": "elasticbeanstalk.js"
+  },
+  "^I create an Elastic Transcoder pipeline with name prefix \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    this.pipelineName = this.uniqueName(prefix);\n    var params = {\n      Name: this.pipelineName,\n      InputBucket: this.bucket,\n      OutputBucket: this.bucket,\n      Role: this.iamRoleArn,\n      Notifications: {\"Progressing\":\"\",\"Completed\":\"\",\"Warning\":\"\",\"Error\":\"\"}\n    };\n\n    var world = this;\n    var next = function() {\n      if (world.data) world.pipelineId = world.data.Pipeline.Id;\n      callback();\n    }\n\n    this.request(null, 'createPipeline', params, next, false);\n  }",
+    "File": "elastictranscoder.js"
+  },
+  "^I list pipelines$": {
+    "Code": "function(callback) {\n    this.request(null, 'listPipelines', {}, callback);\n  }",
+    "File": "elastictranscoder.js"
+  },
+  "^the list should contain the pipeline$": {
+    "Code": "function(callback) {\n    var id = this.pipelineId;\n    this.assert.contains(this.data.Pipelines, function (pipeline) {\n      return pipeline.Id === id;\n    });\n    callback();\n  }",
+    "File": "elastictranscoder.js"
+  },
+  "^I pause the pipeline$": {
+    "Code": "function(callback) {\n    this.request(null, 'updatePipelineStatus', {Id:this.pipelineId, Status: 'Paused'}, callback);\n  }",
+    "File": "elastictranscoder.js"
+  },
+  "^I read the pipeline$": {
+    "Code": "function(callback) {\n    this.request(null, 'readPipeline', {Id: this.pipelineId}, callback);\n  }",
+    "File": "elastictranscoder.js"
+  },
+  "^the pipeline status should be \"([^\"]*)\"$": {
+    "Code": "function(status, callback) {\n    this.assert.equal(this.data.Pipeline.Status, status);\n    callback();\n  }",
+    "File": "elastictranscoder.js"
+  },
+  "^I delete the pipeline$": {
+    "Code": "function(callback) {\n    this.request(null, 'deletePipeline', {Id: this.pipelineId}, callback);\n  }",
+    "File": "elastictranscoder.js"
+  },
+  "^I create a load balancer with name prefix \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    this.loadBalancerName = prefix + '-' + new Date().getTime();\n\n    var params = {\n      LoadBalancerName: this.loadBalancerName,\n      Listeners: [{Protocol: 'TCP', LoadBalancerPort: 80, InstancePort: 80}],\n      AvailabilityZones: ['us-east-1a']\n    };\n    this.request(null, 'createLoadBalancer', params, callback, false);\n  }",
+    "File": "elb.js"
+  },
+  "^I describe load balancers with the load balancer name$": {
+    "Code": "function(callback) {\n    var params = {LoadBalancerNames: [this.loadBalancerName]};\n    this.request(null, 'describeLoadBalancers', params, callback);\n  }",
+    "File": "elb.js"
+  },
+  "^the load balancer should be in the list$": {
+    "Code": "function(callback) {\n    var name = this.data.LoadBalancerDescriptions[0].LoadBalancerName;\n    this.assert.equal(name, this.loadBalancerName);\n    callback();\n  }",
+    "File": "elb.js"
+  },
+  "^I delete the load balancer$": {
+    "Code": "function(callback) {\n    var params = {LoadBalancerName: this.loadBalancerName};\n    this.request(null, 'deleteLoadBalancer', params, callback);\n  }",
+    "File": "elb.js"
+  },
+  "^I try to create a load balancer with no name$": {
+    "Code": "function(callback) {\n    this.request(null, 'createLoadBalancer', {}, callback);\n  }",
+    "File": "elb.js"
+  },
+  "^I run an EMR job flow with invalid parameters$": {
+    "Code": "function(callback) {\n    this.service = new this.AWS.EMR();\n    var params = {Name: '', Instances: {MasterInstanceType: 'invalid'}};\n    this.request(null, 'runJobFlow', params, callback, false);\n  }",
+    "File": "emr.js"
+  },
+  "^I have a Glacier vault$": {
+    "Code": "function(callback) {\n    this.vaultName = 'aws-sdk-js-integration';\n    var params = {vaultName: this.vaultName};\n    this.request(null, 'createVault', params, callback, false);\n  }",
+    "File": "glacier.js"
+  },
+  "^I upload a (\\d+(?:\\.\\d+)?)MB Glacier archive to the vault( with (?:invalid|incorrect) checksum)?$": {
+    "Code": "function(size, invalid, callback) {\n    var data = Buffer.alloc(parseFloat(size) * 1024 * 1024);\n    data.fill('0');\n    var params = {vaultName: this.vaultName, body: data};\n    if (invalid) {\n      if (invalid.match(\"invalid\")) params.checksum = '000';\n      else params.checksum = '00000000000000000000000000000000';\n    }\n    this.request(null, 'uploadArchive', params, callback, false);\n  }",
+    "File": "glacier.js"
+  },
+  "^the result should contain the Glacier archive ID$": {
+    "Code": "function(callback) {\n    this.archiveId = this.data.archiveId;\n    callback();\n  }",
+    "File": "glacier.js"
+  },
+  "^the result should contain the same tree hash checksum$": {
+    "Code": "function(callback) {\n    var hash = this.response.request.httpRequest.headers['x-amz-sha256-tree-hash'];\n    this.assert.equal(this.data.checksum, hash);\n    callback();\n  }",
+    "File": "glacier.js"
+  },
+  "^I describe the Glacier vault$": {
+    "Code": "function(callback) {\n    var params = {vaultName: this.vaultName};\n    this.request(null, 'describeVault', params, callback);\n  }",
+    "File": "glacier.js"
+  },
+  "^I delete the Glacier archive$": {
+    "Code": "function(callback) {\n    var params = {vaultName: this.vaultName, archiveId: this.archiveId};\n    this.request(null, 'deleteArchive', params, callback);\n  }",
+    "File": "glacier.js"
+  },
+  "^I delete the Glacier vault$": {
+    "Code": "function(callback) {\n    var params = {vaultName: this.vaultName};\n    this.eventually(callback, function(next) {\n      this.request(null, 'deleteVault', params, next);\n    });\n  }",
+    "File": "glacier.js"
+  },
+  "^I initiate a Glacier multi-part upload on a (\\d+(?:\\.\\d+)?)MB archive in (\\d+)MB chunks$": {
+    "Code": "function(totalSize, partSize, callback) {\n    // setup multi-part upload\n    this.uploadData = Buffer.alloc(totalSize * 1024 * 1024);\n    this.uploadData.fill('0');\n    this.checksums = this.service.computeChecksums(this.uploadData);\n    this.partCounter = 0;\n    this.partSize = partSize * 1024 * 1024;\n\n    var params = {vaultName: this.vaultName, partSize: this.partSize.toString()};\n    this.request(null, 'initiateMultipartUpload', params, callback);\n  }",
+    "File": "glacier.js"
+  },
+  "^the result should contain the Glacier multi-part upload ID$": {
+    "Code": "function(callback) {\n    this.uploadId = this.data.uploadId;\n    callback();\n  }",
+    "File": "glacier.js"
+  },
+  "^I send the next part$": {
+    "Code": "function(callback) {\n    var start = this.partCounter;\n    var end = Math.min(start + this.partSize, this.uploadData.length);\n    var buf = this.uploadData.slice(start, end);\n    var range = 'bytes ' + start + '-' + (end - 1) + '/*';\n    var params = {\n      vaultName: this.vaultName,\n      uploadId: this.uploadId,\n      range: range,\n      body: buf\n    };\n    this.request(null, 'uploadMultipartPart', params, callback);\n    this.partCounter += this.partSize;\n  }",
+    "File": "glacier.js"
+  },
+  "^I send the Glacier archive data in chunks$": {
+    "Code": "function(callback) {\n    var numPartsLeft = Math.ceil(this.uploadData.length / this.partSize);\n    for (var i = 0; i < this.uploadData.length; i += this.partSize) {\n      var end = Math.min(i + this.partSize, this.uploadData.length);\n      var buf = this.uploadData.slice(i, end);\n      var range = 'bytes ' + i + '-' + (end - 1) + '/*';\n      var params = {\n        vaultName: this.vaultName,\n        uploadId: this.uploadId,\n        range: range,\n        body: buf\n      };\n      this.service.uploadMultipartPart(params, function() {\n        if (--numPartsLeft === 0) callback();\n      });\n    }\n  }",
+    "File": "glacier.js"
+  },
+  "^I complete the Glacier multi-part upload$": {
+    "Code": "function(callback) {\n    var params = {\n      vaultName: this.vaultName,\n      uploadId: this.uploadId,\n      archiveSize: this.uploadData.length.toString(),\n      checksum: this.checksums.treeHash\n    };\n    this.request(null, 'completeMultipartUpload', params, callback);\n  }",
+    "File": "glacier.js"
+  },
+  "^I have an IAM username \"([^\"]*)\"$": {
+    "Code": "function(name, callback) {\n    this.iamUserArn = '';\n    this.iamUser = this.uniqueName(name);\n    callback();\n  }",
+    "File": "iam.js"
+  },
+  "^I create an IAM user with the username$": {
+    "Code": "function(callback) {\n    var world = this;\n    var next = function() {\n      if (world.data) this.iamUserArn = world.data.User.Arn;\n      else this.iamUserArn = null;\n      callback();\n    };\n    next.fail = callback.fail;\n    this.request('iam', 'createUser', {UserName: this.iamUser}, next, false);\n  }",
+    "File": "iam.js"
+  },
+  "^I get the IAM user$": {
+    "Code": "function(callback) {\n    this.request('iam', 'getUser', {UserName: this.iamUser}, callback);\n  }",
+    "File": "iam.js"
+  },
+  "^the IAM user should exist$": {
+    "Code": "function(callback) {\n    this.assert.equal(this.data.User.UserName, this.iamUser);\n    callback();\n  }",
+    "File": "iam.js"
+  },
+  "^I delete the IAM user$": {
+    "Code": "function(callback) {\n    this.request('iam', 'deleteUser', {UserName: this.iamUser}, callback);\n  }",
+    "File": "iam.js"
+  },
+  "^I create an IAM role with name prefix \"([^\"]*)\"$": {
+    "Code": "function(name, callback) {\n    this.iamRoleName = this.uniqueName(name);\n\n    var world = this;\n    var assumeRolePolicyDocument = '{\"Version\":\"2008-10-17\",\"Statement\":[' +\n      '{\"Effect\":\"Allow\",\"Principal\":{\"Service\":[\"ec2.amazonaws.com\"]},' +\n      '\"Action\":[\"sts:AssumeRole\"]}]}';\n    var params = {RoleName: this.iamRoleName,\n      AssumeRolePolicyDocument: assumeRolePolicyDocument};\n    var next = function() {\n      world.iamRoleArn = world.data.Role.Arn;\n      callback();\n    }\n    next.fail = callback.fail;\n\n    this.request('iam', 'createRole', params, next);\n  }",
+    "File": "iam.js"
+  },
+  "^the IAM role should exist$": {
+    "Code": "function(callback) {\n    this.assert.compare(this.iamRoleArn.length, '>', 0);\n    callback();\n  }",
+    "File": "iam.js"
+  },
+  "^I delete the IAM role$": {
+    "Code": "function(callback) {\n    this.request('iam', 'deleteRole', {RoleName: this.iamRoleName}, callback);\n  }",
+    "File": "iam.js"
+  },
+  "^I try to describe a stream in Kinesis$": {
+    "Code": "function(callback) {\n    this.request(null, 'describeStream', {StreamName: 'XXINVALIDXX'}, callback, false);\n  }",
+    "File": "kinesis.js"
+  },
+  "^I create an OpsWorks user profile with the IAM user ARN$": {
+    "Code": "function(callback) {\n    var params = {IamUserArn: this.iamUserArn};\n    this.request(null, 'createUserProfile', params, callback, false);\n  }",
+    "File": "opsworks.js"
+  },
+  "^the IAM user ARN is in the result$": {
+    "Code": "function(callback) {\n    this.assert.equal(this.data.IamUserArn, this.iamUserArn);\n    callback();\n  }",
+    "File": "opsworks.js"
+  },
+  "^I describe the OpsWorks user profiles$": {
+    "Code": "function(callback) {\n    var params = {IamUserArns: [this.iamUserArn]};\n    this.request(null, 'describeUserProfiles', params, callback);\n  }",
+    "File": "opsworks.js"
+  },
+  "^the IAM user ARN should be in the result$": {
+    "Code": "function(callback) {\n    this.assert.equal(this.data.UserProfiles[0].IamUserArn, this.iamUserArn);\n    callback();\n  }",
+    "File": "opsworks.js"
+  },
+  "^the name should be equal to the IAM username$": {
+    "Code": "function(callback) {\n    this.assert.equal(this.data.UserProfiles[0].Name, this.iamUser);\n    callback();\n  }",
+    "File": "opsworks.js"
+  },
+  "^the SSH username should be equal to the IAM username$": {
+    "Code": "function(callback) {\n    this.assert.equal(this.data.UserProfiles[0].SshUsername, this.iamUser);\n    callback();\n  }",
+    "File": "opsworks.js"
+  },
+  "^I delete the OpsWorks user profile$": {
+    "Code": "function(callback) {\n    var params = {IamUserArn: this.iamUserArn};\n    this.request(null, 'deleteUserProfile', params, callback, false);\n  }",
+    "File": "opsworks.js"
+  },
+  "^I create a RDS security group with prefix name \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    this.dbGroupName = this.uniqueName(prefix);\n    var params = { DBSecurityGroupDescription: 'Description', DBSecurityGroupName: this.dbGroupName };\n    this.request(null, 'createDBSecurityGroup', params, callback, false);\n  }",
+    "File": "rds.js"
+  },
+  "the value at \"([^\"]*)\" should contain \"([^\"]*)\" with \"([^\"]*)\"": {
+    "Code": "function (path, key, value, callback) {\n    var member = jmespath.search(this.data, path);\n    var containDefault = false;\n    member.forEach(function(config) {\n      console.log(config[key], value)\n      if (config[key] === value) {\n        containDefault = true\n      }\n    });\n    this.assert.ok(containDefault === true, `No ${path} has member key ${key} of the value ${value}`);\n    callback();\n  }",
+    "File": "rds.js"
+  },
+  "^I paginate the \"([^\"]*)\" operation asynchronously with limit (\\d+)$": {
+    "Code": "function (operation, limit, callback) {\n    var maxPages = 3;\n    limit = parseInt(limit);\n\n    var world = this;\n    this.numPages = 0;\n    this.numMarkers = 0\n    this.operation = operation;\n    this.paginationConfig = this.service.paginationConfig(operation);\n    this.params = this.params || {};\n    this.finishedPagination = false;\n\n    var marker = this.paginationConfig.outputToken;\n    if (this.paginationConfig.limitKey) {\n      this.params[this.paginationConfig.limitKey] = limit;\n    }\n    this.service[operation](this.params).eachPage(function (err, data, done) {\n      process.nextTick(function() {\n        if (err) callback.fail(err);\n        else if (data === null || world.numPages === maxPages) {\n          world.finishedPagination = true;\n          callback();\n          return false;\n        } else {\n          if (data[marker]) world.numMarkers++;\n          world.numPages++;\n          world.data = data;\n        }\n\n        done(); // start getting next page\n      });\n    });\n  }",
+    "File": "rds.js"
+  },
+  "^I should be able to asynchronously paginate all pages$": {
+    "Code": "function (callback) {\n    this.assert.equal(this.finishedPagination, true);\n    callback();\n  }",
+    "File": "rds.js"
+  },
+  "^I create a Redshift cluster parameter group with prefix name \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    this.parameterGroupName = this.uniqueName(prefix);\n    var params = {\n      Description: 'Description',\n      ParameterGroupName: this.parameterGroupName,\n      ParameterGroupFamily: 'redshift-1.0'\n    };\n    this.request(null, 'createClusterParameterGroup', params, callback, false);\n  }",
+    "File": "redshift.js"
+  },
+  "^I create a Route53 hosted zone with name prefix \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    this.zoneName = 'zone1.example.com';\n    var params = {\n      Name: this.zoneName,\n      CallerReference: this.uniqueName(prefix),\n      HostedZoneConfig: {\n        Comment: 'A comment about the zone'\n      }\n    };\n    this.request(null, 'createHostedZone', params, callback, false);\n  }",
+    "File": "route53.js"
+  },
+  "^the result should contain the hosted zone ID$": {
+    "Code": "function(callback) {\n    this.hostedZoneId = this.data.HostedZone.Id;\n    callback();\n  }",
+    "File": "route53.js"
+  },
+  "^the result should contain the change ID$": {
+    "Code": "function(callback) {\n    this.changeInfoId = this.data.ChangeInfo.Id;\n    callback();\n  }",
+    "File": "route53.js"
+  },
+  "^the result should contain the hosted zone name$": {
+    "Code": "function(callback) {\n    this.assert.equal(this.data.HostedZone.Name, this.zoneName + '.');\n    callback();\n  }",
+    "File": "route53.js"
+  },
+  "^I get information about the Route53 change ID$": {
+    "Code": "function(callback) {\n    this.request(null, 'getChange', {Id: this.changeInfoId}, callback);\n  }",
+    "File": "route53.js"
+  },
+  "^the change status should be PENDING or INSYNC$": {
+    "Code": "function(callback) {\n    this.assert.match(this.data.ChangeInfo.Status, /^(PENDING|INSYNC)$/);\n    callback();\n  }",
+    "File": "route53.js"
+  },
+  "^I get information about the Route53 hosted zone ID$": {
+    "Code": "function(callback) {\n    this.request(null, 'getHostedZone', {Id: this.hostedZoneId}, callback);\n  }",
+    "File": "route53.js"
+  },
+  "^the result should contain multiple nameservers$": {
+    "Code": "function(callback) {\n    this.assert.compare(this.data.DelegationSet.NameServers.length, '>=', 0);\n    this.assert.equal(typeof this.data.DelegationSet.NameServers[0], 'string');\n    callback();\n  }",
+    "File": "route53.js"
+  },
+  "^I delete the Route53 hosted zone$": {
+    "Code": "function(callback) {\n    this.request(null, 'deleteHostedZone', {Id: this.hostedZoneId}, callback);\n  }",
+    "File": "route53.js"
+  },
+  "^I create a Route53 TCP health check with name prefix \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    var params = {\n      CallerReference: this.uniqueName(prefix),\n      HealthCheckConfig: {\n        IPAddress: '192.0.43.10', // example.com\n        Port: 80,\n        Type: 'TCP'\n      }\n    }\n    this.request(null, 'createHealthCheck', params, callback);\n  }",
+    "File": "route53.js"
+  },
+  "^the result should contain health check information$": {
+    "Code": "function(callback) {\n    this.healthCheckInfo = this.data.HealthCheck;\n    callback();\n  }",
+    "File": "route53.js"
+  },
+  "^the result should contain the health check ID$": {
+    "Code": "function(callback) {\n    this.healthCheckId = this.data.HealthCheck.Id;\n    callback();\n  }",
+    "File": "route53.js"
+  },
+  "^I get information about the health check ID$": {
+    "Code": "function(callback) {\n    var params = {HealthCheckId: this.healthCheckId};\n    this.request(null, 'getHealthCheck', params, callback);\n  }",
+    "File": "route53.js"
+  },
+  "^the result should contain the previous health check information$": {
+    "Code": "function(callback) {\n    this.assert.deepEqual(this.data.HealthCheck, this.healthCheckInfo);\n    callback();\n  }",
+    "File": "route53.js"
+  },
+  "^I delete the Route53 TCP health check$": {
+    "Code": "function(callback) {\n    var params = {HealthCheckId: this.healthCheckId};\n    this.request(null, 'deleteHealthCheck', params, callback);\n  }",
+    "File": "route53.js"
+  },
+  "^I list Route53 hosted zones$": {
+    "Code": "function(callback) {\n    this.request(null, 'listHostedZones', {}, callback);\n  }",
+    "File": "route53.js"
+  },
+  "^I list Route53 domains$": {
+    "Code": "function (callback) {\n    this.request(null, 'listDomains', {}, callback);\n  }",
+    "File": "route53domains.js"
+  },
+  "^I try to register a Route53 domain with invalid parameters$": {
+    "Code": "function (callback) {\n    var params = {\n      DomainName: 'example.com',\n      DurationInYears: 1,\n      AdminContact: {}, RegistrantContact: {}, TechContact: {}\n    };\n    this.request(null, 'registerDomain', params, callback, false);\n  }",
+    "File": "route53domains.js"
+  },
+  "^I am using the S3 \"([^\"]*)\" region$": {
+    "Code": "function(region, callback) {\n    this.s3 = new this.AWS.S3({region: region});\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^I am using the S3 \"([^\"]*)\" region with signatureVersion \"([^\"]*)\"$": {
+    "Code": "function(region, signatureVersion, callback) {\n    this.s3 = new this.AWS.S3({region: region, signatureVersion: signatureVersion});\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^I am using the S3 us-east-1 regional endpoint$": {
+    "Code": "function(callback) {\n    this.s3 = new this.AWS.S3({region: 'us-east-1', s3UsEast1RegionalEndpoint: 'regional'});\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^I create a bucket with the location constraint \"([^\"]*)\"$": {
+    "Code": "function(location, callback) {\n    var bucket = this.bucket = this.uniqueName('aws-sdk-js-integration');\n    var params = {\n      Bucket: this.bucket,\n      CreateBucketConfiguration: {\n        LocationConstraint: location\n      }\n    };\n    this.request('s3', 'createBucket', params, function(err, data) {\n      if (err) {\n        return callback(err);\n      }\n      this.s3.waitFor('bucketExists', {Bucket: bucket}, callback);\n    });\n  }",
+    "File": "buckets.js"
+  },
+  "^the bucket should have a location constraint of \"([^\"]*)\"$": {
+    "Code": "function(loc, callback) {\n    var self = this;\n    self.s3.getBucketLocation({Bucket: self.bucket}, function(err, data) {\n      if (err) callback.fail(err);\n      self.assert.equal(data.LocationConstraint, loc);\n      callback();\n    });\n  }",
+    "File": "buckets.js"
+  },
+  "^I put a transition lifecycle configuration on the bucket with prefix \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    var params = {\n      Bucket: this.bucket,\n      LifecycleConfiguration: {\n        Rules: [{\n          Prefix: prefix,\n          Status: 'Enabled',\n          Transition: {Days: 0, StorageClass: 'GLACIER'}\n        }]\n      }\n    };\n    this.request('s3', 'putBucketLifecycle', params, callback);\n  }",
+    "File": "buckets.js"
+  },
+  "^I get the transition lifecycle configuration on the bucket$": {
+    "Code": "function(callback) {\n    this.eventually(callback, function(next) {\n      this.request('s3', 'getBucketLifecycle', {Bucket: this.bucket}, next);\n    });\n  }",
+    "File": "buckets.js"
+  },
+  "^the lifecycle configuration should have transition days of (\\d+)$": {
+    "Code": "function(days, callback) {\n    this.assert.equal(this.data.Rules[0].Transition.Days, 0);\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^the lifecycle configuration should have transition storage class of \"([^\"]*)\"$": {
+    "Code": "function(value, callback) {\n    this.assert.equal(this.data.Rules[0].Transition.StorageClass, value);\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^I put a bucket CORS configuration$": {
+    "Code": "function(callback) {\n    var params = {\n      Bucket: this.bucket,\n      CORSConfiguration: {\n        CORSRules: [{\n          AllowedMethods: ['DELETE', 'POST', 'PUT'],\n          AllowedOrigins: ['http://example.com'],\n          AllowedHeaders: ['*'],\n          ExposeHeaders: ['x-amz-server-side-encryption'],\n          MaxAgeSeconds: 5000\n        }]\n      }\n    };\n    this.request('s3', 'putBucketCors', params, callback);\n  }",
+    "File": "buckets.js"
+  },
+  "^I get the bucket CORS configuration$": {
+    "Code": "function(callback) {\n    this.request('s3', 'getBucketCors', {Bucket: this.bucket}, callback);\n  }",
+    "File": "buckets.js"
+  },
+  "^the AllowedMethods list should inclue \"([^\"]*)\"$": {
+    "Code": "function(value, callback) {\n    this.assert.equal(this.data.CORSRules[0].AllowedMethods.sort().join(' '), 'DELETE POST PUT');\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^the AllowedOrigin value should equal \"([^\"]*)\"$": {
+    "Code": "function(value, callback) {\n    this.assert.equal(this.data.CORSRules[0].AllowedOrigins[0], value);\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^the AllowedHeader value should equal \"([^\"]*)\"$": {
+    "Code": "function(value, callback) {\n    this.assert.equal(this.data.CORSRules[0].AllowedHeaders[0], value);\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^the ExposeHeader value should equal \"([^\"]*)\"$": {
+    "Code": "function(value, callback) {\n    this.assert.equal(this.data.CORSRules[0].ExposeHeaders[0], value);\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^the MaxAgeSeconds value should equal (\\d+)$": {
+    "Code": "function(value, callback) {\n    this.assert.equal(this.data.CORSRules[0].MaxAgeSeconds, parseInt(value));\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^I put a bucket tag with key \"([^\"]*)\" and value \"([^\"]*)\"$": {
+    "Code": "function(key, value, callback) {\n    var params = {\n      Bucket: this.bucket,\n      Tagging: {\n        TagSet: [\n          {Key: key, Value: value}\n        ]\n      }\n    };\n\n    this.request('s3', 'putBucketTagging', params, callback);\n  }",
+    "File": "buckets.js"
+  },
+  "^I get the bucket tagging$": {
+    "Code": "function(callback) {\n    this.request('s3', 'getBucketTagging', {Bucket: this.bucket}, callback);\n  }",
+    "File": "buckets.js"
+  },
+  "^the first tag in the tag set should have key and value \"([^\"]*)\", \"([^\"]*)\"$": {
+    "Code": "function(key, value, callback) {\n    this.assert.equal(this.data.TagSet[0].Key, key);\n    this.assert.equal(this.data.TagSet[0].Value, value);\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^I create a bucket with a DNS compatible name that contains a dot$": {
+    "Code": "function(callback) {\n    var bucket = this.bucket = this.uniqueName('aws-sdk-js.integration');\n    this.request('s3', 'createBucket', {Bucket: this.bucket}, function(err, data) {\n      if (err) {\n        return callback(err);\n      }\n      this.s3.waitFor('bucketExists', {Bucket: bucket}, callback);\n    });\n  }",
+    "File": "buckets.js"
+  },
+  "^I force path style requests$": {
+    "Code": "function(callback) {\n    this.s3 = new this.AWS.S3({s3ForcePathStyle: true});\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^the bucket name should be in the request path$": {
+    "Code": "function(callback) {\n    var path = this.response.request.httpRequest.path.split('/');\n    this.assert.equal(path[1], this.bucket);\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^the bucket name should not be in the request host$": {
+    "Code": "function(callback) {\n    var host = this.response.request.httpRequest.endpoint.host;\n    this.assert.compare(host.indexOf(this.bucket), '<', 0);\n    callback();\n  }",
+    "File": "buckets.js"
+  },
+  "^I put \"([^\"]*)\" to the key \"([^\"]*)\" in the bucket$": {
+    "Code": "function(data, key, next) {\n    var params = {Bucket: this.bucket, Key: key, Body: data};\n    this.request('s3', 'putObject', params, next, false);\n  }",
+    "File": "buckets.js"
+  },
+  "^I delete the object \"([^\"]*)\" from the bucket$": {
+    "Code": "function(key, next) {\n    var params = {Bucket: this.bucket, Key: key};\n    this.request('s3', 'deleteObject', params, next);\n  }",
+    "File": "buckets.js"
+  },
+  "^I put a (small|large) buffer to the key \"([^\"]*)\" in the bucket$": {
+    "Code": "function(size, key, next) {\n    var body = this.createBuffer(size);\n    var params = {Bucket: this.bucket, Key: key, Body: body};\n    this.request('s3', 'putObject', params, next);\n  }",
+    "File": "buckets.js"
+  },
+  "^the object \"([^\"]*)\" should (not )?exist in the bucket$": {
+    "Code": "function(key, shouldNotExist, next) {\n    var params = { Bucket: this.bucket, Key: key };\n    this.eventually(next, function (retry) {\n      retry.condition = function() {\n        if (shouldNotExist) {\n          return this.error && this.error.code === 'NotFound';\n        } else {\n          return !this.error;\n        }\n      };\n      this.request('s3', 'headObject', params, retry, false);\n    });\n  }",
+    "File": "buckets.js"
+  },
+  "^I use S3 managed upload to upload(?: a| an) (empty|small|large) buffer to the key \"([^\"]*)\"$": {
+    "Code": "function (size, key, callback) {\n    var self = this;\n    var buffer = self.createBuffer(size);\n    var params = {Bucket: self.sharedBucket, Key: key, Body: buffer};\n    self.s3.upload(params, function (err, data) {\n      self.error = err;\n      self.data = data;\n      callback();\n    });\n  }",
+    "File": "managed_upload.js"
+  },
+  "^I generate the MD5 checksum of a (\\d+MB) buffer$": {
+    "Code": "function(size, next) {\n    this.uploadBuffer = this.createBuffer(size);\n    this.sentContentMD5 = this.AWS.util.crypto.md5(this.uploadBuffer, 'base64');\n    next();\n  }",
+    "File": "managed_upload.js"
+  },
+  "^I use S3 managed upload to upload the buffer to the key \"([^\"]*)\"$": {
+    "Code": "function (key, callback) {\n    var self = this;\n    var params = {Bucket: self.sharedBucket, Key: key, Body: self.uploadBuffer};\n    self.s3.upload(params, function (err, data) {\n      self.error = err;\n      self.data = data;\n      callback();\n    });\n  }",
+    "File": "managed_upload.js"
+  },
+  "^the multipart upload should succeed$": {
+    "Code": "function (callback) {\n    this.assert.equal(this.error, null);\n    this.assert.equal(typeof this.data.Location, 'string');\n    callback();\n  }",
+    "File": "managed_upload.js"
+  },
+  "^I use S3 managed upload to upload(?: a| an) (empty|small|large) stream to the key \"([^\"]*)\"$": {
+    "Code": "function (size, key, callback) {\n    var fs = require('fs');\n    var self = this;\n    var fileName = self.createFile(size);\n    var params = {Bucket: self.sharedBucket, Key: key, Body: fs.createReadStream(fileName)};\n\n    self.progressEvents = [];\n    var progress = function(info) {\n      self.progressEvents.push(info);\n    };\n\n    self.s3.upload(params).on('httpUploadProgress', progress).send(function (err, data) {\n      self.error = err;\n      self.data = data;\n      callback();\n    });\n  }",
+    "File": "managed_upload.js"
+  },
+  "^I should get progress events$": {
+    "Code": "function (callback) {\n    this.assert.compare(this.progressEvents.length, '>', 0);\n    callback();\n  }",
+    "File": "managed_upload.js"
+  },
+  "^the ContentLength should equal (\\d+)$": {
+    "Code": "function (val, callback) {\n    this.assert.equal(this.data.ContentLength, val);\n    callback();\n  }",
+    "File": "managed_upload.js"
+  },
+  "^I use S3 managed upload to upload some (\\d+MB) buffer to the key \"([^\"]*)\"$": {
+    "Code": "function(size, key, callback) {\n    var self = this;\n    var params = {\n      Bucket: self.sharedBucket,\n      Key: key,\n      Body: self.createBuffer(size)\n    };\n    self.progressEvents = [];\n    var progress = function progress(info) {\n      self.progressEvents.push(info);\n    };\n\n    var managedUpload = self.managedUpload = new self.AWS.S3.ManagedUpload({\n      leavePartsOnError: true,\n      params: params,\n      service: self.s3\n    });\n\n    managedUpload.on('httpUploadProgress', progress).send(function(err, data) {\n      self.error = err;\n      self.data = data;\n    });\n    callback();\n  }",
+    "File": "managed_upload.js"
+  },
+  "^I use S3 managed upload to partially upload some (\\d+MB) buffer to the key \"([^\"]*)\"$": {
+    "Code": "function(size, key, callback) {\n    var self = this;\n    var params = {\n      Bucket: self.sharedBucket,\n      Key: key,\n      Body: self.createBuffer(size)\n    };\n    self.progressEvents = [];\n    var didAbort = false;\n    var progress = function progress(info) {\n      if (self.progressEvents.length && !didAbort) {\n        didAbort = true;\n        self.managedUpload.abort();\n      }\n      self.progressEvents.push(info);\n    };\n\n    var managedUpload = self.managedUpload = new self.AWS.S3.ManagedUpload({\n      leavePartsOnError: true,\n      queueSize: 1,\n      params: params,\n      service: self.s3\n    });\n\n    managedUpload.on('httpUploadProgress', progress).send(function(err, data) {\n      self.error = err;\n      self.data = data;\n      callback();\n    });\n  }",
+    "File": "managed_upload.js"
+  },
+  "^I abort the upload$": {
+    "Code": "function(callback) {\n    this.managedUpload.abort();\n    callback();\n  }",
+    "File": "managed_upload.js"
+  },
+  "^I receive a \"([^\"]*)\" error$": {
+    "Code": "function(errName, callback) {\n    this.assert.equal(this.error.name, errName);\n    callback();\n  }",
+    "File": "managed_upload.js"
+  },
+  "^I resume the upload$": {
+    "Code": "function(callback) {\n    var self = this;\n    self.managedUpload.send(function(err, data) {\n      self.error = err;\n      self.data = data;\n      callback();\n    });\n  }",
+    "File": "managed_upload.js"
+  },
+  "^uploadPart should have been called (\\d+) times$": {
+    "Code": "function(count, callback) {\n    this.assert.equal(this.progressEvents.length, count);\n    callback();\n  }",
+    "File": "managed_upload.js"
+  },
+  "^I put \"([^\"]*)\" to the(?: invalid)? key \"([^\"]*)\"$": {
+    "Code": "function(data, key, next) {\n    var params = {Bucket: this.sharedBucket, Key: key, Body: data};\n    this.request('s3', 'putObject', params, next, false);\n  }",
+    "File": "objects.js"
+  },
+  "^I get the object \"([^\"]*)\"$": {
+    "Code": "function(key, next) {\n    var params = {Bucket: this.sharedBucket, Key: key};\n    this.request('s3', 'getObject', params, next, false);\n  }",
+    "File": "objects.js"
+  },
+  "^I put (?:a |an )(empty|small|large|\\d+KB|\\d+MB) buffer to the key \"([^\"]*)\"$": {
+    "Code": "function(size, key, next) {\n    var body = this.createBuffer(size);\n    var params = {Bucket: this.sharedBucket, Key: key, Body: body};\n    this.request('s3', 'putObject', params, next);\n  }",
+    "File": "objects.js"
+  },
+  "^I put (?:a |an )(empty|small|large) file to the key \"([^\"]*)\"$": {
+    "Code": "function(size, key, next) {\n    var fs = require('fs');\n    var filename = this.createFile(size, key);\n    var params = {Bucket: this.sharedBucket, Key: key, Body: fs.createReadStream(filename)};\n    this.request('s3', 'putObject', params, next);\n  }",
+    "File": "objects.js"
+  },
+  "^I put \"([^\"]*)\" to the key \"([^\"]*)\" with ContentLength (\\d+)$": {
+    "Code": "function(contents, key, contentLength, next) {\n    var params = {Bucket: this.sharedBucket, Key: key, Body: contents, ContentLength: parseInt(contentLength)};\n    this.s3nochecksums = new this.AWS.S3({computeChecksums: false});\n    this.request('s3nochecksums', 'putObject', params, next);\n  }",
+    "File": "objects.js"
+  },
+  "^the object \"([^\"]*)\" should contain \"([^\"]*)\"$": {
+    "Code": "function(key, contents, next) {\n    this.assert.equal(this.data.Body.toString().replace('\\n', ''), contents);\n    next();\n  }",
+    "File": "objects.js"
+  },
+  "^the HTTP response should have a content length of (\\d+)$": {
+    "Code": "function(contentLength, next) {\n    this.assert.equal(this.response.httpResponse.body.length, parseInt(contentLength));\n    next();\n  }",
+    "File": "objects.js"
+  },
+  "^I copy the object \"([^\"]*)\" to \"([^\"]*)\"$": {
+    "Code": "function(key1, key2, next) {\n    var params = {\n      Bucket: this.sharedBucket, Key: key2, CopySource: '/' + this.sharedBucket + '/' + key1\n    };\n    this.request('s3', 'copyObject', params, next);\n  }",
+    "File": "objects.js"
+  },
+  "^I delete the object \"([^\"]*)\"$": {
+    "Code": "function(key, next) {\n    var params = {Bucket: this.sharedBucket, Key: key};\n    this.request('s3', 'deleteObject', params, next);\n  }",
+    "File": "objects.js"
+  },
+  "^the object \"([^\"]*)\" should (not )?exist$": {
+    "Code": "function(key, shouldNotExist, next) {\n    var params = { Bucket: this.sharedBucket, Key: key };\n    this.eventually(next, function (retry) {\n      retry.condition = function() {\n        if (shouldNotExist) {\n          return this.error && this.error.code === 'NotFound';\n        } else {\n          return !this.error;\n        }\n      };\n      this.request('s3', 'headObject', params, retry, false);\n    });\n  }",
+    "File": "objects.js"
+  },
+  "^I stream key \"([^\"]*)\"$": {
+    "Code": "function(key, callback) {\n    var params = {Bucket: this.sharedBucket, Key: key};\n    var world = this;\n    this.result = '';\n    var s = this.service.getObject(params).createReadStream();\n\n    setTimeout(function() {\n      s.on('end', function() { callback(); });\n      s.on('data', function(d) { world.result += d.toString(); });\n    }, 2000); // delay streaming to ensure it is buffered\n  }",
+    "File": "objects.js"
+  },
+  "^I stream2 key \"([^\"]*)\"$": {
+    "Code": "function(key, callback) {\n    if (!require('stream').Readable) return callback();\n    var params = {Bucket: this.sharedBucket, Key: key};\n    var world = this;\n    this.result = '';\n    var stream = this.service.getObject(params).createReadStream();\n    setTimeout(function() {\n      stream.on('end', function() { callback(); });\n      stream.on('readable', function() {\n        var v = stream.read(); if (v) world.result += v;\n      });\n    }, 2000); // delay streaming to ensure it is buffered\n  }",
+    "File": "objects.js"
+  },
+  "^the streamed data should contain \"([^\"]*)\"$": {
+    "Code": "function(data, callback) {\n    this.assert.equal(this.result.replace('\\n', ''), data);\n    callback();\n  }",
+    "File": "objects.js"
+  },
+  "^the streamed data content length should equal (\\d+)$": {
+    "Code": "function(length, callback) {\n    this.assert.equal(this.result.length, length);\n    callback();\n  }",
+    "File": "objects.js"
+  },
+  "^I get a pre\\-signed URL to GET the key \"([^\"]*)\"$": {
+    "Code": "function(key, callback) {\n    var world = this;\n    this.s3.getSignedUrl('getObject', {Bucket: this.sharedBucket, Key: key}, function(err, url) {\n      world.signedUrl = url;\n      callback();\n    });\n  }",
+    "File": "objects.js"
+  },
+  "^I access the URL via HTTP GET$": {
+    "Code": "function(callback) {\n    var world = this;\n    this.data = '';\n    require('https').get(this.signedUrl, function (res) {\n      res.on('data', function (chunk) {\n        world.data += chunk.toString();\n      }).on('end', callback);\n    }).on('error', callback.fail);\n  }",
+    "File": "objects.js"
+  },
+  "^I get a pre\\-signed URL to PUT the key \"([^\"]*)\"(?: with data \"([^\"]*)\")?$": {
+    "Code": "function(key, body, callback) {\n    var world = this;\n    var params = {Bucket: this.sharedBucket, Key: key};\n    if (body) params.Body = body;\n    this.s3.getSignedUrl('putObject', params, function(err, url) {\n      world.signedUrl = url;\n      callback();\n    });\n  }",
+    "File": "objects.js"
+  },
+  "^I access the URL via HTTP PUT with data \"([^\"]*)\"$": {
+    "Code": "function(body, callback) {\n    var world = this;\n    this.data = '';\n\n    var data = body;\n    var options = require('url').parse(this.signedUrl);\n    options.method = 'PUT';\n    options.headers = {'Content-Length': data.length};\n\n    require('https').request(options, function (res) {\n      res.on('data', function (chunk) {\n        world.data += chunk.toString();\n      }).on('end', callback);\n    }).on('error', callback.fail).end(data);\n  }",
+    "File": "objects.js"
+  },
+  "^I create a presigned form to POST the key \"([^\"]*)\" with the data \"([^\"]*)\"$": {
+    "Code": "function (key, data, callback) {\n      var world = this;\n      var boundary = this.postBoundary = '----WebKitFormBoundaryLL0mBKIuuLUKr7be';\n      var conditions = [\n          ['content-length-range', data.length - 1, data.length + 1]\n        ],\n        params = {\n          Bucket: this.sharedBucket,\n          Fields: {key: key},\n          Conditions: conditions\n        };\n      this.s3.createPresignedPost(params, function(err, postData) {\n        var body = Object.keys(postData.fields).reduce(function(body, fieldName) {\n          body += '--' + boundary + '\\r\\n';\n          body += 'Content-Disposition: form-data; name=\"' + fieldName + '\"\\r\\n\\r\\n';\n          return body + postData.fields[fieldName] + '\\r\\n';\n        }, '');\n        body += '--' + world.postBoundary + '\\r\\n';\n        body += 'Content-Disposition: form-data; name=\"file\"; filename=\"' + key + '\"\\r\\n';\n        body += 'Content-Type: text/plain\\r\\n\\r\\n';\n        body += data + '\\r\\n';\n        body += '--' + world.postBoundary + '\\r\\n';\n        body += 'Content-Disposition: form-data; name=\"submit\"\\r\\n';\n        body += 'Content-Type: text/plain\\r\\n\\r\\n';\n        body += 'submit\\r\\n';\n        body += '--' + world.postBoundary + '--\\r\\n';\n        world.postBody = body;\n        world.postAction = postData.url;\n        callback();\n      });\n    }",
+    "File": "objects.js"
+  },
+  "^I POST the form$": {
+    "Code": "function (callback) {\n    var world = this;\n    var options = require('url').parse(this.postAction);\n    options.method = 'POST';\n    options.headers = {\n      'Content-Type': 'multipart/form-data; boundary=' + this.postBoundary,\n      'Content-Length': this.postBody.length\n    };\n    require('https').request(options, function(res) {\n      res.on('data', function (chunk) {\n        world.data += chunk.toString();\n      }).on('end', callback);\n    })\n      .on('error', callback.fail)\n      .end(this.postBody);\n  }",
+    "File": "objects.js"
+  },
+  "^the HTTP response should equal \"([^\"]*)\"$": {
+    "Code": "function(data, callback) {\n    this.assert.equal(this.data, data);\n    callback();\n  }",
+    "File": "objects.js"
+  },
+  "^the HTTP response should contain \"([^\"]*|)\"$": {
+    "Code": "function(data, callback) {\n    this.assert.match(this.data, data);\n    callback();\n  }",
+    "File": "objects.js"
+  },
+  "^I setup the listObjects request for the bucket$": {
+    "Code": "function(callback) {\n    this.params = { Bucket: this.sharedBucket };\n    callback();\n  }",
+    "File": "objects.js"
+  },
+  "^I put (?:a |an )(empty|small|large|\\d+KB|\\d+MB) buffer to the key \"([^\"]*)\" with progress events$": {
+    "Code": "function(size, key, callback) {\n    var self = this;\n    var body = self.createBuffer(size);\n    this.progress = [];\n    var req = this.s3.putObject({Bucket: this.sharedBucket, Key: key, Body: body});\n    req.on('httpUploadProgress', function (p) { self.progress.push(p); });\n    req.send(callback);\n  }",
+    "File": "objects.js"
+  },
+  "^more than (\\d+) \"([^\"]*)\" event should fire$": {
+    "Code": "function(numEvents, eventName, callback) {\n    this.assert.compare(this.progress.length, '>', numEvents);\n    callback();\n  }",
+    "File": "objects.js"
+  },
+  "^the \"([^\"]*)\" value of the progress event should equal (\\d+)MB$": {
+    "Code": "function(prop, mb, callback) {\n    this.assert.equal(this.progress[0][prop], mb * 1024 * 1024);\n    callback();\n  }",
+    "File": "objects.js"
+  },
+  "^the \"([^\"]*)\" value of the first progress event should be greater than (\\d+) bytes$": {
+    "Code": "function(prop, bytes, callback) {\n    this.assert.compare(this.progress[0][prop], '>', bytes);\n    callback();\n  }",
+    "File": "objects.js"
+  },
+  "^I read the key \"([^\"]*)\" with progress events$": {
+    "Code": "function(key, callback) {\n    var self = this;\n    this.progress = [];\n    var req = this.s3.getObject({Bucket: this.sharedBucket, Key: key});\n    req.on('httpDownloadProgress', function (p) { self.progress.push(p); });\n    req.send(callback);\n  }",
+    "File": "objects.js"
+  },
+  "^I put \"([^\"]*)\" to the private key \"([^\"]*)\"$": {
+    "Code": "function(data, key, next) {\n    var params = {Bucket: this.sharedBucket, Key: key, Body: data, ACL: 'private'};\n    this.request('s3', 'putObject', params, next);\n  }",
+    "File": "objects.js"
+  },
+  "^I put \"([^\"]*)\" to the key \"([^\"]*)\" with an AES key$": {
+    "Code": "function(data, key, next) {\n    var params = {\n      Bucket: this.sharedBucket,\n      Key: key,\n      Body: data,\n      SSECustomerAlgorithm: 'AES256',\n      SSECustomerKey: 'aaaabbbbccccddddaaaabbbbccccdddd'\n    };\n    this.request('s3', 'putObject', params, next);\n  }",
+    "File": "objects.js"
+  },
+  "^I read the object \"([^\"]*)\" with the AES key$": {
+    "Code": "function(key, next) {\n    var params = {\n      Bucket: this.sharedBucket,\n      Key: key,\n      SSECustomerAlgorithm: 'AES256',\n      SSECustomerKey: 'aaaabbbbccccddddaaaabbbbccccdddd'\n    };\n    this.request('s3', 'getObject', params, next);\n  }",
+    "File": "objects.js"
+  },
+  "^I generate the MD5 checksum of \"([^\"]*)\"$": {
+    "Code": "function(data, next) {\n    this.sentContentMD5 = this.AWS.util.crypto.md5(data, 'base64');\n    next();\n  }",
+    "File": "objects.js"
+  },
+  "^the MD5 checksum of the response data should equal the generated checksum$": {
+    "Code": "function(next) {\n    var receivedContentMD5 = this.AWS.util.crypto.md5(this.data.Body.toString(), 'base64');\n    this.assert.equal(receivedContentMD5, this.sentContentMD5);\n    next();\n  }",
+    "File": "objects.js"
+  },
+  "^an empty bucket$": {
+    "Code": "function(next) {\n    var self = this;\n    var params = { Bucket: this.sharedBucket };\n    self.s3.listObjects(params, function(err, data) {\n      if (err) return next(err);\n      if (data.Contents.length > 0) {\n        params.Delete = { Objects: [] };\n        data.Contents.forEach(function (item) {\n          params.Delete.Objects.push({Key: item.Key});\n        });\n        self.request('s3', 'deleteObjects', params, next);\n      } else {\n        next();\n      }\n    });\n  }",
+    "File": "objects.js"
+  },
+  "^I use signatureVersion \"([^\"]*)\"$": {
+    "Code": "function(signatureVersion, next) {\n    this.s3Slashes = new this.AWS.S3({signatureVersion: signatureVersion});\n    next();\n  }",
+    "File": "objects.js"
+  },
+  "^I put \"([^\"]*)\" to the key \"([^\"]*)\" with bucket suffix \"([^\"]*)\"$": {
+    "Code": "function(data, key, suffix, next) {\n    var world = this;\n    var params = {\n      Bucket: this.sharedBucket + suffix,\n      Key: key,\n      Body: data\n    };\n    this.s3Slashes.putObject(params, function(err, data) {\n      world.assert.equal(!!err, false);\n      next();\n    });\n  }",
+    "File": "objects.js"
+  },
+  "^I teardown the local proxy server$": {
+    "Code": "function(callback) {\n    this.service = this.s3 = new this.AWS.S3();\n    this.proxyServer.close(callback);\n  }",
+    "File": "proxy.js"
+  },
+  "^I check quota$": {
+    "Code": "function(next) {\n    this.request(null, 'getSendQuota', {}, next);\n  }",
+    "File": "ses.js"
+  },
+  "^the result should include (\\S+) \"([^\"]*)\"$": {
+    "Code": "function(type, attr, next) {\n    if (this.data[attr] === undefined) next.fail(\"Missing \" + attr);\n    if (typeof this.data[attr] !== type) next.fail(\"Incorrect type \" + attr);\n    next();\n  }",
+    "File": "ses.js"
+  },
+  "^I ask to verify the email address \"([^\"]*)\"$": {
+    "Code": "function(email, next) {\n    this.request(null, 'verifyEmailAddress', {EmailAddress: email}, next, function() {\n      // do nothing\n    });\n  }",
+    "File": "ses.js"
+  },
+  "^I create an SNS topic with name \"([^\"]*)\"$": {
+    "Code": "function (name, callback) {\n      var world = this;\n      this.request(\n        null,\n        \"createTopic\",\n        { Name: name },\n        callback,\n        function (resp) {\n          world.topicArn = resp.data.TopicArn;\n        }\n      );\n    }",
+    "File": "sns.js"
+  },
+  "^I list the SNS topics$": {
+    "Code": "function (callback) {\n    this.request(null, \"listTopics\", {}, callback);\n  }",
+    "File": "sns.js"
+  },
+  "^the list should contain the topic ARN$": {
+    "Code": "function (callback) {\n    var arn = this.topicArn;\n    this.assert.contains(this.data.Topics, function (topic) {\n      return topic.TopicArn === arn;\n    });\n    callback();\n  }",
+    "File": "sns.js"
+  },
+  "^I delete the SNS topic$": {
+    "Code": "function (callback) {\n    this.request(null, \"deleteTopic\", { TopicArn: this.topicArn }, callback);\n  }",
+    "File": "sns.js"
+  },
+  "^I get SNS topic attributes with an invalid ARN$": {
+    "Code": "function (callback) {\n      this.request(\n        null,\n        \"getTopicAttributes\",\n        { TopicArn: \"INVALID\" },\n        callback,\n        false\n      );\n    }",
+    "File": "sns.js"
+  },
+  "^I send the message \"([^\"]*)\"$": {
+    "Code": "function(message, callback) {\n    this.request(null, 'sendMessage', {QueueUrl:this.queueUrl,MessageBody:message}, callback);\n  }",
+    "File": "messages.js"
+  },
+  "^the result should include a message ID$": {
+    "Code": "function(callback) {\n    this.assert.compare(this.data.MessageId.length, '>', 0);\n    callback();\n  }",
+    "File": "messages.js"
+  },
+  "^the result should have an MD5 digest of \"([^\"]*)\"$": {
+    "Code": "function(digest, callback) {\n    this.assert.equal(this.data.MD5OfMessageBody, digest);\n    callback();\n  }",
+    "File": "messages.js"
+  },
+  "^I should eventually be able to receive \"([^\"]*)\" from the queue$": {
+    "Code": "function(message, callback) {\n    this.eventually(callback, function (next) {\n      next.condition = function() {\n        return this.data.Messages[0].Body === message;\n      };\n      this.request(null, 'receiveMessage', {QueueUrl:this.queueUrl}, next);\n    });\n  }",
+    "File": "messages.js"
+  },
+  "^I send the message \"([^\"]*)\" with a binary attribute$": {
+    "Code": "function (message, callback) {\n    var params = {\n      QueueUrl: this.queueUrl,\n      MessageBody: message,\n      MessageAttributes: {\n        binary: { DataType: 'Binary', BinaryValue: Buffer.from([1,2,3]) }\n      }\n    };\n    this.request(null, 'sendMessage', params, callback);\n  }",
+    "File": "messages.js"
+  },
+  "^I should eventually be able to receive \"([^\"]*)\" from the queue with a binary attribute$": {
+    "Code": "function (message, callback) {\n    this.eventually(callback, function (next) {\n      next.condition = function() {\n        return this.data.Messages[0].MessageAttributes.binary.BinaryValue.toString() === '\\u0001\\u0002\\u0003';\n      };\n      var params = {QueueUrl:this.queueUrl,MessageAttributeNames:['binary']};\n      this.request(null, 'receiveMessage', params, next);\n    });\n  }",
+    "File": "messages.js"
+  },
+  "^I create a queue with the prefix name \"([^\"]*)\"$": {
+    "Code": "function(prefix, callback) {\n    var name = this.uniqueName(prefix);\n    this.request(null, 'createQueue', { QueueName: name }, callback, function() {\n      this.queueUrl = this.data.QueueUrl;\n      this.createdQueues.push(this.queueUrl);\n    });\n  }",
+    "File": "queues.js"
+  },
+  "^list queues should eventually return the queue urls$": {
+    "Code": "function(callback) {\n    this.eventually(callback, function (next) {\n      next.condition = function() {\n        var matchingCount = 0;\n        for (var i = 0; i < this.createdQueues.length; ++i) {\n          for (var j = 0; j < this.data.QueueUrls.length; ++j) {\n            if (this.createdQueues[i] == this.data.QueueUrls[j]) {\n              matchingCount++;\n            }\n          }\n        }\n        return matchingCount == this.createdQueues.length;\n      };\n      this.request(null, 'listQueues', {}, next);\n    }, { maxTime: 60 });\n  }",
+    "File": "queues.js"
+  },
+  "^I try to activate a Storage Gateway$": {
+    "Code": "function(callback) {\n    var params = {\n      ActivationKey: 'INVALIDKEY',\n      GatewayName: this.uniqueName('aws-sdk-js'),\n      GatewayTimezone: 'GMT-5:00',\n      GatewayRegion: 'us-east-1'\n    };\n    this.request(null, 'activateGateway', params, callback, false);\n  }",
+    "File": "storagegateway.js"
+  },
+  "^I get an STS session token with a duration of (\\d+) seconds$": {
+    "Code": "function(duration, callback) {\n    this.request(null, 'getSessionToken', {DurationSeconds: parseInt(duration)}, callback, false);\n  }",
+    "File": "sts.js"
+  },
+  "^the result should contain an access key ID and secret access key$": {
+    "Code": "function(callback) {\n    this.assert.compare(this.data.Credentials.AccessKeyId.length, '>', 0);\n    this.assert.compare(this.data.Credentials.SecretAccessKey.length, '>', 0);\n    callback();\n  }",
+    "File": "sts.js"
+  },
+  "^I try to assume role with web identity$": {
+    "Code": "function(callback) {\n    var params = {RoleArn: 'arn:aws:iam::123456789:role/WebIdentity', RoleSessionName: 'name', WebIdentityToken: 'token'};\n    this.request(null, 'assumeRoleWithWebIdentity', params, callback, false);\n  }",
+    "File": "sts.js"
+  },
+  "^I try to assume role with SAML$": {
+    "Code": "function(callback) {\n    var arn = 'arn:aws:iam::123456789:role/Role';\n    var token = 'TOKENVALUETOKENVALUETOKENVALUETOKENVALUE';\n    var params = {RoleArn: arn, PrincipalArn: arn, SAMLAssertion: token};\n    this.request(null, 'assumeRoleWithSAML', params, callback, false);\n  }",
+    "File": "sts.js"
+  },
+  "^I describe Support services$": {
+    "Code": "function(callback) {\n    this.request(null, 'describeServices', {}, callback);\n  }",
+    "File": "support.js"
+  },
+  "^the Supported services list should contain a service with code \"([^\"]*)\"$": {
+    "Code": "function(code, callback) {\n    this.assert.contains(this.data.services, function (svc) {\n      return svc.code == code;\n    });\n    callback();\n  }",
+    "File": "support.js"
+  },
+  "^the Supported services list should contain a service with name \"([^\"]*)\"$": {
+    "Code": "function(name, callback) {\n    this.assert.contains(this.data.services, function (svc) {\n      return svc.name == name;\n    });\n    callback();\n  }",
+    "File": "support.js"
+  },
+  "^I create a case with an invalid category$": {
+    "Code": "function(callback) {\n    var params = {\n      subject: \"Subject\",\n      serviceCode: \"INVALID-CODE\",\n      categoryCode: \"INVALID-CATEGORY\",\n      communicationBody: \"Communication\"\n    };\n\n    this.request(null, 'createCase', params, callback, false);\n  }",
+    "File": "support.js"
+  },
+  "^I create a shared bucket$": {
+    "Code": "function(callback) {\n    if (this.sharedBucket) return callback();\n\n    var bucket = this.sharedBucket = this.uniqueName('aws-sdk-js-shared-integration');\n    this.request('s3', 'createBucket', {Bucket: this.sharedBucket}, function(err) {\n      this.cacheBucketName(this.sharedBucket);\n      if (err) {\n        callback.fail(err);\n      } else {\n        if (err) {\n          return callback(err);\n        }\n        this.s3.waitFor('bucketExists', {Bucket: bucket}, callback);\n      }\n    });\n  }",
+    "File": "hooks.js"
+  },
+  "^I create a bucket$": {
+    "Code": "function(callback) {\n    var bucket = this.bucket = this.uniqueName('aws-sdk-js-integration');\n    this.request('s3', 'createBucket', {Bucket: this.bucket}, function(err, data) {\n      if (err) {\n        return callback(err);\n      }\n      this.s3.waitFor('bucketExists', {Bucket: bucket}, callback);\n    });\n  }",
+    "File": "hooks.js"
+  },
+  "^I delete the bucket$": {
+    "Code": "function(callback) {\n    this.request('s3', 'deleteBucket', {Bucket: this.bucket}, callback);\n  }",
+    "File": "hooks.js"
+  },
+  "^the bucket should exist$": {
+    "Code": "function(next) {\n    this.s3.waitFor('bucketExists', {Bucket: this.bucket}, next);\n  }",
+    "File": "hooks.js"
+  },
+  "^the bucket should not exist$": {
+    "Code": "function(callback) {\n    this.s3.waitFor('bucketNotExists', {Bucket: this.bucket}, callback);\n  }",
+    "File": "hooks.js"
+  },
+  "^I run the \"([^\"]*)\" operation$": {
+    "Code": "function (operation, callback) {\n    this.request(null, operation, {}, callback, false);\n  }",
+    "File": "hooks.js"
+  },
+  "^I run the \"([^\"]*)\" operation with params:$": {
+    "Code": "function (operation, params, callback) {\n    this.request(null, operation, JSON.parse(params), callback, false);\n  }",
+    "File": "hooks.js"
+  },
+  "^the request should be successful$": {
+    "Code": "function (callback) {\n    this.assert.ok(!this.error, 'Response was not successful');\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^the value at \"([^\"]*)\" should be a list$": {
+    "Code": "function (path, callback) {\n    var value = jmespath.search(this.data, path);\n    this.assert.ok(Array.isArray(value), 'expected ' + util.inspect(value) + ' to be a list');\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^the value at \"([^\"]*)\" should be a number$": {
+    "Code": "function (path, callback) {\n    var value = jmespath.search(this.data, path);\n    this.assert.ok(typeof value === 'number', 'expected ' + util.inspect(value) + ' to be a number');\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^the value at \"([^\"]*)\" should be a string$": {
+    "Code": "function (path, callback) {\n    var value = jmespath.search(this.data, path);\n    this.assert.ok(typeof value === 'string', 'expected ' + util.inspect(value) + ' to be a string');\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^the error code should be \"([^\"]*)\"$": {
+    "Code": "function(code, callback) {\n    this.assert.ok(this.error, 'Response does not contain an error');\n    this.assert.equal(this.error.code, code);\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^the error message should (be|equal|match|contain):$": {
+    "Code": "function(matcher, message, callback) {\n    if (matcher === 'be') matcher = 'equal';\n    if (matcher === 'contain') matcher = 'match';\n    this.assert.ok(this.error, 'Response does not contain an error');\n    this.assert[matcher](this.error.message, message);\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^the status code should be (\\d+)$": {
+    "Code": "function(status, callback) {\n    this.assert.equal(this.response.httpResponse.statusCode, parseInt(status));\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^I should get the error:$": {
+    "Code": "function(table, callback) {\n    var err = table.hashes()[0];\n    this.assert.equal(this.error.code, err.code);\n    this.assert.equal(this.error.message, err.message);\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^I have a \"([^\"]*)\" service in the \"([^\"]*)\" region$": {
+    "Code": "function(svc, region, callback) {\n    this.service = new this.AWS[svc]({ region: region });\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^I paginate the \"([^\"]*)\" operation(?: with limit (\\d+))?(?: and max pages (\\d+))?$": {
+    "Code": "function(operation, limit, maxPages, callback) {\n    limit = parseInt(limit);\n    if (maxPages) maxPages = parseInt(maxPages);\n\n    var world = this;\n    this.numPages = 0;\n    this.numMarkers = 0;\n    this.operation = operation;\n    this.paginationConfig = this.service.paginationConfig(operation);\n    this.params = this.params || {};\n\n    var marker = this.paginationConfig.outputToken;\n    if (this.paginationConfig.limitKey) {\n      this.params[this.paginationConfig.limitKey] = limit;\n    }\n    this.service[operation](this.params).eachPage(function (err, data) {\n      if (err) callback.fail(err);\n      else if (data === null) callback();\n      else if (maxPages && world.numPages === maxPages) {\n        callback();\n        return false;\n      }\n      else {\n        if (data[marker]) world.numMarkers++;\n        world.numPages++;\n        world.data = data;\n      }\n    });\n  }",
+    "File": "hooks.js"
+  },
+  "^I should get more than one page$": {
+    "Code": "function(callback) {\n    this.assert.compare(this.numPages, '>', 1);\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^I should get at least one page$": {
+    "Code": "function(callback) {\n    this.assert.compare(this.numPages, '>=', 1);\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^I should get (\\d+) pages$": {
+    "Code": "function(numPages, callback) {\n    this.assert.equal(this.numPages, parseInt(numPages));\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^I should get numPages - 1 markers$": {
+    "Code": "function(callback) {\n    this.assert.equal(this.numMarkers, this.numPages - 1);\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^the last page should not contain a marker$": {
+    "Code": "function(callback) {\n    var marker = this.paginationConfig.outputToken;\n    this.assert.equal(this.data[marker], null);\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^the result at (\\w+) should contain a property (\\w+) with an? (\\w+)$": {
+    "Code": "function(wrapper, property, type, callback) {\n    if (type === 'Array' || type === 'Date') {\n      this.assert.equal(this.AWS.util.isType(this.data[wrapper][property], type), true);\n    } else {\n      this.assert.equal(typeof this.data[wrapper][property], type);\n    }\n    callback();\n  }",
+    "File": "hooks.js"
+  },
+  "^the result should contain a property (\\w+) with an? (\\w+)$": {
+    "Code": "function(property, type, callback) {\n    if (type === 'Array' || type === 'Date') {\n      this.assert.equal(this.AWS.util.isType(this.data[property], type), true);\n    } else {\n      this.assert.equal(typeof this.data[property], type);\n    }\n    callback();\n  }",
+    "File": "hooks.js"
+  }
 }

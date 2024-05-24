@@ -140,8 +140,8 @@ def feature_parser(feature_files, parsed_definitions, combined_directory):
                 matched_scenario[step.name] = definition
                 
                 if step.name in matched_scenario:
-                    step_definition = None if matched_scenario[step.name] is None else matched_scenario[step.name]['Glue Code']
-                    step_definition_file = None if matched_scenario[step.name] is None else matched_scenario[step.name]['Glue Code File']
+                    step_definition = None if matched_scenario[step.name] is None else matched_scenario[step.name]['Code']
+                    step_definition_file = None if matched_scenario[step.name] is None else matched_scenario[step.name]['File']
                     steps.append({
                         "step_num": step_num,
                         "step_name": step.name,
@@ -167,6 +167,7 @@ def feature_parser(feature_files, parsed_definitions, combined_directory):
         print("----------------------------------------------------")
         print("\n")
     
+    print("Total Test Cases: ", total_test_cases)
     json_file_path = os.path.join(combined_directory, f'{os.path.basename(combined_directory)}_parsed_steps.json')
     with open(json_file_path, 'w') as json_file:
         json.dump(combined_json, json_file, indent=4)
@@ -185,6 +186,14 @@ def run_parser(step_definitions_directory, file_ext, regex_str, feature_director
     feature_parser(feature_files, parsed_steps_file, combined_directory)
 
 if __name__ == "__main__":
+    feature_directory = './repos/aws-sdk-js/features'
+    feature_files = find_feature_files(feature_directory)
+    combined_directory = "./data/aws-sdk-js"
+
+    with open('./data/aws-sdk-js/parsed_stepdefinitions.json') as f:
+        parsed_steps_file = json.load(f)
+
+    feature_parser(feature_files, parsed_steps_file, combined_directory)
     """
     # parsing aws-sdk-js files
     step_definitions_directory = './repos/aws-sdk-js/features'
@@ -197,7 +206,7 @@ if __name__ == "__main__":
 
     run_parser(step_definitions_directory, file_ext, regex_str, feature_directory, combined_directory)
     """
-
+    """
     step_definitions_directory = './repos/jekyll/features'
     file_ext = ".rb"
 
@@ -206,4 +215,10 @@ if __name__ == "__main__":
 
     combined_directory = "./test/jekyll"
 
-    run_parser(step_definitions_directory, file_ext, regex_str, feature_directory, combined_directory)
+    # retrieve step definitions
+    step_definitions = find_step_definition_files(step_definitions_directory, file_ext)
+
+    # parse the step definitions and create the parsed_stepdefinitions file
+    parsed_steps_file = step_definition_parser(step_definitions, combined_directory, regex_str)
+    """
+    

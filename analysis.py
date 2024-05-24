@@ -24,6 +24,13 @@ def stringify_test_cases(test_data, data_key):
     
     return test_strings
 
+def stringify_test_titles(test_data):
+    """Retrieve the scenario titles and put them in an array"""
+    test_titles = []
+    for test in test_data:
+        test_titles.append(test["test_case"])
+    return test_titles
+
 def calculate_pairwise_ncd(test_strings):
     ncd_matrix = np.zeros((len(test_strings), len(test_strings)))
     for i in range(len(test_strings)):
@@ -71,23 +78,30 @@ def calculate_manhattan_distance(test_case_strings):
             manhattan_distances[j, i] = manhattan_distances[i, j]  # Since the distance is symmetric
     return manhattan_distances
 
-def plot_heatmaps(step_matrix1, glue_matrix2, type):
+def plot_heatmaps(step_matrix, glue_matrix, title_matrix, type):
     """Plot similarity matrix using heatmaps"""
-    fig, axs = plt.subplots(1, 2, figsize=(20, 8))
+    fig, axs = plt.subplots(1, 3, figsize=(20, 8))
 
     # Plot heatmap for step_name
-    im1 = axs[0].imshow(step_matrix1, cmap='hot', interpolation='nearest')
+    im1 = axs[0].imshow(step_matrix, cmap='hot', interpolation='nearest')
     axs[0].set_title(f'{type} Heatmap for Step Name')
     axs[0].set_xlabel('Test Case Index')
     axs[0].set_ylabel('Test Case Index')
     fig.colorbar(im1, ax=axs[0])
 
     # Plot heatmap for glue_code
-    im2 = axs[1].imshow(glue_matrix2, cmap='hot', interpolation='nearest')
+    im2 = axs[1].imshow(glue_matrix, cmap='hot', interpolation='nearest')
     axs[1].set_title(f'{type} Heatmap for Glue Code')
     axs[1].set_xlabel('Test Case Index')
     axs[1].set_ylabel('Test Case Index')
     fig.colorbar(im2, ax=axs[1])
+
+    # Plot heatmap for titles
+    im2 = axs[2].imshow(title_matrix, cmap='hot', interpolation='nearest')
+    axs[2].set_title(f'{type} Heatmap for Titles')
+    axs[2].set_xlabel('Test Case Index')
+    axs[2].set_ylabel('Test Case Index')
+    fig.colorbar(im2, ax=axs[2])
 
     plt.show()
 
@@ -97,19 +111,20 @@ if __name__ == "__main__":
         test_data = json.load(f)
 
     test_step_strings, test_glue_strings = stringify_test_cases(test_data, 'step_name'), stringify_test_cases(test_data, 'glue_code')
+    test_titles = stringify_test_titles(test_data)
     
     # calculate and plot NCD
-    step_ncd_matrix, glue_ncd_matrix = calculate_pairwise_ncd(test_step_strings), calculate_pairwise_ncd(test_glue_strings)
-    plot_heatmaps(step_ncd_matrix, glue_ncd_matrix, "NCD")
+    step_ncd_matrix, glue_ncd_matrix, title_ncd_matrix = calculate_pairwise_ncd(test_step_strings), calculate_pairwise_ncd(test_glue_strings), calculate_pairwise_ncd(test_titles)
+    plot_heatmaps(step_ncd_matrix, glue_ncd_matrix, title_ncd_matrix, "NCD")
 
     # calculate and plot cosine
-    step_cosine_matrix, glue_cosine_matrix = calculate_cosine_similarity(test_step_strings), calculate_cosine_similarity(test_glue_strings)
-    plot_heatmaps(step_cosine_matrix, glue_cosine_matrix, "Cosine")
+    step_cosine_matrix, glue_cosine_matrix, title_cosine_matrix = calculate_cosine_similarity(test_step_strings), calculate_cosine_similarity(test_glue_strings), calculate_cosine_similarity(test_titles)
+    plot_heatmaps(step_cosine_matrix, glue_cosine_matrix, title_cosine_matrix, "Cosine")
 
     # calculate euclidean distances
-    step_euclidean_matrix, glue_euclidean_matrix = calculate_euclidean_distance(test_step_strings), calculate_euclidean_distance(test_glue_strings)
-    plot_heatmaps(step_euclidean_matrix, glue_euclidean_matrix, "Euclidean")
+    step_euclidean_matrix, glue_euclidean_matrix, title_euclidean_matrix = calculate_euclidean_distance(test_step_strings), calculate_euclidean_distance(test_glue_strings), calculate_euclidean_distance(test_titles)
+    plot_heatmaps(step_euclidean_matrix, glue_euclidean_matrix,title_euclidean_matrix, "Euclidean")
 
     # calculate manhattan distances
-    step_manhattan_matrix, glue_manhattan_matrix = calculate_manhattan_distance(test_step_strings), calculate_manhattan_distance(test_glue_strings)
-    plot_heatmaps(step_manhattan_matrix, glue_manhattan_matrix, "Manhattan")
+    step_manhattan_matrix, glue_manhattan_matrix, title_manhattan_matrix = calculate_manhattan_distance(test_step_strings), calculate_manhattan_distance(test_glue_strings), calculate_manhattan_distance(test_titles)
+    plot_heatmaps(step_manhattan_matrix, glue_manhattan_matrix,title_manhattan_matrix, "Manhattan")
