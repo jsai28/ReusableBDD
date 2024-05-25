@@ -1,162 +1,162 @@
 {
-  "^I run git add .$": {
-    "Type": "When",
-    "Glue Code": "  run_in_shell(\"git\", \"add\", \".\", \"--verbose\")"
-  },
-  "^I decide to build the theme gem$": {
-    "Type": "When",
-    "Glue Code": "  Dir.chdir(Paths.theme_gem_dir)\n  [\n    \"_includes/blank.html\",\n    \"_sass/blank.scss\",\n    \"assets/blank.scss\",\n    \"_config.yml\"\n  ].each do |filename|\n    File.new(filename, \"w\")\n  end"
-  },
-  "^I should get an updated git index$": {
-    "Type": "Then",
-    "Glue Code": "  index = %w(\n    .gitignore\n    Gemfile\n    LICENSE.txt\n    README.md\n    _config.yml\n    _includes/blank.html\n    _layouts/default.html\n    _layouts/page.html\n    _layouts/post.html\n    _sass/blank.scss\n    assets/blank.scss\n    my-cool-theme.gemspec\n  )\n  index.each do |file|\n    expect(jekyll_run_output).to match file\n  end"
-  },
-  "^I should get a zero exit(?:-| )status$": {
-    "Type": "Then",
-    "Glue Code": "  step %(I should see \"EXIT STATUS: 0\" in the build output)"
-  },
-  "^I should get a non-zero exit(?:-| )status$": {
-    "Type": "Then",
-    "Glue Code": "  step %(I should not see \"EXIT STATUS: 0\" in the build output)"
-  },
   "^I have a blank site in \"(.*)\"$": {
-    "Type": "Given",
-    "Glue Code": "unless File.exist?(path)\n    then FileUtils.mkdir_p(path)"
+    "Code": "do\nunless File.exist?(path)\n  FileUtils.mkdir_p(path)\nend\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I do not have a \"(.*)\" directory$": {
-    "Type": "Given",
-    "Glue Code": "Paths.test_dir.join(path).directory?"
+    "Code": "do\nPaths.test_dir.join(path).directory?\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have an? \"(.*)\" page(?: with (.*) \"(.*)\")? that contains \"(.*)\"$": {
-    "Type": "Given",
-    "Glue Code": "File.write(file, <<~DATA)\n    ---\n    #{key || \"layout\"}: #{value || \"none\"}\n    ---\n\n    #{text}\n  DATA"
+    "Code": "do\nFile.write(file, <<-HEREDOC)\n---\n#{key || \"layout\"}: #{value || \"none\"}\n---\n\n#{text}\nHEREDOC\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have an? \"(.*)\" file that contains \"(.*)\"$": {
-    "Type": "Given",
-    "Glue Code": "File.write(file, text)"
+    "Code": "do\nFile.write(file, text)\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have an? (.*) (layout|theme) that contains \"(.*)\"$": {
-    "Type": "Given",
-    "Glue Code": "folder = type == \"layout\" ? \"_layouts\" : \"_theme\"\n\n  destination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\n  FileUtils.mkdir_p(destination_file.parent) unless destination_file.parent.directory?\n  File.write(destination_file, text)"
+    "Code": "do\nfolder = if type == \"layout\"\n  \"_layouts\"\nelse\n  \"_theme\"\nend\ndestination_file = Pathname.new(File.join(folder, \"#{name}.html\"))\nunless destination_file.parent.directory?\n  FileUtils.mkdir_p(destination_file.parent)\nend\nFile.write(destination_file, text)\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have an? \"(.*)\" file with content:$": {
-    "Type": "Given",
-    "Glue Code": "File.write(file, text)"
+    "Code": "do\nFile.write(file, text)\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have an? \"(.*)\" page with content:$": {
-    "Type": "Given",
-    "Glue Code": "File.write(file, <<~DATA)\n    ---\n    ---\n\n    #{text}\n  DATA"
+    "Code": "do\nFile.write(file, <<-HEREDOC)\n---\n---\n\n#{text}\nHEREDOC\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have an? (.*) directory$": {
-    "Type": "Given",
-    "Glue Code": "unless File.directory?(dir)\n    then FileUtils.mkdir_p(dir)"
+    "Code": "do\nunless File.directory?(dir)\n  FileUtils.mkdir_p(dir)\nend\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have the following (draft|page|post)s?(?: (in|under) \"([^\"]+)\")?:$": {
-    "Type": "Given",
-    "Glue Code": "table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    ext = input_hash[\"type\"] || \"markdown\"\n    filename = \"#{title}.#{ext}\" if %w(draft page).include?(status)\n    before, after = location(folder, direction)\n    dest_folder = \"_drafts\" if status == \"draft\"\n    dest_folder = \"_posts\"  if status == \"post\"\n    dest_folder = \"\" if status == \"page\"\n\n    if status == \"post\"\n      parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n      input_hash[\"date\"] = parsed_date\n      filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\""
+    "Code": "do\ntable.hashes.each { |input_hash,|\n  title = slug(input_hash.[](\"title\"))\n  ext = input_hash.[](\"type\") || \"markdown\"\n  if [\"draft\", \"page\"].include?(status)\n    filename = \"#{title}.#{ext}\"\n  end\n  (before, after) = location(folder, direction)\n  if status == \"draft\"\n    dest_folder = \"_drafts\"\n  end\n  if status == \"post\"\n    dest_folder = \"_posts\"\n  end\n  if status == \"page\"\n    dest_folder = \"\"\n  end\n  if status == \"post\"\n    parsed_date = Time.xmlschema(input_hash.[](\"date\")) rescue Time.parse(input_hash.[](\"date\"))\n    input_hash.[]=(\"date\", parsed_date)\n    filename = \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.#{ext}\"\n  end\n  path = File.join(before, dest_folder, after, filename)\n  File.write(path, file_content_from_hash(input_hash))\n}\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have the following (draft|post)s? within the \"(.*)\" directory:$": {
-    "Type": "Given",
-    "Glue Code": "table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    parsed_date = Time.xmlschema(input_hash[\"date\"]) rescue Time.parse(input_hash[\"date\"])\n\n    filename = type == \"draft\" ? \"#{title}.markdown\" : \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.markdown\"\n\n    path = File.join(folder, \"_#{type}s\", filename)\n    File.write(path, file_content_from_hash(input_hash))"
+    "Code": "do\ntable.hashes.each { |input_hash,|\n  title = slug(input_hash.[](\"title\"))\n  parsed_date = Time.xmlschema(input_hash.[](\"date\")) rescue Time.parse(input_hash.[](\"date\"))\n  filename = if type == \"draft\"\n    \"#{title}.markdown\"\n  else\n    \"#{parsed_date.strftime(\"%Y-%m-%d\")}-#{title}.markdown\"\n  end\n  path = File.join(folder, \"_#{type}s\", filename)\n  File.write(path, file_content_from_hash(input_hash))\n}\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have the following documents? under the (.*) collection:$": {
-    "Type": "Given",
-    "Glue Code": "table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    filename = \"#{title}.md\"\n    dest_folder = \"_#{folder}\"\n\n    path = File.join(dest_folder, filename)\n    File.write(path, file_content_from_hash(input_hash))"
+    "Code": "do\ntable.hashes.each { |input_hash,|\n  title = slug(input_hash.[](\"title\"))\n  filename = \"#{title}.md\"\n  dest_folder = \"_#{folder}\"\n  path = File.join(dest_folder, filename)\n  File.write(path, file_content_from_hash(input_hash))\n}\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have the following documents? under the \"(.*)\" collection within the \"(.*)\" directory:$": {
-    "Type": "Given",
-    "Glue Code": "table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))"
+    "Code": "do\ntable.hashes.each { |input_hash,|\n  title = slug(input_hash.[](\"title\"))\n  path = File.join(dir, \"_#{label}\", \"#{title}.md\")\n  File.write(path, file_content_from_hash(input_hash))\n}\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have the following documents? nested inside \"(.*)\" directory under the \"(.*)\" collection within the \"(.*)\" directory:$": {
-    "Type": "Given",
-    "Glue Code": "table.hashes.each do |input_hash|\n    title = slug(input_hash[\"title\"])\n    path = File.join(dir, \"_#{label}\", subdir, \"#{title}.md\")\n    File.write(path, file_content_from_hash(input_hash))"
+    "Code": "do\ntable.hashes.each { |input_hash,|\n  title = slug(input_hash.[](\"title\"))\n  path = File.join(dir, \"_#{label}\", subdir, \"#{title}.md\")\n  File.write(path, file_content_from_hash(input_hash))\n}\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have a configuration file with \"(.*)\" set to \"(.*)\"$": {
-    "Type": "Given",
-    "Glue Code": "config = \\\n    if source_dir.join(\"_config.yml\").exist?\n      SafeYAML.load_file(source_dir.join(\"_config.yml\"))\n    else\n      {}"
+    "Code": "do\nconfig = if source_dir.join(\"_config.yml\").exist?\n  SafeYAML.load_file(source_dir.join(\"_config.yml\"))\nelse\n  {}\nend\nconfig.[]=(key, SafeYAML.load(value))\nif key == \"timezone\"\n  Jekyll.set_timezone(value)\nend\nFile.write(\"_config.yml\", YAML.dump(config))\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have a configuration file with:$": {
-    "Type": "Given",
-    "Glue Code": "table.hashes.each do |row|\n    step %(I have a configuration file with \"#{row[\"key\"]}\" set to \"#{row[\"value\"]}\")"
+    "Code": "do\ntable.hashes.each { |row,|\n  step(\"I have a configuration file with \\\"#{row.[](\"key\")}\\\" set to \\\"#{row.[](\"value\")}\\\"\")\n}\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have a configuration file with \"([^\\\"]*)\" set to:$": {
-    "Type": "Given",
-    "Glue Code": "File.open(\"_config.yml\", \"w\") do |f|\n    f.write(\"#{key}:\\n\")\n    table.hashes.each do |row|\n      f.write(\"- #{row[\"value\"]}\\n\")"
+    "Code": "do\nFile.open(\"_config.yml\", \"w\") { |f,|\n  f.write(\"#{key}:\\n\")\n  table.hashes.each { |row,|\n    f.write(<<-HEREDOC)\n- #{row.[](\"value\")}\n    HEREDOC\n  }\n}\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I have fixture collections(?: in \"(.*)\" directory)?$": {
-    "Type": "Given",
-    "Glue Code": "collections_dir = File.join(source_dir, directory.to_s)\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_methods\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_thanksgiving\"), collections_dir\n  FileUtils.cp_r Paths.source_dir.join(\"test\", \"source\", \"_tutorials\"), collections_dir"
+    "Code": "do\ncollections_dir = File.join(source_dir, directory.to_s)\nFileUtils.cp_r(Paths.source_dir.join(\"test\", \"source\", \"_methods\"), collections_dir)\nFileUtils.cp_r(Paths.source_dir.join(\"test\", \"source\", \"_thanksgiving\"), collections_dir)\nFileUtils.cp_r(Paths.source_dir.join(\"test\", \"source\", \"_tutorials\"), collections_dir)\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I wait (\\d+) second(s?)$": {
-    "Type": "Given",
-    "Glue Code": "sleep(time.to_f)"
+    "Code": "do\nsleep(time.to_f)\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I run jekyll(.*)$": {
-    "Type": "When",
-    "Glue Code": "run_jekyll(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\""
+    "Code": "do\nrun_jekyll(args)\nif args.include?(\"--verbose\") || ENV.[](\"DEBUG\")\n  warn(<<-HEREDOC)\n\n#{jekyll_run_output}\n  HEREDOC\nend\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I run bundle(.*)$": {
-    "Type": "When",
-    "Glue Code": "run_bundle(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\""
+    "Code": "do\nrun_bundle(args)\nif args.include?(\"--verbose\") || ENV.[](\"DEBUG\")\n  warn(<<-HEREDOC)\n\n#{jekyll_run_output}\n  HEREDOC\nend\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I run gem(.*)$": {
-    "Type": "When",
-    "Glue Code": "run_rubygem(args)\n  if args.include?(\"--verbose\") || ENV[\"DEBUG\"]\n    warn \"\\n#{jekyll_run_output}\\n\""
+    "Code": "do\nrun_rubygem(args)\nif args.include?(\"--verbose\") || ENV.[](\"DEBUG\")\n  warn(<<-HEREDOC)\n\n#{jekyll_run_output}\n  HEREDOC\nend\nend",
+    "File": "features/step_definitions.rb"
   },
-  "^I delete the file \"(.*)\"$": {
-    "Type": "When",
-    "Glue Code": "File.delete(file)"
+  "^I run git add .$": {
+    "Code": "do\nrun_in_shell(\"git\", \"add\", \".\", \"--verbose\")\nend",
+    "File": "features/step_definitions.rb"
   },
-  "^the (.*) directory should +(not )?exist$": {
-    "Type": "Then",
-    "Glue Code": "if negative.nil?\n    expect(Pathname.new(dir)).to exist\n  else\n    expect(Pathname.new(dir)).to_not exist"
-  },
-  "^I should (not )?see \"(.*)\" in \"(.*)\"$": {
-    "Type": "Then",
-    "Glue Code": "step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp"
-  },
-  "^I should (not )?see \"(.*)\" in \"(.*)\" if on Windows$": {
-    "Type": "Then",
-    "Glue Code": "step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    if Jekyll::Utils::Platforms.really_windows?\n      expect(file_contents(file)).to match regexp\n    else\n      expect(file_contents(file)).not_to match regexp"
-  },
-  "^I should (not )?see \"(.*)\" in \"(.*)\" unless Windows$": {
-    "Type": "Then",
-    "Glue Code": "step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text, Regexp::MULTILINE)\n  if negative.nil? || negative.empty?\n    if Jekyll::Utils::Platforms.really_windows?\n      expect(file_contents(file)).not_to match regexp\n    else\n      expect(file_contents(file)).to match regexp"
-  },
-  "^I should see date \"(.*)\" in \"(.*)\" unless Windows$": {
-    "Type": "Then",
-    "Glue Code": "step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text)\n  if Jekyll::Utils::Platforms.really_windows? && !dst_active?\n    expect(file_contents(file)).not_to match regexp\n  else\n    expect(file_contents(file)).to match regexp"
-  },
-  "^I should see date \"(.*)\" in \"(.*)\" if on Windows$": {
-    "Type": "Then",
-    "Glue Code": "step %(the \"#{file}\" file should exist)\n  regexp = Regexp.new(text)\n  if Jekyll::Utils::Platforms.really_windows? && !dst_active?\n    expect(file_contents(file)).to match regexp\n  else\n    expect(file_contents(file)).not_to match regexp"
-  },
-  "^I should see exactly \"(.*)\" in \"(.*)\"$": {
-    "Type": "Then",
-    "Glue Code": "step %(the \"#{file}\" file should exist)\n  expect(file_contents(file).strip).to eq text"
-  },
-  "^I should see escaped \"(.*)\" in \"(.*)\"$": {
-    "Type": "Then",
-    "Glue Code": "step %(I should see \"#{Regexp.escape(text)}\" in \"#{file}\")"
-  },
-  "^the \"(.*)\" file should +(not )?exist$": {
-    "Type": "Then",
-    "Glue Code": "if negative.nil?\n    expect(Pathname.new(file)).to exist\n  else\n    expect(Pathname.new(file)).to_not exist"
-  },
-  "^I should see today's time in \"(.*)\"$": {
-    "Type": "Then",
-    "Glue Code": "step %(I should see \"#{seconds_agnostic_time(Time.now)}\" in \"#{file}\")"
-  },
-  "^I should see today's date in \"(.*)\"$": {
-    "Type": "Then",
-    "Glue Code": "step %(I should see \"#{Date.today}\" in \"#{file}\")"
-  },
-  "^I should (not )?see \"(.*)\" in the build output$": {
-    "Type": "Then",
-    "Glue Code": "if negative.nil? || negative.empty?\n    expect(jekyll_run_output).to match Regexp.new(text)\n  else\n    expect(jekyll_run_output).not_to match Regexp.new(text)"
+  "^I decide to build the theme gem$": {
+    "Code": "do\nDir.chdir(Paths.theme_gem_dir)\n[\"_includes/blank.html\", \"_sass/blank.scss\", \"assets/blank.scss\", \"_config.yml\"].each { |filename,|\n  File.new(filename, \"w\")\n}\nend",
+    "File": "features/step_definitions.rb"
   },
   "^I change \"(.*)\" to contain \"(.*)\"$": {
-    "Type": "When",
-    "Glue Code": "File.open(file, \"a\") do |f| f.write(text) end"
+    "Code": "do\nFile.open(file, \"a\") { |f,|\n  f.write(text)\n}\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I delete the file \"(.*)\"$": {
+    "Code": "do\nFile.delete(file)\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^the (.*) directory should +(not )?exist$": {
+    "Code": "do\nif negative.nil?\n  expect(Pathname.new(dir)).to(exist)\nelse\n  expect(Pathname.new(dir)).to_not(exist)\nend\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should (not )?see \"(.*)\" in \"(.*)\"$": {
+    "Code": "do\nstep(\"the \\\"#{file}\\\" file should exist\")\nregexp = Regexp.new(text, Regexp::MULTILINE)\nif negative.nil? || negative.empty?\n  expect(file_contents(file)).to(match(regexp))\nelse\n  expect(file_contents(file)).not_to(match(regexp))\nend\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should (not )?see \"(.*)\" in \"(.*)\" if on Windows$": {
+    "Code": "do\nstep(\"the \\\"#{file}\\\" file should exist\")\nregexp = Regexp.new(text, Regexp::MULTILINE)\nif negative.nil? || negative.empty?\n  if Jekyll::Utils::Platforms.really_windows?\n    expect(file_contents(file)).to(match(regexp))\n  else\n    expect(file_contents(file)).not_to(match(regexp))\n  end\nend\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should (not )?see \"(.*)\" in \"(.*)\" unless Windows$": {
+    "Code": "do\nstep(\"the \\\"#{file}\\\" file should exist\")\nregexp = Regexp.new(text, Regexp::MULTILINE)\nif negative.nil? || negative.empty?\n  if Jekyll::Utils::Platforms.really_windows?\n    expect(file_contents(file)).not_to(match(regexp))\n  else\n    expect(file_contents(file)).to(match(regexp))\n  end\nend\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should see date \"(.*)\" in \"(.*)\" unless Windows$": {
+    "Code": "do\nstep(\"the \\\"#{file}\\\" file should exist\")\nregexp = Regexp.new(text)\nif Jekyll::Utils::Platforms.really_windows? && !dst_active?\n  expect(file_contents(file)).not_to(match(regexp))\nelse\n  expect(file_contents(file)).to(match(regexp))\nend\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should see date \"(.*)\" in \"(.*)\" if on Windows$": {
+    "Code": "do\nstep(\"the \\\"#{file}\\\" file should exist\")\nregexp = Regexp.new(text)\nif Jekyll::Utils::Platforms.really_windows? && !dst_active?\n  expect(file_contents(file)).to(match(regexp))\nelse\n  expect(file_contents(file)).not_to(match(regexp))\nend\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should see exactly \"(.*)\" in \"(.*)\"$": {
+    "Code": "do\nstep(\"the \\\"#{file}\\\" file should exist\")\nexpect(file_contents(file).strip).to(eq(text))\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should see escaped \"(.*)\" in \"(.*)\"$": {
+    "Code": "do\nstep(\"I should see \\\"#{Regexp.escape(text)}\\\" in \\\"#{file}\\\"\")\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^the \"(.*)\" file should +(not )?exist$": {
+    "Code": "do\nif negative.nil?\n  expect(Pathname.new(file)).to(exist)\nelse\n  expect(Pathname.new(file)).to_not(exist)\nend\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should see today's time in \"(.*)\"$": {
+    "Code": "do\nstep(\"I should see \\\"#{seconds_agnostic_time(Time.now)}\\\" in \\\"#{file}\\\"\")\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should see today's date in \"(.*)\"$": {
+    "Code": "do\nstep(\"I should see \\\"#{Date.today}\\\" in \\\"#{file}\\\"\")\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should (not )?see \"(.*)\" in the build output$": {
+    "Code": "do\nif negative.nil? || negative.empty?\n  expect(jekyll_run_output).to(match(Regexp.new(text)))\nelse\n  expect(jekyll_run_output).not_to(match(Regexp.new(text)))\nend\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should get an updated git index$": {
+    "Code": "do\nindex = [\".gitignore\", \"Gemfile\", \"LICENSE.txt\", \"README.md\", \"_config.yml\", \"_includes/blank.html\", \"_layouts/default.html\", \"_layouts/page.html\", \"_layouts/post.html\", \"_sass/blank.scss\", \"assets/blank.scss\", \"my-cool-theme.gemspec\"]\nindex.each { |file,|\n  expect(jekyll_run_output).to(match(file))\n}\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should get a zero exit(?:-| )status$": {
+    "Code": "do\nstep(\"I should see \\\"EXIT STATUS: 0\\\" in the build output\")\nend",
+    "File": "features/step_definitions.rb"
+  },
+  "^I should get a non-zero exit(?:-| )status$": {
+    "Code": "do\nstep(\"I should not see \\\"EXIT STATUS: 0\\\" in the build output\")\nend",
+    "File": "features/step_definitions.rb"
   }
 }

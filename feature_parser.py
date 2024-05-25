@@ -186,11 +186,12 @@ def run_parser(step_definitions_directory, file_ext, regex_str, feature_director
     feature_parser(feature_files, parsed_steps_file, combined_directory)
 
 if __name__ == "__main__":
-    feature_directory = './repos/aws-sdk-js/features'
+    feature_directory = './repos/jekyll/features'
+    step_definition_file = './data/jekyll/parsed_stepdefinitions.json'
     feature_files = find_feature_files(feature_directory)
-    combined_directory = "./data/aws-sdk-js"
+    combined_directory = "./data/jekyll"
 
-    with open('./data/aws-sdk-js/parsed_stepdefinitions.json') as f:
+    with open(step_definition_file) as f:
         parsed_steps_file = json.load(f)
 
     feature_parser(feature_files, parsed_steps_file, combined_directory)
