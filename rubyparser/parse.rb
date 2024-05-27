@@ -17,10 +17,26 @@ end
 
 def find_step_definitions(file_path)
   step_definitions = []
-  file_content = File.read(file_path)
-
-  file_content.scan(/(?:Then|When|Given|And)\s*\(/).each do |match|
-    step_definitions << match.strip
+  
+  # Check if the file is UTF-8 encoded
+  if File.open(file_path, 'r:utf-8').read.encoding.to_s == 'UTF-8'
+    file_content = File.read(file_path, mode: 'rb').force_encoding('UTF-8').encode('UTF-8', invalid: :replace, undef: :replace, replace: '')
+  
+    step_patterns = [
+      /^(Given|When|Then|And)\s*\(['"]([^'"]*)['"]\)\s*do\s*\|\s*([^|]*)\s*\|/,
+      /^(Given|When|Then|And)\s*\(['"]([^'"]*)['"]\)\s*do/,
+      /^(Given|When|Then|And)\s*\(['"]([^'"]*)['"]\)\s*do\s*\|?\s*([^|]*)\|?/,
+      /^(Given|When|Then|And)\s*\(([^)]*)\)\s*do/,
+      /^(Given|When|Then|And)\s*\(([^)]*)\)\s*do\s*\|([^|]*)\|/,
+    ]
+  
+    step_patterns.each do |pattern|
+      file_content.scan(pattern).each do |match|
+        step_definitions << match.map(&:strip)
+      end
+    end
+  else
+    puts "File #{file_path} is not UTF-8 encoded. Skipping..."
   end
 
   step_definitions
@@ -101,7 +117,7 @@ def main(base_dir, output_dir)
 end
 
 # Specify the path to the repository directory
-repository_directory = '../repos/jekyll'
-output_directory = '../data/jekyll'
+repository_directory = '../repos/keygen-api'
+output_directory = '../data/keygen-api'
 
 main(repository_directory, output_directory)

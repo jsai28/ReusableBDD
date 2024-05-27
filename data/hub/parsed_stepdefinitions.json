@@ -1,0 +1,210 @@
+{
+  "^git protocol is preferred$": {
+    "Code": "do\nset_environment_variable(\"HUB_PROTOCOL\", \"git\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^there are no remotes$": {
+    "Code": "do\noutput = run_ignored_command(\"git remote\")\nexpect(output).to(be_empty)\nend",
+    "File": "features/steps.rb"
+  },
+  "^\"([^\"]*)\" is a whitelisted Enterprise host$": {
+    "Code": "do\nrun_ignored_command(\"git config --global --add hub.host \\\"#{host}\\\"\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^git \"(.+?)\" is set to \"(.+?)\"$": {
+    "Code": "do\nrun_ignored_command(\"git config #{key} \\\"#{value}\\\"\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^the \"([^\"]*)\" remote has(?: (push))? url \"([^\"]*)\"$": {
+    "Code": "do\nremotes = run_ignored_command(\"git remote\")\nif remotes.split(\"\\n\").include?(remote_name)\n  run_ignored_command(\"git remote set-url #{if push\n  \"--push\"\nend} #{remote_name} \\\"#{url}\\\"\")\nelse\n  run_ignored_command(\"git remote add #{remote_name} \\\"#{url}\\\"\")\nend\nend",
+    "File": "features/steps.rb"
+  },
+  "^I am \"([^\"]*)\" on ([\\S]+)(?: with OAuth token \"([^\"]*)\")?$": {
+    "Code": "do\nedit_hub_config { |cfg,|\n  entry = { \"user\" => name }\n  host = host.sub(/^([\\w-]+):\\/\\//, \"\")\n  if token\n    entry.[]=(\"oauth_token\", token)\n  end\n  if $1\n    entry.[]=(\"protocol\", $1)\n  end\n  cfg.[]=(host.downcase, [entry])\n}\nend",
+    "File": "features/steps.rb"
+  },
+  "^\\$(\\w+) is \"([^\"]*)\"$": {
+    "Code": "do\nexpanded_value = value.gsub(/\\$([A-Z_]+)/) {\n  aruba.environment.[]($1)\n}\nset_environment_variable(name, expanded_value)\nend",
+    "File": "features/steps.rb"
+  },
+  "^I am in \"([^\"]*)\" git repo$": {
+    "Code": "do\n(origin_url = dir_name; dir_name = File.basename(origin_url, \".git\")) if dir_name.include?(\":\")\nstep(\"a git repo in \\\"#{dir_name}\\\"\")\nstep(\"I cd to \\\"#{dir_name}\\\"\")\nif origin_url\n  step(\"the \\\"origin\\\" remote has url \\\"#{origin_url}\\\"\")\nend\nend",
+    "File": "features/steps.rb"
+  },
+  "^a (bare )?git repo in \"([^\"]*)\"$": {
+    "Code": "do\nrun_ignored_command(\"git -c init.defaultBranch=master init --quiet #{if bare\n  \"--bare\"\nend} '#{dir_name}'\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^a git bundle named \"([^\"]*)\"$": {
+    "Code": "do\ndest = expand_path(file)\nFileUtils.mkdir_p(File.dirname(dest))\nDir.mktmpdir { |tmpdir,|\n  Dir.chdir(tmpdir) {\n    `git -c init.defaultBranch=master init --quiet`\n    `GIT_COMMITTER_NAME=a GIT_COMMITTER_EMAIL=b git commit --quiet -m 'empty' --allow-empty --author='a <b>'`\n    `git bundle create \"#{dest}\" master 2>&1`\n  }\n}\nend",
+    "File": "features/steps.rb"
+  },
+  "^there is a commit named \"([^\"]+)\"$": {
+    "Code": "do\nempty_commit\nempty_commit\nrun_ignored_command(\"git tag #{name}\")\nrun_ignored_command(\"git reset --quiet --hard HEAD^\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^there is a git FETCH_HEAD$": {
+    "Code": "do\nempty_commit\nempty_commit\ncd(\".\") {\n  File.open(\".git/FETCH_HEAD\", \"w\") { |fetch_head,|\n    fetch_head.puts(\"%s\\t\\t'refs/heads/made-up' of git://github.com/made/up.git\" % `git rev-parse HEAD`.chomp)\n  }\n}\nrun_ignored_command(\"git reset --quiet --hard HEAD^\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^I make (a|\\d+) commits?(?: with message \"([^\"]+)\")?$": {
+    "Code": "do\nnum = if num == \"a\"\n  1\nelse\n  num.to_i\nend\nnum.times {\n  empty_commit(msg)\n}\nend",
+    "File": "features/steps.rb"
+  },
+  "^I make a commit with message:$": {
+    "Code": "do\nempty_commit(msg)\nend",
+    "File": "features/steps.rb"
+  },
+  "^the latest commit message should be \"([^\"]+)\"$": {
+    "Code": "do\nstep(\"I successfully run `git log -1 --format=%s`\")\nstep(\"the output should contain exactly \\\"#{subject}\\\\n\\\"\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^(the (?:output|stderr|stdout)) with expanded variables( should contain(?: exactly)?:)": {
+    "Code": "do\nstep(\"#{prefix}#{postfix}\", text.gsub(/<\\$(\\w+)>/) {\n  aruba.environment.[]($1)\n})\nend",
+    "File": "features/steps.rb"
+  },
+  "^the \"([^\"]+)\" branch is pushed to \"([^\"]+)\"$": {
+    "Code": "do\nfull_upstream = \".git/refs/remotes/#{upstream}\"\ncd(\".\") {\n  FileUtils.mkdir_p(File.dirname(full_upstream))\n  FileUtils.cp(\".git/refs/heads/#{name}\", full_upstream)\n}\nend",
+    "File": "features/steps.rb"
+  },
+  "^I am on the \"([^\"]+)\" branch(?: (pushed to|with upstream) \"([^\"]+)\")?$": {
+    "Code": "do\nrun_ignored_command(\"git checkout --quiet -b #{shell_escape(name)}\")\nempty_commit\nif upstream\n  full_upstream = if upstream.start_with?(\"refs/\")\n    upstream\n  else\n    \"refs/remotes/#{upstream}\"\n  end\n  run_ignored_command(\"git update-ref #{shell_escape(full_upstream)} HEAD\")\n  if type == \"with upstream\"\n    run_ignored_command(\"git branch --set-upstream-to #{shell_escape(upstream)}\")\n  end\nend\nend",
+    "File": "features/steps.rb"
+  },
+  "^the default branch for \"([^\"]+)\" is \"([^\"]+)\"$": {
+    "Code": "do\ncd(\".\") {\n  ref_file = \".git/refs/remotes/#{remote}/#{branch}\"\n  unless File.exist?(ref_file)\n    unless File.exist?(\".git/refs/heads/master\")\n      empty_commit\n    end\n    FileUtils.mkdir_p(File.dirname(ref_file))\n    FileUtils.cp(\".git/refs/heads/master\", ref_file)\n  end\n}\nrun_ignored_command(\"git remote set-head #{remote} #{branch}\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^I am in detached HEAD$": {
+    "Code": "do\nempty_commit\nempty_commit\nrun_ignored_command(\"git checkout HEAD^\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^the current dir is not a repo$": {
+    "Code": "do\nFileUtils.rm_rf(expand_path(\".git\"))\nend",
+    "File": "features/steps.rb"
+  },
+  "^the GitHub API server:$": {
+    "Code": "do\n@server = Hub::LocalServer.start_sinatra {\n  eval(endpoints_str, binding)\n}\nset_environment_variable(\"HUB_TEST_HOST\", \"http://127.0.0.1:#{@server.port}\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^shell$": {
+    "Code": "do\ncd(\".\") {\n  system(\"/bin/bash -i\")\n}\nend",
+    "File": "features/steps.rb"
+  },
+  "^\"([^\"]*)\" should be run$": {
+    "Code": "do\nassert_command_run(cmd)\nend",
+    "File": "features/steps.rb"
+  },
+  "^it should clone \"([^\"]*)\"$": {
+    "Code": "do\nstep(\"\\\"git clone #{repo}\\\" should be run\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^it should not clone anything$": {
+    "Code": "do\nhistory.each { |h,|\n  expect(h).to_not(match(/^git clone/))\n}\nend",
+    "File": "features/steps.rb"
+  },
+  "^\"([^\"]+)\" should not be run$": {
+    "Code": "do\nhistory.each { |h,|\n  expect(h).to_not(include(pattern))\n}\nend",
+    "File": "features/steps.rb"
+  },
+  "^the git command should be unchanged$": {
+    "Code": "do\nexpect(@commands).to_not(be_empty)\nassert_command_run(@commands.last.sub(/^hub\\b/, \"git\"))\nend",
+    "File": "features/steps.rb"
+  },
+  "^the url for \"([^\"]*)\" should be \"([^\"]*)\"$": {
+    "Code": "do\noutput = run_ignored_command(\"git config --get-all remote.#{name}.url\")\nexpect(output).to(include(url))\nend",
+    "File": "features/steps.rb"
+  },
+  "^the \"([^\"]*)\" submodule url should be \"([^\"]*)\"$": {
+    "Code": "do\noutput = run_ignored_command(\"git config --get-all submodule.\\\"#{name}\\\".url\")\nexpect(output).to(include(url))\nend",
+    "File": "features/steps.rb"
+  },
+  "^\"([^\"]*)\" should merge \"([^\"]*)\" from remote \"([^\"]*)\"$": {
+    "Code": "do\noutput = run_ignored_command(\"git config --get-all branch.#{name}.remote\")\nexpect(output).to(include(remote))\noutput = run_ignored_command(\"git config --get-all branch.#{name}.merge\")\nexpect(output).to(include(merge))\nend",
+    "File": "features/steps.rb"
+  },
+  "^there should be no \"([^\"]*)\" remote$": {
+    "Code": "do\nremotes = run_ignored_command(\"git remote\")\nexpect(remotes.split(\"\\n\")).to_not(include(remote_name))\nend",
+    "File": "features/steps.rb"
+  },
+  "^the file \"([^\"]*)\" should have mode \"([^\"]*)\"$": {
+    "Code": "do\nmode = File.stat(expand_path(file)).mode\nexpect(mode.to_s(8)).to(match(/#{expected_mode}$/))\nend",
+    "File": "features/steps.rb"
+  },
+  "^the remote commit states of \"(.*?)\" \"(.*?)\" are:$": {
+    "Code": "do\nif ref == \"HEAD\"\n  empty_commit\nend\noutput = run_ignored_command(\"git rev-parse #{ref}\")\nrev = output.chomp\n(host, owner, repo) = proj.split(\"/\", 3)\nif repo.nil?\n  repo = owner\n  owner = host\n  host = nil\nend\nstatus_endpoint = <<-HEREDOC\n    get('#{if host\n  \"/api/v3\"\nend}/repos/#{owner}/#{repo}/commits/#{rev}/status'#{if host\n  \", :host_name => '#{host}'\"\nend}) {\n      json(#{json_value})\n    }\n    get('#{if host\n  \"/api/v3\"\nend}/repos/#{owner}/#{repo}/commits/#{rev}/check-runs'#{if host\n  \", :host_name => '#{host}'\"\nend}) {\n      status 422\n    }\nHEREDOC\nstep(\"the GitHub API server:\", status_endpoint)\nend",
+    "File": "features/steps.rb"
+  },
+  "^the remote commit state of \"(.*?)\" \"(.*?)\" is \"(.*?)\"$": {
+    "Code": "do\nstep(\"the remote commit states of \\\"#{proj}\\\" \\\"#{ref}\\\" are:\", <<-HEREDOC)\n    { :state => \"#{status}\",\n      :statuses => [\n        { :state => \"#{status}\",\n          :context => \"continuous-integration/travis-ci/push\",\n          :target_url => 'https://travis-ci.org/#{proj}/builds/1234567' }\n      ]\n    }\nHEREDOC\nend",
+    "File": "features/steps.rb"
+  },
+  "^the remote commit state of \"(.*?)\" \"(.*?)\" is nil$": {
+    "Code": "do\nstep(\"the remote commit states of \\\"#{proj}\\\" \\\"#{ref}\\\" are:\", \"{ :state => \\\"pending\\\", :statuses => [] }\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^the text editor exits with error status$": {
+    "Code": "do\ntext_editor_script(\"exit 1\")\nend",
+    "File": "features/steps.rb"
+  },
+  "^the text editor adds:$": {
+    "Code": "do\ntext_editor_script(<<-HEREDOC)\n    file=\"$3\"\n    contents=\"$(cat \"$file\" 2>/dev/null || true)\"\n    { echo \"#{text}\"\n      echo\n      echo \"$contents\"\n    } > \"$file\"\nHEREDOC\nend",
+    "File": "features/steps.rb"
+  },
+  "^I pass in:$": {
+    "Code": "do\ntype(input)\nclose_input\nend",
+    "File": "features/steps.rb"
+  },
+  "^the git commit editor is \"([^\"]+)\"$": {
+    "Code": "do\nset_environment_variable(\"GIT_EDITOR\", cmd)\nend",
+    "File": "features/steps.rb"
+  },
+  "^the SSH config:$": {
+    "Code": "do\nssh_config = expand_path(\"~/.ssh/config\")\nFileUtils.mkdir_p(File.dirname(ssh_config))\nFile.open(ssh_config, \"w\") { |f,|\n  f << config_lines\n}\nend",
+    "File": "features/steps.rb"
+  },
+  "^the SHAs and timestamps are normalized in \"([^\"]+)\"$": {
+    "Code": "do\nfile = expand_path(file)\ncontents = File.read(file)\ncontents.gsub!(/[0-9a-f]{7} \\(Hub, \\d seconds? ago\\)/, \"SHA1SHA (Hub, 0 seconds ago)\")\nFile.open(file, \"w\") { |f,|\n  f.write(contents)\n}\nend",
+    "File": "features/steps.rb"
+  },
+  "^its (output|stderr|stdout) should( not)? contain( exactly)?:$": {
+    "Code": "do\nmatcher = case channel.to_sym\nwhen :output\n  :have_output\nwhen :stderr\n  :have_output_on_stderr\nwhen :stdout\n  :have_output_on_stdout\nend\ncommands = [last_command_started]\noutput_string_matcher = if exactly\n  :an_output_string_being_eq\nelse\n  :an_output_string_including\nend\nif negated\n  expect(commands).not_to(include_an_object(send(matcher, send(output_string_matcher, expected))))\nelse\n  expect(commands).to(include_an_object(send(matcher, send(output_string_matcher, expected))))\nend\nend",
+    "File": "features/steps.rb"
+  },
+  "^my shell is (\\w+)$": {
+    "Code": "do\nset_shell(shell) || pending\nsetup_tmp_home.call(shell)\nend",
+    "File": "features/support/completion.rb"
+  },
+  "^I'm using ((?:zsh|git)-distributed) base git completions$": {
+    "Code": "do\nlink_completion.call(zsh_completion, \"_hub\")\ncase type\nwhen \"zsh-distributed\"\n  if \"bash\" == shell\n    raise(\"this combination makes no sense!\")\n  end\n  expect((cpldir + \"_git\")).to_not(be_exist)\nwhen \"git-distributed\"\n  if \"zsh\" == shell\n    if git_zsh_completion = git_distributed_zsh_completion.call\n      link_completion.call(git_zsh_completion, \"_git\")\n      link_completion.call(git_distributed_bash_completion.call, \"git-completion.bash\")\n    else\n      warn(\"warning: git-distributed zsh completion wasn't found; using zsh-distributed instead\")\n    end\n  end\n  if \"bash\" == shell\n    unless git_distributed_bash_completion.call\n      raise(\"git-distributed bash completion wasn't found. Completion won't work.\")\n    end\n  end\nelse\n  raise(ArgumentError, type)\nend\nend",
+    "File": "features/support/completion.rb"
+  },
+  "^I type \"(.+?)\" and press <Tab>$": {
+    "Code": "do\ntmux_wait_for_prompt\n@last_command = string\ntmux_send_keys(string)\ntmux_send_tab\nend",
+    "File": "features/support/completion.rb"
+  },
+  "^I press <Tab> again$": {
+    "Code": "do\ntmux_send_tab\nend",
+    "File": "features/support/completion.rb"
+  },
+  "^the completion menu should offer \"([^\"]+?)\"( unsorted)?$": {
+    "Code": "do\nmenu = tmux_completion_menu_basic\nif unsorted\n  menu.sort!\n  items = items.split(\" \").sort.join(\" \")\nend\nexpect(menu.join(\" \")).to(eq(items))\nend",
+    "File": "features/support/completion.rb"
+  },
+  "^the completion menu should offer \"(.+?)\" with description \"(.+?)\"$": {
+    "Code": "do\nmenu = tmux_completion_menu\nexpect(menu.keys).to(include(item))\nexpect(menu.[](item)).to(eq(description))\nend",
+    "File": "features/support/completion.rb"
+  },
+  "^the completion menu should offer:": {
+    "Code": "do\nmenu = tmux_completion_menu\nexpect(menu).to(eq(table.rows_hash))\nend",
+    "File": "features/support/completion.rb"
+  },
+  "^the command should expand to \"(.+?)\"$": {
+    "Code": "do\ntmux_wait_for_completion\nexpect(tmux_pane_contents).to(match(/^\\$ #{cmd}$/))\nend",
+    "File": "features/support/completion.rb"
+  },
+  "^the command should not expand$": {
+    "Code": "do\ntmux_wait_for_completion {\n  false\n}\nexpect(tmux_pane_contents).to(match(/^\\$ #{@last_command}$/))\nend",
+    "File": "features/support/completion.rb"
+  }
+}

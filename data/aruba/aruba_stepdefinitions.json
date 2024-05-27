@@ -1,0 +1,306 @@
+{
+  "^I run `([^`]*)`$": {
+    "Code": "do\ncmd = sanitize_text(cmd)\nrun_command_and_stop(cmd, { fail_on_error: false })\nend",
+    "File": "command.rb"
+  },
+  "^I successfully run `(.*?)`(?: for up to ([\\d.]+) seconds)?$": {
+    "Code": "do\ncmd = sanitize_text(cmd)\nrun_command_and_stop(cmd, { fail_on_error: true, exit_timeout: secs && secs.to_f })\nend",
+    "File": "command.rb"
+  },
+  "^I run the following (?:commands|script)(?: (?:with|in) `([^`]+)`)?:$": {
+    "Code": "do\nfull_path = expand_path(\"bin/myscript\")\nAruba.platform.mkdir(expand_path(\"bin\"))\nshell ||= Aruba.platform.default_shell\nAruba::ScriptFile.new({ interpreter: shell, content: commands, path: full_path }).call\nrun_command_and_stop(Shellwords.escape(full_path), { fail_on_error: false })\nend",
+    "File": "command.rb"
+  },
+  "^I run `([^`]*)` interactively$": {
+    "Code": "do\nrun_command(sanitize_text(cmd))\nend",
+    "File": "command.rb"
+  },
+  "^I run `([^`]*)` in background$": {
+    "Code": "do\nrun_command(sanitize_text(cmd))\nend",
+    "File": "command.rb"
+  },
+  "^I stop the command(?: started last)? if (output|stdout|stderr) contains:$": {
+    "Code": "do\nTimeout.timeout(aruba.config.exit_timeout) {\n  loop {\n    output = last_command_started.public_send(channel.to_sym, { wait_for_io: 0 })\n    output = sanitize_text(output)\n    expected = sanitize_text(expected)\n    if output.include?(expected)\n      last_command_started.terminate\n      break\n    end\n    sleep(0.1)\n  }\n} rescue last_command_started.terminate\nend",
+    "File": "command.rb"
+  },
+  "^the output should( not)? match /([^/]*)/$": {
+    "Code": "do\nif negated\n  expect(all_commands).not_to(include(have_output(an_output_string_matching(expected))))\nelse\n  expect(all_commands).to(include(have_output(an_output_string_matching(expected))))\nend\nend",
+    "File": "command.rb"
+  },
+  "^the output should( not)? match %r<([^>]*)>$": {
+    "Code": "do\nif negated\n  expect(all_commands).not_to(include(have_output(an_output_string_matching(expected))))\nelse\n  expect(all_commands).to(include(have_output(an_output_string_matching(expected))))\nend\nend",
+    "File": "command.rb"
+  },
+  "^the output should( not)? match:$": {
+    "Code": "do\nif negated\n  expect(all_commands).not_to(include(have_output(an_output_string_matching(expected))))\nelse\n  expect(all_commands).to(include(have_output(an_output_string_matching(expected))))\nend\nend",
+    "File": "command.rb"
+  },
+  "^the exit status should( not)? be (\\d+)$": {
+    "Code": "do\nif last_command_stopped.empty?\n  last_command_started.stop\nend\nif negated\n  expect(last_command_stopped).not_to(have_exit_status(exit_status.to_i))\nelse\n  expect(last_command_stopped).to(have_exit_status(exit_status.to_i))\nend\nend",
+    "File": "command.rb"
+  },
+  "^it should not (pass|fail) with \"(.*?)\"$": {
+    "Code": "do\nlast_command_started.stop\nif pass_fail == \"pass\"\n  expect(last_command_stopped).to(be_successfully_executed)\nelse\n  expect(last_command_stopped).not_to(be_successfully_executed)\nend\nexpect(last_command_stopped).not_to(have_output(an_output_string_including(expected)))\nend",
+    "File": "command.rb"
+  },
+  "^it should (pass|fail) with \"(.*?)\"$": {
+    "Code": "do\nlast_command_started.stop\nif pass_fail == \"pass\"\n  expect(last_command_stopped).to(be_successfully_executed)\nelse\n  expect(last_command_stopped).not_to(be_successfully_executed)\nend\nexpect(last_command_stopped).to(have_output(an_output_string_including(expected)))\nend",
+    "File": "command.rb"
+  },
+  "^it should not (pass|fail) with:$": {
+    "Code": "do\nlast_command_started.stop\nif pass_fail == \"pass\"\n  expect(last_command_stopped).to(be_successfully_executed)\nelse\n  expect(last_command_stopped).not_to(be_successfully_executed)\nend\nexpect(last_command_stopped).not_to(have_output(an_output_string_including(expected)))\nend",
+    "File": "command.rb"
+  },
+  "^it should (pass|fail) with:$": {
+    "Code": "do\nlast_command_started.stop\nif pass_fail == \"pass\"\n  expect(last_command_stopped).to(be_successfully_executed)\nelse\n  expect(last_command_stopped).not_to(be_successfully_executed)\nend\nexpect(last_command_stopped).to(have_output(an_output_string_including(expected)))\nend",
+    "File": "command.rb"
+  },
+  "^it should not (pass|fail) with exactly:$": {
+    "Code": "do\nlast_command_started.stop\nif pass_fail == \"pass\"\n  expect(last_command_stopped).to(be_successfully_executed)\nelse\n  expect(last_command_stopped).not_to(be_successfully_executed)\nend\nexpect(last_command_stopped).not_to(have_output(an_output_string_eq(expected)))\nend",
+    "File": "command.rb"
+  },
+  "^it should (pass|fail) with exactly:$": {
+    "Code": "do\nlast_command_started.stop\nif pass_fail == \"pass\"\n  expect(last_command_stopped).to(be_successfully_executed)\nelse\n  expect(last_command_stopped).not_to(be_successfully_executed)\nend\nexpect(last_command_stopped).to(have_output(an_output_string_being_eq(expected)))\nend",
+    "File": "command.rb"
+  },
+  "^it should not (pass|fail) (?:with regexp?|matching):$": {
+    "Code": "do\nlast_command_started.stop\nif pass_fail == \"pass\"\n  expect(last_command_stopped).to(be_successfully_executed)\nelse\n  expect(last_command_stopped).not_to(be_successfully_executed)\nend\nexpect(last_command_stopped).not_to(have_output(an_output_string_matching(expected)))\nend",
+    "File": "command.rb"
+  },
+  "^it should (pass|fail) (?:with regexp?|matching):$": {
+    "Code": "do\nlast_command_started.stop\nif pass_fail == \"pass\"\n  expect(last_command_stopped).to(be_successfully_executed)\nelse\n  expect(last_command_stopped).not_to(be_successfully_executed)\nend\nexpect(last_command_stopped).to(have_output(an_output_string_matching(expected)))\nend",
+    "File": "command.rb"
+  },
+  "^(?:the )?(output|stderr|stdout) should not contain anything$": {
+    "Code": "do\nmatcher = case channel\nwhen \"output\"\n  :have_output\nwhen \"stderr\"\n  :have_output_on_stderr\nwhen \"stdout\"\n  :have_output_on_stdout\nend\nexpect(all_commands).to(include(send(matcher, be_nil.or(be_empty))))\nend",
+    "File": "command.rb"
+  },
+  "^(?:the )?(output|stdout|stderr) should( not)? contain all of these lines:$": {
+    "Code": "do\ntable.raw.flatten.each { |expected,|\n  _matcher = case channel\n  when \"output\"\n    :have_output\n  when \"stderr\"\n    :have_output_on_stderr\n  when \"stdout\"\n    :have_output_on_stdout\n  end\n  if negated\n    expect(all_commands).not_to(include(have_output(an_output_string_including(expected))))\n  else\n    expect(all_commands).to(include(have_output(an_output_string_including(expected))))\n  end\n}\nend",
+    "File": "command.rb"
+  },
+  "^the (?:default )?aruba io wait timeout is ([\\d.]+) seconds?$": {
+    "Code": "do\naruba.config.io_wait_timeout=seconds.to_f\nend",
+    "File": "command.rb"
+  },
+  "^the (?:default )?aruba exit timeout is ([\\d.]+) seconds?$": {
+    "Code": "do\naruba.config.exit_timeout=seconds.to_f\nend",
+    "File": "command.rb"
+  },
+  "^I wait ([\\d.]+) seconds? for (?:a|the) command to start up$": {
+    "Code": "do\naruba.config.startup_wait_time=seconds.to_f\nend",
+    "File": "command.rb"
+  },
+  "^a mocked home directory$": {
+    "Code": "do\nset_environment_variable(\"HOME\", expand_path(\".\"))\nend",
+    "File": "environment.rb"
+  },
+  "^I set the environment variable \"(.*)\" to \"(.*)\"": {
+    "Code": "do\nset_environment_variable(variable.to_s, value.to_s)\nend",
+    "File": "environment.rb"
+  },
+  "^I append \"(.*)\" to the environment variable \"(.*)\"": {
+    "Code": "do\nappend_environment_variable(variable.to_s, value.to_s)\nend",
+    "File": "environment.rb"
+  },
+  "^I prepend \"(.*)\" to the environment variable \"(.*)\"": {
+    "Code": "do\nprepend_environment_variable(variable.to_s, value.to_s)\nend",
+    "File": "environment.rb"
+  },
+  "^I set the environment variables? to:": {
+    "Code": "do\ntable.hashes.each { |row,|\n  variable = row.[](\"variable\").to_s\n  value = row.[](\"value\").to_s\n  set_environment_variable(variable, value)\n}\nend",
+    "File": "environment.rb"
+  },
+  "^I append the values? to the environment variables?:": {
+    "Code": "do\ntable.hashes.each { |row,|\n  variable = row.[](\"variable\").to_s\n  value = row.[](\"value\").to_s\n  append_environment_variable(variable, value)\n}\nend",
+    "File": "environment.rb"
+  },
+  "^I prepend the values? to the environment variables?:": {
+    "Code": "do\ntable.hashes.each { |row,|\n  variable = row.[](\"variable\").to_s\n  value = row.[](\"value\").to_s\n  prepend_environment_variable(variable, value)\n}\nend",
+    "File": "environment.rb"
+  },
+  "^I use (?:a|the) fixture(?: named)? \"([^\"]*)\"$": {
+    "Code": "do\ncopy(File.join(aruba.config.fixtures_path_prefix, name), name)\ncd(name)\nend",
+    "File": "file.rb"
+  },
+  "^I copy (?:a|the) (?:file|directory)(?: (?:named|from))? \"([^\"]*)\" to \"([^\"]*)\"$": {
+    "Code": "do\ncopy(source, destination)\nend",
+    "File": "file.rb"
+  },
+  "^I move (?:a|the) (?:file|directory)(?: (?:named|from))? \"([^\"]*)\" to \"([^\"]*)\"$": {
+    "Code": "do\nmove(source, destination)\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the|(?:an empty)) directory(?: named)? \"([^\"]*)\"$": {
+    "Code": "do\ncreate_directory(dir_name)\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) directory(?: named)? \"([^\"]*)\" with mode \"([^\"]*)\"$": {
+    "Code": "do\ncreate_directory(dir_name)\nchmod(dir_mode, dir_name)\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) file(?: named)? \"([^\"]*)\" with:$": {
+    "Code": "do\nwrite_file(file_name, file_content)\nend",
+    "File": "file.rb"
+  },
+  "^(?:an|the) executable(?: named)? \"([^\"]*)\" with:$": {
+    "Code": "do\nstep(\"a file named \\\"#{file_name}\\\" with mode \\\"0o755\\\" and with:\", file_content)\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) file(?: named)? \"([^\"]*)\" with \"([^\"]*)\"$": {
+    "Code": "do\nwrite_file(file_name, unescape_text(file_content))\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) file(?: named)? \"([^\"]*)\" with mode \"([^\"]*)\" and with:$": {
+    "Code": "do\nwrite_file(file_name, unescape_text(file_content))\nchmod(file_mode, file_name)\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) (\\d+) byte file(?: named)? \"([^\"]*)\"$": {
+    "Code": "do\nwrite_fixed_size_file(file_name, file_size.to_i)\nend",
+    "File": "file.rb"
+  },
+  "^(?:an|the) empty file(?: named)? \"([^\"]*)\"$": {
+    "Code": "do\nwrite_file(file_name, \"\")\nend",
+    "File": "file.rb"
+  },
+  "^(?:an|the) empty file(?: named)? \"([^\"]*)\" with mode \"([^\"]*)\"$": {
+    "Code": "do\nwrite_file(file_name, \"\")\nchmod(file_mode, file_name)\nend",
+    "File": "file.rb"
+  },
+  "^I write to \"([^\"]*)\" with:$": {
+    "Code": "do\nwrite_file(file_name, file_content)\nend",
+    "File": "file.rb"
+  },
+  "^I overwrite(?: (?:a|the) file(?: named)?)? \"([^\"]*)\" with:$": {
+    "Code": "do\noverwrite_file(file_name, file_content)\nend",
+    "File": "file.rb"
+  },
+  "^I append to \"([^\"]*)\" with:$": {
+    "Code": "do\nappend_to_file(file_name, file_content)\nend",
+    "File": "file.rb"
+  },
+  "^I append the following lines to \"([^\"]*)\":$": {
+    "Code": "do\nappend_lines_to_file(file_name, file_content)\nend",
+    "File": "file.rb"
+  },
+  "^I append to \"([^\"]*)\" with \"([^\"]*)\"$": {
+    "Code": "do\nappend_to_file(file_name, file_content)\nend",
+    "File": "file.rb"
+  },
+  "^I remove (?:a|the) (?:file|directory)(?: named)? \"([^\"]*)\"( with full force)?$": {
+    "Code": "do\nremove(name, { force: !force_remove.nil? })\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) (?:file|directory)(?: named)? \"([^\"]*)\" does not exist$": {
+    "Code": "do\nremove(name, { force: true })\nend",
+    "File": "file.rb"
+  },
+  "^I cd to \"([^\"]*)\"$": {
+    "Code": "do\ncd(dir)\nend",
+    "File": "file.rb"
+  },
+  "^the following files should (not )?exist:$": {
+    "Code": "do\nfiles = files.raw.flatten\nif negated\n  expect(files).not_to(include(an_existing_file))\nelse\n  expect(files).to(all(be_an_existing_file))\nend\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) file(?: named)? \"([^\"]*)\" should (not )?exist(?: anymore)?$": {
+    "Code": "do\nif expect_match\n  expect(path).not_to(be_an_existing_file)\nelse\n  expect(path).to(be_an_existing_file)\nend\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) directory(?: named)? \"([^\"]*)\" should (not )?exist(?: anymore)?$": {
+    "Code": "do\nif expect_match\n  expect(path).not_to(be_an_existing_directory)\nelse\n  expect(path).to(be_an_existing_directory)\nend\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) file matching %r<(.*?)> should (not )?exist$": {
+    "Code": "do\nif expect_match\n  expect(all_paths).not_to(include(a_file_name_matching(pattern)))\nelse\n  expect(all_paths).to(include(match(a_file_name_matching(pattern))))\nend\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) (\\d+) byte file(?: named)? \"([^\"]*)\" should (not )?exist$": {
+    "Code": "do\nif negated\n  expect(file).not_to(have_file_size(size))\nelse\n  expect(file).to(have_file_size(size))\nend\nend",
+    "File": "file.rb"
+  },
+  "^the following directories should (not )?exist:$": {
+    "Code": "do\ndirectories = directories.rows.flatten\nif negated\n  expect(directories).not_to(include(an_existing_directory))\nelse\n  expect(directories).to(all(be_an_existing_directory))\nend\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) file(?: named)? \"([^\"]*)\" should (not )?contain \"([^\"]*)\"$": {
+    "Code": "do\nif negated\n  expect(file).not_to(have_file_content(file_content_including(content.chomp)))\nelse\n  expect(file).to(have_file_content(file_content_including(content.chomp)))\nend\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) file(?: named)? \"([^\"]*)\" should (not )?contain:$": {
+    "Code": "do\nif negated\n  expect(file).not_to(have_file_content(file_content_including(content.chomp)))\nelse\n  expect(file).to(have_file_content(file_content_including(content.chomp)))\nend\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) file(?: named)? \"([^\"]*)\" should (not )?contain exactly:$": {
+    "Code": "do\nif negated\n  expect(file).not_to(have_file_content(content))\nelse\n  expect(file).to(have_file_content(content))\nend\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) file(?: named)? \"([^\"]*)\" should (not )?match %r<([^>]*)>$": {
+    "Code": "do\nif negated\n  expect(file).not_to(have_file_content(file_content_matching(content)))\nelse\n  expect(file).to(have_file_content(file_content_matching(content)))\nend\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) file(?: named)? \"([^\"]*)\" should (not )?match /([^/]*)/$": {
+    "Code": "do\nif negated\n  expect(file).not_to(have_file_content(file_content_matching(content)))\nelse\n  expect(file).to(have_file_content(file_content_matching(content)))\nend\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) file(?: named)? \"([^\"]*)\" should (not )?be equal to file \"([^\"]*)\"": {
+    "Code": "do\nif negated\n  expect(file).not_to(have_same_file_content_as(reference_file))\nelse\n  expect(file).to(have_same_file_content_as(reference_file))\nend\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) (?:file|directory)(?: named)? \"([^\"]*)\" should have permissions \"([^\"]*)\"$": {
+    "Code": "do\nexpect(path).to(have_permissions(permissions))\nend",
+    "File": "file.rb"
+  },
+  "^(?:a|the) (?:file|directory)(?: named)? \"([^\"]*)\" should not have permissions \"([^\"]*)\"$": {
+    "Code": "do\nexpect(path).not_to(have_permissions(permissions))\nend",
+    "File": "file.rb"
+  },
+  "^the feature(?:s)? should not(?: all)? pass$": {
+    "Code": "do\nstep(\"the output should contain \\\" failed)\\\"\")\nstep(\"the exit status should be 1\")\nend",
+    "File": "testing_frameworks.rb"
+  },
+  "^the feature(?:s)? should(?: all)? pass$": {
+    "Code": "do\nstep(\"the output should not contain \\\" failed)\\\"\")\nstep(\"the output should not contain \\\" undefined)\\\"\")\nstep(\"the exit status should be 0\")\nend",
+    "File": "testing_frameworks.rb"
+  },
+  "^the feature(?:s)? should not(?: all)? pass with( regex)?:$": {
+    "Code": "do\nstep(\"the output should contain \\\" failed)\\\"\")\nstep(\"the exit status should be 1\")\nif regex\n  step(\"the output should match %r<#{string}>\")\nelse\n  step(\"the output should contain:\", string)\nend\nend",
+    "File": "testing_frameworks.rb"
+  },
+  "^the feature(?:s)? should(?: all)? pass with( regex)?:$": {
+    "Code": "do\nstep(\"the output should not contain \\\" failed)\\\"\")\nstep(\"the output should not contain \\\" undefined)\\\"\")\nstep(\"the exit status should be 0\")\nif regex\n  step(\"the output should match %r<#{string}>\")\nelse\n  step(\"the output should contain:\", string)\nend\nend",
+    "File": "testing_frameworks.rb"
+  },
+  "^the spec(?:s)? should not(?: all)? pass(?: with (\\d+) failures?)?$": {
+    "Code": "do\nif count_failures.nil?\n  step(\"the output should not contain \\\"0 failures\\\"\")\nelse\n  step(\"the output should contain \\\"#{count_failures} failures\\\"\")\nend\nstep(\"the exit status should be 1\")\nend",
+    "File": "testing_frameworks.rb"
+  },
+  "^the spec(?:s)? should all pass$": {
+    "Code": "do\nstep(\"the output should contain \\\"0 failures\\\"\")\nstep(\"the exit status should be 0\")\nend",
+    "File": "testing_frameworks.rb"
+  },
+  "^the spec(?:s)? should not(?: all)? pass with( regex)?:$": {
+    "Code": "do\nstep(\"the output should not contain \\\"0 failures\\\"\")\nstep(\"the exit status should be 1\")\nif regex\n  step(\"the output should match %r<#{string}>\")\nelse\n  step(\"the output should contain:\", string)\nend\nend",
+    "File": "testing_frameworks.rb"
+  },
+  "^the spec(?:s)? should(?: all)? pass with( regex)?:$": {
+    "Code": "do\nstep(\"the output should contain \\\"0 failures\\\"\")\nstep(\"the exit status should be 0\")\nif regex\n  step(\"the output should match %r<#{string}>\")\nelse\n  step(\"the output should contain:\", string)\nend\nend",
+    "File": "testing_frameworks.rb"
+  },
+  "^the tests(?:s)? should not(?: all)? pass(?: with (\\d+) failures?)?$": {
+    "Code": "do\nif count_failures.nil?\n  step(\"the output should not contain \\\"0 errors\\\"\")\nelse\n  step(\"the output should contain \\\"#{count_failures} errors\\\"\")\nend\nstep(\"the exit status should be 1\")\nend",
+    "File": "testing_frameworks.rb"
+  },
+  "^the tests(?:s)? should all pass$": {
+    "Code": "do\nstep(\"the output should contain \\\"0 errors\\\"\")\nstep(\"the exit status should be 0\")\nend",
+    "File": "testing_frameworks.rb"
+  },
+  "^the test(?:s)? should not(?: all)? pass with( regex)?:$": {
+    "Code": "do\nstep(\"the output should contain \\\"0 errors\\\"\")\nstep(\"the exit status should be 1\")\nif regex\n  step(\"the output should match %r<#{string}>\")\nelse\n  step(\"the output should contain:\", string)\nend\nend",
+    "File": "testing_frameworks.rb"
+  },
+  "^the test(?:s)? should(?: all)? pass with( regex)?:$": {
+    "Code": "do\nstep(\"the output should not contain \\\"0 errors\\\"\")\nstep(\"the exit status should be 0\")\nif regex\n  step(\"the output should match %r<#{string}>\")\nelse\n  step(\"the output should contain:\", string)\nend\nend",
+    "File": "testing_frameworks.rb"
+  }
+}

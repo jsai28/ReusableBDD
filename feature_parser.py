@@ -186,15 +186,25 @@ def run_parser(step_definitions_directory, file_ext, regex_str, feature_director
     feature_parser(feature_files, parsed_steps_file, combined_directory)
 
 if __name__ == "__main__":
-    feature_directory = './repos/jekyll/features'
-    step_definition_file = './data/jekyll/parsed_stepdefinitions.json'
+    aruba_definitions = './data/aruba/aruba_stepdefinitions.json'
+    cucumber_definitions = './data/cucumber-ruby/cucumber_stepdefinitions.json'
+    feature_directory = './repos/keygen-api/features'
+    step_definition_file = './data/keygen-api/parsed_stepdefinitions.json'
     feature_files = find_feature_files(feature_directory)
-    combined_directory = "./data/jekyll"
+    combined_directory = "./data/keygen-api"
 
     with open(step_definition_file) as f:
         parsed_steps_file = json.load(f)
+    
+    with open(aruba_definitions) as f:
+        aruba_steps_file = json.load(f)
+    
+    with open(cucumber_definitions) as f:
+        cucumber_steps_file = json.load(f)
+    
+    combined_steps = {**parsed_steps_file, **aruba_steps_file, **cucumber_steps_file}
 
-    feature_parser(feature_files, parsed_steps_file, combined_directory)
+    feature_parser(feature_files, combined_steps, combined_directory)
     """
     # parsing aws-sdk-js files
     step_definitions_directory = './repos/aws-sdk-js/features'
