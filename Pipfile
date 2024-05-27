@@ -9,8 +9,6 @@ behave = "*"
 numpy = "*"
 matplotlib = "*"
 scikit-learn = "*"
-slimit = "*"
-py-mini-racer = "*"
 
 [dev-packages]
 

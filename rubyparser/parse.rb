@@ -117,7 +117,7 @@ def main(base_dir, output_dir)
 end
 
 # Specify the path to the repository directory
-repository_directory = '../repos/keygen-api'
-output_directory = '../data/keygen-api'
+repository_directory = './repos/keygen-api'
+output_directory = './data/keygen-api'
 
 main(repository_directory, output_directory)
