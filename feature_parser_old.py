@@ -39,24 +39,22 @@ def pattern_search(step_name, step_patterns):
             return definition
     return None
 
-def feature_parser(base_dir, parsed_definitions, combined_directory='./data'):
+def feature_parser(feature_files, parsed_definitions, combined_directory):
     """
     Build the dataset of each test case and its corresponding glue code and step definitions.
 
     Args:
-        base_dir (str): The base directory where the search for feature files will be conducted.
+        feature_files (list): A list of feature file paths to be parsed.
         parsed_definitions (dict): Dictionary of step patterns and their glue code.
         combined_directory (str): The directory where the combined data file will be saved.
 
     Returns:
         None: This function saves the combined data to a specified file and does not return anything.
     """
-    feature_files = find_feature_files(base_dir)
 
     combined_json = []
     total_test_cases = 0
     total_unmatched_steps = 0
-    total_step_count = 0
     for feature_file in feature_files:
         print("----------------------------------------------------")
         print("Processing file: ", feature_file)
@@ -66,7 +64,7 @@ def feature_parser(base_dir, parsed_definitions, combined_directory='./data'):
             continue
 
         matched_steps = []
-        step_count = 0
+        total_step_count = 0
 
         for scenario in feature.scenarios:
             total_test_cases += 1
@@ -76,7 +74,6 @@ def feature_parser(base_dir, parsed_definitions, combined_directory='./data'):
             # find the glue code for each step
             for step in scenario.steps:
                 total_step_count += 1
-                step_count += 1
                 step_num += 1
                 definition = pattern_search(step.name, parsed_definitions)
 
@@ -94,7 +91,7 @@ def feature_parser(base_dir, parsed_definitions, combined_directory='./data'):
                         "step_definition": step_definition,
                         "step_definition_file": step_definition_file
                     })
-
+                
                 if matched_scenario[step.name] is None:
                     print(f"Step number {step_num} with Step name {step.name} not matched.")
                     total_unmatched_steps += 1
@@ -109,39 +106,62 @@ def feature_parser(base_dir, parsed_definitions, combined_directory='./data'):
         combined_json.extend(matched_steps)
         
         print(f"FINISHED PARSING '{feature_file}' FEATURE FILE")
-        print("Feature Steps: ",step_count)
+        print("Feature Steps: ",total_step_count)
         print("Steps Parsed: ", len(matched_steps))
         print("Test Cases Parsed: ", len(feature.scenarios))
         print("----------------------------------------------------")
         print("\n")
     
     print("Total Test Cases: ", total_test_cases)
-    print("Total Steps: ", total_step_count)
-    print("Total Unmatched: ", total_unmatched_steps)
     json_file_path = os.path.join(combined_directory, f'{os.path.basename(combined_directory)}_parsed_steps.json')
     with open(json_file_path, 'w') as json_file:
         json.dump(combined_json, json_file, indent=4)
 
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description="Parse feature files and step definitions.")
-    parser.add_argument("base_dir", help="The base directory to search for feature files.")
-    parser.add_argument("step_definition_file", help="The JSON file with parsed step definitions.")
-    parser.add_argument("--aruba_definitions", default="./data/aruba/aruba_stepdefinitions.json", help="The JSON file with Aruba step definitions.")
-    parser.add_argument("--cucumber_definitions", default="./data/cucumber-ruby/cucumber_stepdefinitions.json", help="The JSON file with Cucumber step definitions.")
-    parser.add_argument("--output_dir", default="./data", help="The directory to save the combined data file.")
+    aruba_definitions = './data/aruba/aruba_stepdefinitions.json'
+    cucumber_definitions = './data/cucumber_stepdefinitions.json'
+    feature_directory = './repos/keygen-api/features'
+    step_definition_file = './data/keygen-api/parsed_stepdefinitions.json'
+    feature_files = find_feature_files(feature_directory)
+    combined_directory = "./data/keygen-api"
 
-    args = parser.parse_args()
-
-    with open(args.step_definition_file) as f:
+    with open(step_definition_file) as f:
         parsed_steps_file = json.load(f)
     
-    with open(args.aruba_definitions) as f:
+    with open(aruba_definitions) as f:
         aruba_steps_file = json.load(f)
     
-    with open(args.cucumber_definitions) as f:
+    with open(cucumber_definitions) as f:
         cucumber_steps_file = json.load(f)
     
     combined_steps = {**parsed_steps_file, **aruba_steps_file, **cucumber_steps_file}
 
-    feature_parser(args.base_dir, combined_steps, args.output_dir)
+    feature_parser(feature_files, combined_steps, combined_directory)
+    """
+    # parsing aws-sdk-js files
+    step_definitions_directory = './repos/aws-sdk-js/features'
+    file_ext = ".js"
+
+    regex_str = r'\bthis\.(Given|When|Then|Before|After|And)\(([^,]+),\s*function\(([^)]*)\)\s*{([^}]*)}\s*\)'
+    feature_directory = './repos/aws-sdk-js/features'
+
+    combined_directory = "./test/aws-sdk-js"
+
+    run_parser(step_definitions_directory, file_ext, regex_str, feature_directory, combined_directory)
+    """
+    """
+    step_definitions_directory = './repos/jekyll/features'
+    file_ext = ".rb"
+
+    regex_str = r'(Given|When|Then|Before|After)\(%r!(.*?)!\) do(.*?)end'
+    feature_directory = './repos/jekyll/features'
+
+    combined_directory = "./test/jekyll"
+
+    # retrieve step definitions
+    step_definitions = find_step_definition_files(step_definitions_directory, file_ext)
+
+    # parse the step definitions and create the parsed_stepdefinitions file
+    parsed_steps_file = step_definition_parser(step_definitions, combined_directory, regex_str)
+    """
+    

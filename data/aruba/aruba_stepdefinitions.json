@@ -75,6 +75,10 @@
     "Code": "do\nmatcher = case channel\nwhen \"output\"\n  :have_output\nwhen \"stderr\"\n  :have_output_on_stderr\nwhen \"stdout\"\n  :have_output_on_stdout\nend\nexpect(all_commands).to(include(send(matcher, be_nil.or(be_empty))))\nend",
     "File": "command.rb"
   },
+  "^(?:the )?(output|stdout|stderr) should( not)? contain \"(.*)\"$": {
+    "Code": "do\ntable.raw.flatten.each { |expected,|\n  _matcher = case channel\n  when \"output\"\n    :have_output\n  when \"stderr\"\n    :have_output_on_stderr\n  when \"stdout\"\n    :have_output_on_stdout\n  end\n  if negated\n    expect(all_commands).not_to(include(have_output(an_output_string_including(expected))))\n  else\n    expect(all_commands).to(include(have_output(an_output_string_including(expected))))\n  end\n}\nend",
+    "File": "command.rb"
+  },
   "^(?:the )?(output|stdout|stderr) should( not)? contain all of these lines:$": {
     "Code": "do\ntable.raw.flatten.each { |expected,|\n  _matcher = case channel\n  when \"output\"\n    :have_output\n  when \"stderr\"\n    :have_output_on_stderr\n  when \"stdout\"\n    :have_output_on_stdout\n  end\n  if negated\n    expect(all_commands).not_to(include(have_output(an_output_string_including(expected))))\n  else\n    expect(all_commands).to(include(have_output(an_output_string_including(expected))))\n  end\n}\nend",
     "File": "command.rb"
@@ -302,5 +306,21 @@
   "^the test(?:s)? should(?: all)? pass with( regex)?:$": {
     "Code": "do\nstep(\"the output should not contain \\\"0 errors\\\"\")\nstep(\"the exit status should be 0\")\nif regex\n  step(\"the output should match %r<#{string}>\")\nelse\n  step(\"the output should contain:\", string)\nend\nend",
     "File": "testing_frameworks.rb"
+  },
+  "^I type \"(.*)\"$": {
+    "Code": "type(unescape_text(input))",
+    "File": "command.rb"
+  },
+  "^the output from \"(.*)\" should contain exactly:$": {
+    "Code": "do |channel, cmd, expected|\n  matcher = case channel\n            when \"output\"; then :have_output\n            when \"stderr\"; then :have_output_on_stderr\n            when \"stdout\"; then :have_output_on_stdout\n            end\n\n  command = aruba.command_monitor.find(Aruba.platform.detect_ruby(cmd))\n\n  output_string_matcher = :an_output_string_being_eq\n\n  expect(command).to send(matcher, send(output_string_matcher, expected))\nend",
+    "File": "command.rb"
+  },
+  "^the stderr from \"(.*)\" should contain exactly:$": {
+    "Code": "do |channel, cmd, expected|\n  matcher = case channel\n            when \"output\"; then :have_output\n            when \"stderr\"; then :have_output_on_stderr\n            when \"stdout\"; then :have_output_on_stdout\n            end\n\n  command = aruba.command_monitor.find(Aruba.platform.detect_ruby(cmd))\n\n  output_string_matcher = :an_output_string_being_eq\n\n  expect(command).to send(matcher, send(output_string_matcher, expected))\nend",
+    "File": "command.rb"
+  },
+  "^the stdout from \"(.*)\" should contain exactly:$": {
+    "Code": "do |channel, cmd, expected|\n  matcher = case channel\n            when \"output\"; then :have_output\n            when \"stderr\"; then :have_output_on_stderr\n            when \"stdout\"; then :have_output_on_stdout\n            end\n\n  command = aruba.command_monitor.find(Aruba.platform.detect_ruby(cmd))\n\n  output_string_matcher = :an_output_string_being_eq\n\n  expect(command).to send(matcher, send(output_string_matcher, expected))\nend",
+    "File": "command.rb"
   }
 }

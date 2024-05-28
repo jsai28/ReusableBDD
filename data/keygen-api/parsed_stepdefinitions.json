@@ -1,2 +1,230 @@
 {
+  "^I am(?: (?:an?|(the (\\w+))))? (admin|developer|read only|sales agent|support agent|user|product|license|environment) (?:of|for) account \"([^\\\"]*)\"$": {
+    "Code": "do\nnamed_idx ||= :first\naccount = FindByAliasService.call(Account, { id: id, aliases: :slug })\n@bearer = case role\nwhen \"admin\", \"user\", \"read only\", \"developer\", \"sales agent\", \"support agent\"\n  account.users.with_roles(role.parameterize.underscore).send(named_idx)\nwhen \"product\"\n  account.products.send(named_idx)\nwhen \"license\"\n  account.licenses.send(named_idx)\nwhen \"environment\"\n  account.environments.send(named_idx)\nelse\n  raise(\"invalid role\")\nend\nif @bearer.nil?\n  raise(\"failed to find bearer\")\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^I am(?: (?:an?|(the (\\w+))))? (admin|developer|read only|sales agent|support agent|user|product|license|environment) (?:of|for) the (\\w+) \"account\"$": {
+    "Code": "do\nnamed_role_idx ||= :first\naccount = Account.send(named_account_idx)\n@bearer = case role\nwhen \"admin\", \"user\", \"read only\", \"developer\", \"sales agent\", \"support agent\"\n  account.users.with_roles(role.parameterize.underscore).send(named_role_idx)\nwhen \"product\"\n  account.products.send(named_role_idx)\nwhen \"license\"\n  account.licenses.send(named_role_idx)\nwhen \"environment\"\n  account.environments.send(named_role_idx)\nelse\n  raise(\"invalid role\")\nend\nif @bearer.nil?\n  raise(\"failed to find bearer\")\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^I have 2FA (enabled|disabled)$": {
+    "Code": "do\n@second_factor = SecondFactor.new({ user: @bearer, account: @bearer.account })\n@second_factor.enabled=second_factor_status == \"enabled\"\n@second_factor.save\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^I do not have 2FA$": {
+    "Code": "do\n@bearer.second_factors.delete_all\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|last) \"(user|admin)\" does not have 2FA$": {
+    "Code": "do\nuser = @account.users.with_roles(user_role).send(named_index)\nuser.second_factors.delete_all\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|last) \"(user|admin)\" has 2FA (disabled|enabled)$": {
+    "Code": "do\nuser = @account.users.with_roles(user_role).send(named_index)\n@second_factor = SecondFactor.new({ user: user, account: user.account })\n@second_factor.enabled=second_factor_status == \"enabled\"\n@second_factor.save\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^I send the following headers:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\nheaders = JSON.parse(body)\nif headers.[](\"Authorization\")&.starts_with?(\"Basic\")\n  /Basic \"([.@\\w\\d]+):(.+)\"/ =~ headers.[](\"Authorization\")\n  credentials = Base64.encode64(\"#{$1}:#{$2}\")\n  headers.[]=(\"Authorization\", \"Basic \\\"#{credentials}\\\"\")\nend\nheaders.each { |name, value|\n  header(name, value&.strip)\n}\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^I send the following badly encoded headers:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\nheaders = JSON.parse(body)\nif headers.key?(\"Authorization\")\n  /Basic \"([.@\\w\\d]+):(.+)\"/ =~ headers.[](\"Authorization\")\n  credentials = Base64.encode64(\"#{128.chr + $1}:#{128.chr + $2}\")\n  headers.[]=(\"Authorization\", \"Basic \\\"#{credentials}\\\"\")\nend\nheaders.each { |name, value|\n  header(name, value&.strip)\n}\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^I send the following raw headers:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\nheaders = body.split(/\\n/)\nheaders.each { |raw,|\n  (key, value) = raw.split(\":\")\n  header(key, value&.strip)\n}\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^I use an authentication token$": {
+    "Code": "do\n@token = @bearer.tokens.first_or_create!({ account: @bearer.account, bearer: @bearer })\n@token.regenerate!({ version: TOKEN_VERSIONS.sample })\nif rand(0..1).zero?\n  http_token = @token.raw\n  header(\"Authorization\", \"Bearer #{http_token}\")\nelse\n  http_basic = Base64.strict_encode64(\"#{@token.raw}:\")\n  header(\"Authorization\", \"Basic #{http_basic}\")\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^I use an expired authentication token$": {
+    "Code": "do\n@token = @bearer.tokens.first_or_create!({ account: @bearer.account })\n@token.regenerate!({ version: TOKEN_VERSIONS.sample })\n@token.update({ expiry: Time.current })\nheader(\"Authorization\", \"Bearer #{@token.raw}\")\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^I authenticate with my(?: license)? key$": {
+    "Code": "do\nif rand(0..1).zero?\n  http_key = @bearer.key\n  header(\"Authorization\", \"License #{http_key}\")\nelse\n  http_basic = Base64.strict_encode64(\"license:#{@bearer.key}\")\n  header(\"Authorization\", \"Basic #{http_basic}\")\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^I authenticate with an invalid key$": {
+    "Code": "do\nif rand(0..1).zero?\n  http_key = SecureRandom.hex\n  header(\"Authorization\", \"License #{http_key}\")\nelse\n  http_basic = Base64.strict_encode64(\"license:#{SecureRandom.hex}\")\n  header(\"Authorization\", \"Basic #{http_basic}\")\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\authentication_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" is (\\w+)$": {
+    "Code": "do\naccount = FindByAliasService.call(Account, { id: id, aliases: :slug })\ncustomer = create(:customer, :with_card)\nplan = account.plan\nif plan.nil?\n  plan = create(:plan)\nend\nsubscription = create(:subscription, { customer: customer.id, plan: plan.plan_id })\naccount.update({ plan: plan })\naccount.billing.update({ customer_id: customer.id, subscription_id: subscription.id, subscription_status: subscription.status, subscription_period_start: subscription.current_period_start, subscription_period_end: subscription.current_period_end, state: state })\ncase state.to_sym\nwhen :active\n  account.billing.update({ subscription_status: \"active\" })\nwhen :trialing\n  account.billing.update({ subscription_status: \"trialing\" })\nwhen :paused\n  account.billing.update({ subscription_id: nil })\nwhen :canceled\n  account.billing.update({ subscription_id: nil, subscription_period_start: nil, subscription_period_end: nil })\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account does have a card on file$": {
+    "Code": "do\n@billing.update({ card_brand: \"Visa\", card_last4: \"4242\", card_expiry: 2.years.from_now })\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account does not have a card on file$": {
+    "Code": "do\n@billing.update({ card_brand: nil, card_last4: nil, card_expiry: nil })\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" does have a card on file$": {
+    "Code": "do\naccount = FindByAliasService.call(Account, { id: id, aliases: :slug })\naccount.billing.update({ card_brand: \"Visa\", card_last4: \"4242\", card_expiry: 2.years.from_now })\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" does not have a card on file$": {
+    "Code": "do\naccount = FindByAliasService.call(Account, { id: id, aliases: :slug })\naccount.billing.update({ card_brand: nil, card_last4: nil, card_expiry: nil })\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^I have a valid payment token$": {
+    "Code": "do\n\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^I have a valid coupon$": {
+    "Code": "do\nStripeHelper.create_coupon({ id: \"COUPON_CODE\" })\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^I have a payment token with an? \"([^\\\"]*)\" error$": {
+    "Code": "do\nStripeHelper.prepare_card_error(case error\nwhen \"incorrect number\"\n  :incorrect_number\nwhen \"invalid number\"\n  :invalid_number\nwhen \"invalid expiry month\"\n  :invalid_expiry_month\nwhen \"invalid expiry year\"\n  :invalid_expiry_year\nwhen \"invalid cvc\"\n  :invalid_cvc\nwhen \"expired card\"\n  :expired_card\nwhen \"incorrect cvc\"\n  :incorrect_cvc\nwhen \"card declined\"\n  :card_declined\nwhen \"missing\"\n  :missing\nwhen \"processing error\"\n  :processing_error\nend, :new_customer)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^we are receiving Stripe webhook events$": {
+    "Code": "do\n@events = []\nallow_any_instance_of(Billings::CreateSubscriptionService).to(receive(:call) {\n  @events << :subscription_created\n})\nallow_any_instance_of(Billings::DeleteSubscriptionService).to(receive(:call) {\n  @events << :subscription_deleted\n})\nallow_any_instance_of(Billings::UpdateSubscriptionService).to(receive(:call) {\n  @events << :subscription_updated\n})\nallow_any_instance_of(Billings::CreateCustomerService).to(receive(:call) {\n  @events << :customer_created\n})\nallow_any_instance_of(Billings::DeleteCustomerService).to(receive(:call) {\n  @events << :customer_deleted\n})\nallow_any_instance_of(Billings::UpdateCustomerService).to(receive(:call) {\n  @events << :customer_updated\n})\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^there is an incoming \"([^\\\"]*)\" event(?: with an? \"([^\\\"]*)\" status)?$": {
+    "Code": "do\n@plan = create(:plan)\n@customer = create(:customer)\n@subscription = create(:subscription, { customer: @customer.id, plan: @plan.plan_id })\n@account = create(:account)\n@billing = create(:billing, { account: @account, customer_id: @customer.id, subscription_id: @subscription.id, subscription_status: @subscription.status, subscription_period_start: @subscription.current_period_start, subscription_period_end: @subscription.current_period_end })\n@event = StripeMock.mock_webhook_event(type, Proc.new {\n  overrides = case type\n  when /^customer.(\\w+)$/\n    { subscription: @subscription.id, id: @customer.id }\n  when /^customer\\.subscription\\.(\\w)+$/\n    { customer: @customer.id, id: @subscription.id }\n  else\n    { subscription: @subscription.id, customer: @customer.id }\n  end\n  if status\n    overrides.merge!({ status: status })\n  end\n  overrides\n}.call)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^there is an incoming \"([^\\\"]*)\" event with a new plan$": {
+    "Code": "do\n@plan = create(:plan)\n@customer = create(:customer)\n@subscription = create(:subscription, { customer: @customer.id, plan: @plan.plan_id })\n@account = create(:account)\n@billing = create(:billing, { account: @account, customer_id: @customer.id, subscription_id: @subscription.id, subscription_status: @subscription.status, subscription_period_start: @subscription.current_period_start, subscription_period_end: @subscription.current_period_end })\n@event = StripeMock.mock_webhook_event(event_type, Proc.new {\n  { customer: @customer.id, id: @subscription.id, items: [{ plan: { id: @plan.plan_id } }] }\n}.call)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account doesn't have a subscription$": {
+    "Code": "do\n@billing.update({ subscription_id: nil, subscription_status: nil, subscription_period_start: nil, subscription_period_end: nil })\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account is in a \"([^\\\"]*)\" state$": {
+    "Code": "do\n@billing.update({ state: state })\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the event is received at \"\\/stripe\"$": {
+    "Code": "do\npost(\"//api.keygen.sh/#{@api_version}/stripe\", { id: @event.id }.to_json)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^a new \"([^\\\"]*)\" should be (\\w+)$": {
+    "Code": "do\nexpect(@events).to(include(\"#{type.underscore}_#{event}\".to_sym))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account should have a subscription$": {
+    "Code": "do\nexpect(@billing.reload.subscription_id).to(eq(@subscription.id))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account should not have a subscription$": {
+    "Code": "do\nexpect(@billing.reload.subscription_status).to_not(eq(@subscription.status))\nexpect(@billing.reload.subscription_id).to(eq(@subscription.id))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account should be in a \"([^\\\"]*)\" state$": {
+    "Code": "do\nexpect(@billing.reload.state).to(eq(state))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account should have a(?:n? (?:new|updated)) plan$": {
+    "Code": "do\nexpect(@account.reload.plan.plan_id).to(eq(@event.data.object.items.first.plan.id))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account should have a(?:n? (?:new|updated)) card$": {
+    "Code": "do\nexpect(@billing.reload.card.expiry).to(eq(DateTime.new(@event.data.object.exp_year, @event.data.object.exp_month)))\nexpect(@billing.reload.card.last4).to(eq(@event.data.object.last4))\nexpect(@billing.reload.card.brand).to(eq(@event.data.object.brand))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account should contain (\\d+) \"(paid|unpaid)\" receipts?$": {
+    "Code": "do\nexpect(@billing.receipts.send(status).count).to(be(count.to_i))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account should be charged$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"relationships\").[](\"billing\").[](\"data\")).to_not(be_empty)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^the account should not be charged$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"relationships\").[](\"billing\").[](\"data\")).to(be_empty)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\billing_steps.rb"
+  },
+  "^I use API version {string}$": {
+    "Code": "do\nheader(\"Keygen-Version\", version)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I use user agent {string}$": {
+    "Code": "do\nheader(\"User-Agent\", ua)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send and accept JSON$": {
+    "Code": "do\nheader(\"Content-Type\", \"application/vnd.api+json\")\nheader(\"Accept\", \"application/vnd.api+json\")\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send and accept HTML$": {
+    "Code": "do\nheader(\"Content-Type\", \"text/html\")\nheader(\"Accept\", \"text/html\")\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send and accept XML$": {
+    "Code": "do\nheader(\"Content-Type\", \"application/xml\")\nheader(\"Accept\", \"application/xml\")\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send and accept binary$": {
+    "Code": "do\nheader(\"Content-Type\", \"application/octet-stream\")\nheader(\"Accept\", \"*/*\")\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^time is frozen (\\d+) (\\w+) into the future$": {
+    "Code": "do\ntravel_to(duration_number.to_i.send(duration_word).from_now)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^time is frozen at \"([^\\\"]*)\"$": {
+    "Code": "do\ntravel_to(t)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^time is unfrozen$": {
+    "Code": "do\ntravel_back\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send a GET request to \"([^\\\"]*)\"$": {
+    "Code": "do\npath = parse_path_placeholders(path, { account: @account, bearer: @bearer, crypt: @crypt })\ncase /\\/accounts\\/(?<account>[^?#\\/]+)/.match(path)\nin {account: id} if Keygen.singleplayer? then\n  account = FindByAliasService.call(Account, { id: id, aliases: :slug }) rescue nil\n  stub_env(\"KEYGEN_ACCOUNT_ID\", account&.id)\nelse\nend\nif path.starts_with?(\"//\")\n  get(path)\nelse\n  get(\"//api.keygen.sh/#{@api_version}/#{path.sub(/^\\//, \"\")}\")\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send a POST request to \"([^\\\"]*)\"$": {
+    "Code": "do\npath = parse_path_placeholders(path, { account: @account, bearer: @bearer, crypt: @crypt })\ncase /\\/accounts\\/(?<account>[^?#\\/]+)/.match(path)\nin {account: id} if Keygen.singleplayer? then\n  account = FindByAliasService.call(Account, { id: id, aliases: :slug }) rescue nil\n  stub_env(\"KEYGEN_ACCOUNT_ID\", account&.id)\nelse\nend\npost(\"//api.keygen.sh/#{@api_version}/#{path.sub(/^\\//, \"\")}\")\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send a PUT request to \"([^\\\"]*)\"$": {
+    "Code": "do\npath = parse_path_placeholders(path, { account: @account, bearer: @bearer, crypt: @crypt })\ncase /\\/accounts\\/(?<account>[^?#\\/]+)/.match(path)\nin {account: id} if Keygen.singleplayer? then\n  account = FindByAliasService.call(Account, { id: id, aliases: :slug }) rescue nil\n  stub_env(\"KEYGEN_ACCOUNT_ID\", account&.id)\nelse\nend\nput(\"//api.keygen.sh/#{@api_version}/#{path.sub(/^\\//, \"\")}\")\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send a PATCH request to \"([^\\\"]*)\"$": {
+    "Code": "do\npath = parse_path_placeholders(path, { account: @account, bearer: @bearer, crypt: @crypt })\ncase /\\/accounts\\/(?<account>[^?#\\/]+)/.match(path)\nin {account: id} if Keygen.singleplayer? then\n  account = FindByAliasService.call(Account, { id: id, aliases: :slug }) rescue nil\n  stub_env(\"KEYGEN_ACCOUNT_ID\", account&.id)\nelse\nend\npatch(\"//api.keygen.sh/#{@api_version}/#{path.sub(/^\\//, \"\")}\")\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send a POST request to \"([^\\\"]*)\" with the following:$": {
+    "Code": "do\npath = parse_path_placeholders(path, { account: @account, bearer: @bearer, crypt: @crypt })\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\ncase /\\/accounts\\/(?<account>[^?#\\/]+)/.match(path)\nin {account: id} if Keygen.singleplayer? then\n  account = FindByAliasService.call(Account, { id: id, aliases: :slug }) rescue nil\n  stub_env(\"KEYGEN_ACCOUNT_ID\", account&.id)\nelse\nend\npost(\"//api.keygen.sh/#{@api_version}/#{path.sub(/^\\//, \"\")}\", body)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send a POST request to \"([^\\\"]*)\" with the following badly encoded data:$": {
+    "Code": "do\npath = parse_path_placeholders(path, { account: @account, bearer: @bearer, crypt: @crypt })\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\ncase /\\/accounts\\/(?<account>[^?#\\/]+)/.match(path)\nin {account: id} if Keygen.singleplayer? then\n  account = FindByAliasService.call(Account, { id: id, aliases: :slug }) rescue nil\n  stub_env(\"KEYGEN_ACCOUNT_ID\", account&.id)\nelse\nend\npost(\"//api.keygen.sh/#{@api_version}/#{path.sub(/^\\//, \"\")}\", body.encode!(\"CP1252\"))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send a PATCH request to \"([^\\\"]*)\" with the following:$": {
+    "Code": "do\npath = parse_path_placeholders(path, { account: @account, bearer: @bearer, crypt: @crypt })\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\ncase /\\/accounts\\/(?<account>[^?#\\/]+)/.match(path)\nin {account: id} if Keygen.singleplayer? then\n  account = FindByAliasService.call(Account, { id: id, aliases: :slug }) rescue nil\n  stub_env(\"KEYGEN_ACCOUNT_ID\", account&.id)\nelse\nend\npatch(\"//api.keygen.sh/#{@api_version}/#{path.sub(/^\\//, \"\")}\", body)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send a PUT request to \"([^\\\"]*)\" with the following:$": {
+    "Code": "do\npath = parse_path_placeholders(path, { account: @account, bearer: @bearer, crypt: @crypt })\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\ncase /\\/accounts\\/(?<account>[^?#\\/]+)/.match(path)\nin {account: id} if Keygen.singleplayer? then\n  account = FindByAliasService.call(Account, { id: id, aliases: :slug }) rescue nil\n  stub_env(\"KEYGEN_ACCOUNT_ID\", account&.id)\nelse\nend\nput(\"//api.keygen.sh/#{@api_version}/#{path.sub(/^\\//, \"\")}\", body)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^I send a DELETE request to \"([^\\\"]*)\" with the following:$": {
+    "Code": "do\npath = parse_path_placeholders(path, { account: @account, bearer: @bearer, crypt: @crypt })\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\ncase /\\/accounts\\/(?<account>[^?#\\/]+)/.match(path)\nin {account: id} if Keygen.singleplayer? then\n  account = FindByAliasService.call(Account, { id: id, aliases: :slug }) rescue nil\n  stub_env(\"KEYGEN_ACCOUNT_ID\", account&.id)\nelse\nend\ndelete(\"//api.keygen.sh/#{@api_version}/#{path.sub(/^\\//, \"\")}\", body)\ndrain_async_destroy_jobs\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^sidekiq should (?:have|process) (\\d+) \"([^\\\"]*)\" jobs?(?: queued in ([.\\d]+ \\w+))?$": {
+    "Code": "do\nworker_name = case worker_name\nwhen \"metric\"\n  \"record_metric_worker\"\nwhen \"request-log\"\n  \"request_log_worker\"\nwhen \"event-log\"\n  \"event_log_worker\"\nwhen \"event-notification\"\n  \"event_notification_worker\"\nwhen \"machine-heartbeat\"\n  \"machine_heartbeat_worker\"\nwhen \"process-heartbeat\"\n  \"process_heartbeat_worker\"\nelse\n  \"#{worker_name.singularize.underscore}_worker\"\nend\nif Keygen.ce? && worker_name.in?([\"request_log_worker\", \"event_log_worker\"])\n  next\nend\ncase worker_name\nwhen \"webhook_worker\"\n  CreateWebhookEventsWorker.drain\nend\nworker_class = worker_name.classify.constantize\nworker_count = worker_class.jobs.size\nexpect(worker_count).to(eq(expected_count.to_i))\ncase worker_name\nwhen \"initialize_billing_worker\"\n  InitializeBillingWorker.drain\nwhen \"event_notification_worker\"\n  EventNotificationWorker.drain\nwhen \"event_log_worker\"\n  EventLogWorker.drain\nwhen \"touch_license_worker\"\n  TouchLicenseWorker.drain\nend\nunless queued_at.present?\n  next\nend\njob = worker_class.jobs.last\n(n, m) = queued_at.split(\" \")\ndt = n.to_f.send(m)\nt1 = job.[](\"at\")\nt2 = dt.from_now.to_f\ncase m\nwhen \"seconds\", \"minutes\"\n  expect(t1).to(be_within(3.seconds).of(t2))\nelse\n  expect(t1).to(be_within(1.minute).of(t2))\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\worker_steps.rb"
+  },
+  "^the (?:account|user) should receive an? \"([^\\\"]*)\" email$": {
+    "Code": "do\nreceived_any = Sidekiq::Queues.[](\"mailers\").any? { |job,|\n  job.[](\"args\").first.[](\"arguments\").include?(mailer.underscore.parameterize({ separator: \"_\" }))\n}\nexpect(received_any).to(be(true))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\worker_steps.rb"
+  },
+  "^the (?:account|user) should not receive an? \"([^\\\"]*)\" email$": {
+    "Code": "do\nreceived_any = Sidekiq::Queues.[](\"mailers\").any? { |job,|\n  job.[](\"args\").first.[](\"arguments\").include?(mailer.underscore.parameterize({ separator: \"_\" }))\n}\nexpect(received_any).to(be(false))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\worker_steps.rb"
+  }
 }

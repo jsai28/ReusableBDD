@@ -21,14 +21,22 @@ def find_step_definition_files(directory: str, file_type: str=".rb") -> List[str
     return step_definition_files
 
 def has_step_definitions(file_path: str) -> bool:
-    pattern = re.compile(r'^(Given|When|Then|And)\s*\(', re.IGNORECASE)
+    patterns = [
+        r'^(Given|When|Then|And) "',
+        r'^(Given|When|Then|And)\s*\(',
+        r'^When\("I (run|type|close|pipe|stop|terminate|wait|send|look) ',
+        r'^Then\s*\(\/\^\(\d+\) (should|should not|should contain|should not contain|should be|should not be|should match|should not match)',
+        r'^Given\s*\(\/\^\(\d+\) (aruba|default|wait)',
+    ]
+    compiled_patterns = [re.compile(pattern, re.IGNORECASE) for pattern in patterns]
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             for line in file:
-                if pattern.search(line):
+                if any(pattern.search(line) for pattern in compiled_patterns):
                     return True
     except UnicodeDecodeError:
         print(f"Skipping file {file_path} due to UnicodeDecodeError")
+    
     return False
 
 if __name__ == "__main__":
