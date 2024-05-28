@@ -1,6 +1,7 @@
 from typing import List
 import subprocess
 import json
+from step_finder import find_step_definition_files
 
 def parse_ruby_code(file_path):
     try:
@@ -18,19 +19,20 @@ def parse_ruby_code(file_path):
         print(f"Error decoding JSON output: {e}")
         return None
 
-ruby_ast = parse_ruby_code('./repos/cucumber-ruby/features/lib/step_definitions/command_line_steps.rb')
+def step_parser(directory: str, file_type: str=".rb", output_dir="./data") -> None:
+    step_definition_files = find_step_definition_files(directory, file_type)
+    ruby_script = './parse.rb'
 
-""" if ruby_ast:
-    with open('ruby_ast_cucumber.json', 'w') as f:
-        json.dump(ruby_ast, f, indent=2)
+    subprocess.run(['ruby', ruby_script] + step_definition_files + [output_dir])
 
-print("AST saved to 'ruby_ast_cucumber.json'") """
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description='Parse step definitions in Ruby files.')
+    parser.add_argument('directory', type=str, help='Directory containing Ruby files')
+    parser.add_argument('--file-type', type=str, default='.rb', help='File type of Ruby files (default: .rb)')
+    parser.add_argument('--output-dir', type=str, default='./data', help='Output directory for parsed files (default: ./data)')
+    args = parser.parse_args()
 
-""" # inputs
-directory = "./repos/vagrant-exec"
-file_type = ".rb"
-
-
-step_definition_files = find_step_definition_files(directory, file_type) """
+    step_parser(args.directory, args.file_type, args.output_dir)
 
 
