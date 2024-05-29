@@ -147,6 +147,10 @@
     "Code": "do\nheader(\"Keygen-Version\", version)\nend",
     "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
   },
+  "^I use API version \"(.*)\"$": {
+    "Code": "do\nheader(\"Keygen-Version\", version)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
   "^I use user agent {string}$": {
     "Code": "do\nheader(\"User-Agent\", ua)\nend",
     "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
@@ -215,6 +219,234 @@
     "Code": "do\npath = parse_path_placeholders(path, { account: @account, bearer: @bearer, crypt: @crypt })\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\ncase /\\/accounts\\/(?<account>[^?#\\/]+)/.match(path)\nin {account: id} if Keygen.singleplayer? then\n  account = FindByAliasService.call(Account, { id: id, aliases: :slug }) rescue nil\n  stub_env(\"KEYGEN_ACCOUNT_ID\", account&.id)\nelse\nend\ndelete(\"//api.keygen.sh/#{@api_version}/#{path.sub(/^\\//, \"\")}\", body)\ndrain_async_destroy_jobs\nend",
     "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
   },
+  "^I send a DELETE request to \"([^\\\"]*)\"$": {
+    "Code": "do\npath = parse_path_placeholders(path, { account: @account, bearer: @bearer, crypt: @crypt })\ncase /\\/accounts\\/(?<account>[^?#\\/]+)/.match(path)\nin {account: id} if Keygen.singleplayer? then\n  account = FindByAliasService.call(Account, { id: id, aliases: :slug }) rescue nil\n  stub_env(\"KEYGEN_ACCOUNT_ID\", account&.id)\nelse\nend\ndelete(\"//api.keygen.sh/#{@api_version}/#{path.sub(/^\\//, \"\")}\")\ndrain_async_destroy_jobs\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response status should (?:contain|be) \"([^\\\"]*)\"$": {
+    "Code": "do\nexpect(last_response.status).to(eq(status.to_i))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response status should not (?:contain|be) \"([^\\\"]*)\"$": {
+    "Code": "do\nexpect(last_response.status).to_not(eq(status.to_i))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should include the following:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nexpect(json).to(include(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should be the following:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nexpect(json).to(eq(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an array (?:with|of) (\\d+) \"([^\\\"]*)\"$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nmatches = json.[](\"data\").select {\n  _1.[](\"type\") == resource.pluralize\n}\nexpect(matches.size).to(eq(count.to_i))\nif @account.present?\n  json.[](\"data\").all? { |data,|\n    account_id = data.[](\"relationships\").[](\"account\").[](\"data\").[](\"id\")\n    expect(account_id).to(eq(@account.id))\n  }\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an array (?:with|of) (\\d+) \"([^\\\"]*)\" with the following:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nprops = JSON.parse(body)\nmatches = json.[](\"data\").select { |data,|\n  data.[](\"type\") == resource.pluralize && props <= data\n}\nexpect(matches.count).to(eq(count.to_i))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an array (?:with|of) (\\d+) \"([^\\\"]*)\" with the following attributes:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nattrs = JSON.parse(body)\nmatches = json.[](\"data\").select { |data,|\n  data.[](\"type\") == resource.pluralize && attrs <= data.[](\"attributes\")\n}\nexpect(matches.count).to(eq(count.to_i))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an array (?:with|of) (\\d+) \"([^\\\"]*)\" with the following relationships:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nrels = JSON.parse(body)\nmatches = json.[](\"data\").select { |data,|\n  data.[](\"type\") == resource.pluralize && rels <= data.[](\"relationships\")\n}\nexpect(matches.count).to(eq(count.to_i))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an array of \"([^\\\"]*)\"$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\njson.[](\"data\").each { |d,|\n  expect(d.[](\"type\")).to(eq(name.pluralize))\n}\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an empty array$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").empty?).to(be(true))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\"$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(name.pluralize))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should not (?:contain|be) an? \"([^\\\"]*)\"$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nresource = json.[](\"data\")\nif resource.present?\n  expect(resource.[](\"type\")).to_not(eq(name.pluralize))\nelse\n  expect(resource).to(eq(nil))\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should contain an included \"([^\\\"]*)\"$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\ninlc = json.[](\"included\")\nexpect(incl).to(be_an(Array))\nres = incl&.any? { |i,|\n  i.[](\"type\") == name.pluralize\n}\nexpect(res).to(be(true))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should contain an included \"([^\\\"]*)\" with the following relationships:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nincl = json.[](\"included\")\nexpect(incl).to(be_an(Array))\nres = incl&.any? { |i,|\n  i.[](\"type\") == name.pluralize\n}\nexpect(res).to(be(true))\nrecord = incl.first\nrels = record.[](\"relationships\")\nexpect(rels).to(include(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with (?:(?:the|an?) )?(\\w+) \"([^\\\"]*)\"$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\ncase attribute\nwhen \"id\"\n  expect(json.[](\"data\").[](\"id\")).to(eq(value.to_s))\nelse\n  expect(json.[](\"data\").[](\"attributes\").[](attribute).to_s).to(eq(value.to_s))\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with an? (\\w+) that is not \"([^\\\"]*)\"$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\ncase attribute\nwhen \"id\"\n  expect(json.[](\"data\").[](\"id\")).to_not(eq(value.to_s))\nelse\n  expect(json.[](\"data\").[](\"attributes\").[](attribute).to_s).to_not(eq(value.to_s))\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with (?:the|an?) (?:encrypted|signed|JWT) key (?:of )?(?:\"([^\\\"]*)\"|'([^\\']*)') using \"([^\\\"]*)\"$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nvalue = v1 || v2\ncase scheme\nwhen \"RSA_2048_PKCS1_ENCRYPT\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  key = Base64.urlsafe_decode64(json.[](\"data\").[](\"attributes\").[](\"key\").to_s)\n  dec = pub.public_decrypt(key) rescue nil\n  expect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\n  expect(dec).to(eq(value.to_s))\nwhen \"RSA_2048_PKCS1_SIGN\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  digest = OpenSSL::Digest::SHA256.new\n  (encoded_key, encoded_sig) = json.[](\"data\").[](\"attributes\").[](\"key\").to_s.split(\".\")\n  key = Base64.urlsafe_decode64(encoded_key)\n  sig = Base64.urlsafe_decode64(encoded_sig)\n  val = value.to_s\n  res = pub.verify(digest, sig, key) rescue false\n  expect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\n  expect(key).to(eq(val))\n  expect(res).to(be(true))\nwhen \"RSA_2048_PKCS1_PSS_SIGN\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  digest = OpenSSL::Digest::SHA256.new\n  (encoded_key, encoded_sig) = json.[](\"data\").[](\"attributes\").[](\"key\").to_s.split(\".\")\n  key = Base64.urlsafe_decode64(encoded_key)\n  sig = Base64.urlsafe_decode64(encoded_sig)\n  val = value.to_s\n  res = pub.verify_pss(digest, sig, key, { salt_length: :auto, mgf1_hash: \"SHA256\" }) rescue false\n  expect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\n  expect(key).to(eq(val))\n  expect(res).to(be(true))\nwhen \"RSA_2048_JWT_RS256\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  jwt = json.[](\"data\").[](\"attributes\").[](\"key\").to_s\n  dec = JWT.decode(jwt, pub, true, { algorithm: \"RS256\" })\n  payload = JSON.parse(value)\n  (val, alg) = dec\n  expect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\n  expect(alg).to(eq({ \"alg\" => \"RS256\" }))\n  expect(val).to(eq(payload))\nwhen \"RSA_2048_PKCS1_SIGN_V2\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  digest = OpenSSL::Digest::SHA256.new\n  (data, encoded_sig) = json.[](\"data\").[](\"attributes\").[](\"key\").to_s.split(\".\")\n  (prefix, encoded_key) = data.split(\"/\")\n  key = Base64.urlsafe_decode64(encoded_key)\n  sig = Base64.urlsafe_decode64(encoded_sig)\n  val = value.to_s\n  res = pub.verify(digest, sig, \"key/#{encoded_key}\") rescue false\n  expect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\n  expect(prefix).to(eq(\"key\"))\n  expect(key).to(eq(val))\n  expect(res).to(be(true))\nwhen \"RSA_2048_PKCS1_PSS_SIGN_V2\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  digest = OpenSSL::Digest::SHA256.new\n  (data, encoded_sig) = json.[](\"data\").[](\"attributes\").[](\"key\").to_s.split(\".\")\n  (prefix, encoded_key) = data.split(\"/\")\n  key = Base64.urlsafe_decode64(encoded_key)\n  sig = Base64.urlsafe_decode64(encoded_sig)\n  val = value.to_s\n  res = pub.verify_pss(digest, sig, \"key/#{encoded_key}\", { salt_length: :auto, mgf1_hash: \"SHA256\" }) rescue false\n  expect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\n  expect(prefix).to(eq(\"key\"))\n  expect(key).to(eq(val))\n  expect(res).to(be(true))\nwhen \"ED25519_SIGN\"\n  verify_key = Ed25519::VerifyKey.new([@account.ed25519_public_key].pack(\"H*\"))\n  (signing_data, encoded_sig) = json.dig(\"data\", \"attributes\", \"key\").to_s.split(\".\")\n  (signing_prefix, encoded_key) = signing_data.split(\"/\")\n  key = Base64.urlsafe_decode64(encoded_key)\n  sig = Base64.urlsafe_decode64(encoded_sig)\n  val = value.to_s\n  ok = verify_key.verify(sig, signing_data)\n  expect(json.dig(\"data\", \"type\")).to(eq(resource.pluralize))\n  expect(signing_prefix).to(eq(\"key\"))\n  expect(key).to(eq(val))\n  expect(ok).to(be(true))\nelse\n  raise(\"unknown encryption scheme\")\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with (?:the|an?) encoded (\\w+) (?:of )?\"([^\\\"]*)\" using \"([^\\\"]*)\"$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\ncase scheme\nwhen \"BASE64\"\n  dec = Base64.urlsafe_decode64(json.[](\"data\").[](\"attributes\").[](attribute).to_s)\n  expect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\n  expect(dec).to(eq(value.to_s))\nelse\n  raise(\"unknown encoding scheme\")\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with (?:an?) (\\w+) within seconds of \"([^\\\"]*)\"$": {
+    "Code": "do\nvalue = parse_placeholders(value, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nt1 = json.[](\"data\").[](\"attributes\").[](attribute)&.to_time\nt2 = value&.to_time\nexpect(t1).to(be_within(3.seconds).of(t2))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with a nil (\\w+)$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\").[](\"attributes\").[](attribute)).to(eq(nil))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" without an? (\\w+)$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\").[](\"attributes\").[](attribute)).to(eq(nil))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with an? (\\w+)(?: that is not nil)?$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\").[](\"attributes\").[](attribute)).to_not(eq(nil))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" that (?:is|does|has) (\\w+)$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(name.pluralize).to(eq(json.[](\"data\").[](\"type\")))\nexpect(json.[](\"data\").[](\"attributes\").[](attribute)).to(be(true))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" that (?:is|does) not (\\w+)$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\").[](\"attributes\").[](attribute)).to(be(false))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" without an? \"([^\\\"]*)\" attribute$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\").[](\"attributes\").key?(attribute)).to(be(false))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with an? \"([^\\\"]*)\" attribute$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\").[](\"attributes\").key?(attribute)).to(be(true))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should be meta that contains a valid activation proof of the following dataset:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nexpected_dataset = JSON.parse(body)\nproof = json.dig(\"meta\", \"proof\")\n(data, encoded_sig) = proof.split(\".\")\n(prefix, encoded_dataset) = data.split(\"/\")\ndataset = JSON.parse(Base64.urlsafe_decode64(encoded_dataset))\nexpect(dataset).to(include(expected_dataset))\nexpect(prefix).to(eq(\"proof\"))\npub = OpenSSL::PKey::RSA.new(@account.public_key)\ndigest = OpenSSL::Digest::SHA256.new\nsig = Base64.urlsafe_decode64(encoded_sig)\nok = pub.verify(digest, sig, \"proof/#{encoded_dataset}\") rescue false\nexpect(ok).to(be(true))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should a \"license\" that contains a valid \"([^\\\"]*)\" key with the following dataset:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nresource_type = json.dig(\"data\", \"type\")\nencoded_key = json.dig(\"data\", \"attributes\", \"key\")\nexpected_dataset = JSON.parse(body)\nexpect(resource_type).to(eq(\"licenses\"))\ncase scheme\nwhen \"RSA_2048_PKCS1_ENCRYPT\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  encrypted_data = Base64.urlsafe_decode64(encoded_key)\n  decrypted_data = pub.public_decrypt(encrypted_data) rescue nil\n  dataset = JSON.parse(decrypted_data)\n  expect(dataset).to(include(expected_dataset))\nwhen \"RSA_2048_PKCS1_SIGN\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  digest = OpenSSL::Digest::SHA256.new\n  (encoded_dataset, encoded_sig) = encoded_key.split(\".\")\n  dataset = JSON.parse(Base64.urlsafe_decode64(encoded_dataset))\n  expect(dataset).to(include(expected_dataset))\n  signing_data = Base64.urlsafe_decode64(encoded_dataset)\n  sig = Base64.urlsafe_decode64(encoded_sig)\n  ok = pub.verify(digest, sig, signing_data) rescue false\n  expect(ok).to(be(true))\nwhen \"RSA_2048_PKCS1_PSS_SIGN\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  digest = OpenSSL::Digest::SHA256.new\n  (encoded_dataset, encoded_sig) = encoded_key.split(\".\")\n  dataset = JSON.parse(Base64.urlsafe_decode64(encoded_dataset))\n  expect(dataset).to(include(expected_dataset))\n  signing_data = Base64.urlsafe_decode64(encoded_dataset)\n  sig = Base64.urlsafe_decode64(encoded_sig)\n  ok = pub.verify_pss(digest, sig, signing_data, { salt_length: :auto, mgf1_hash: \"SHA256\" }) rescue false\n  expect(ok).to(be(true))\nwhen \"RSA_2048_JWT_RS256\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  jwt = JWT.decode(encoded_key, pub, true, { algorithm: \"RS256\" })\n  expect(jwt).to_not(be_nil)\n  (dataset, alg) = jwt\n  expect(alg).to(eq({ \"alg\" => \"RS256\" }))\n  expect(dataset).to(include(expected_dataset))\nwhen \"RSA_2048_PKCS1_SIGN_V2\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  digest = OpenSSL::Digest::SHA256.new\n  (signing_data, encoded_sig) = encoded_key.split(\".\")\n  (prefix, encoded_dataset) = signing_data.split(\"/\")\n  dataset = JSON.parse(Base64.urlsafe_decode64(encoded_dataset))\n  expect(dataset).to(include(expected_dataset))\n  expect(prefix).to(eq(\"key\"))\n  sig = Base64.urlsafe_decode64(encoded_sig)\n  ok = pub.verify(digest, sig, \"key/#{encoded_dataset}\") rescue false\n  expect(ok).to(be(true))\nwhen \"RSA_2048_PKCS1_PSS_SIGN_V2\"\n  pub = OpenSSL::PKey::RSA.new(@account.public_key)\n  digest = OpenSSL::Digest::SHA256.new\n  (signing_data, encoded_sig) = encoded_key.split(\".\")\n  (prefix, encoded_dataset) = signing_data.split(\"/\")\n  dataset = JSON.parse(Base64.urlsafe_decode64(encoded_dataset))\n  expect(dataset).to(include(expected_dataset))\n  expect(prefix).to(eq(\"key\"))\n  sig = Base64.urlsafe_decode64(encoded_sig)\n  ok = pub.verify_pss(digest, sig, \"key/#{encoded_dataset}\", { salt_length: :auto, mgf1_hash: \"SHA256\" }) rescue false\n  expect(ok).to(be(true))\nwhen \"ED25519_SIGN\"\n  verify_key = Ed25519::VerifyKey.new([@account.ed25519_public_key].pack(\"H*\"))\n  (signing_data, encoded_sig) = json.dig(\"data\", \"attributes\", \"key\").to_s.split(\".\")\n  (signing_prefix, encoded_dataset) = signing_data.split(\"/\")\n  dataset = JSON.parse(Base64.urlsafe_decode64(encoded_dataset))\n  expect(dataset).to(include(expected_dataset))\n  expect(signing_prefix).to(eq(\"key\"))\n  sig = Base64.urlsafe_decode64(encoded_sig)\n  ok = verify_key.verify(sig, signing_data)\n  expect(ok).to(be(true))\nelse\n  raise(\"unknown encryption scheme\")\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with the following \"([^\\\"]*)\":$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\").[](\"attributes\").[](attribute)).to(eq(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with the following data:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\")).to(include(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with the following attributes:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\").[](\"attributes\")).to(include(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with the following relationships:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\").[](\"relationships\")).to(include(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with the following meta:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\").[](\"meta\")).to(include(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with no meta$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"data\").[](\"type\")).to(eq(resource.pluralize))\nexpect(json.[](\"data\").key?(\"meta\")).to(be(false))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) meta with the following:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nexpect(json.[](\"meta\")).to(eq(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) meta which includes the following:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nexpect(json.[](\"meta\")).to(include(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an array of (\\d+) errors?$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"errors\").size).to(eq(count.to_i))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an array of errors?$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nexpect(json.[](\"errors\").size).to(be >= 1)\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the (\\w+) error should have the following properties:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nerr = json.[](\"errors\").send(named_idx)\nexpect(err).to(include(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^an error should have the following properties:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nerrs = json.[](\"errors\")\nexpect(errs).to(include(include(JSON.parse(body))))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should contain the following links:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\njson = JSON.parse(last_response.body)\nexpect(json.[](\"links\")&.transform_values { |l,|\n  if l.is_a?(String)\n    URI.decode_www_form_component(l)\n  else\n    l\n  end\n}).to(include(JSON.parse(body)))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" without(?: an?)? \"([^\\\"]*)\" link$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nlinks = json.[](\"data\").[](\"links\") || {}\ntype = json.[](\"data\").[](\"type\")\nexpect(type).to(eq(resource.pluralize))\nexpect(links.key?(link)).to(be(false))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should (?:contain|be) an? \"([^\\\"]*)\" with(?: an?)? \"([^\\\"]*)\" link$": {
+    "Code": "do\njson = JSON.parse(last_response.body)\nlinks = json.[](\"data\").[](\"links\") || {}\ntype = json.[](\"data\").[](\"type\")\nexpect(type).to(eq(resource.pluralize))\nexpect(links.key?(link)).to(be(true))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response should contain the following headers:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\nheaders = JSON.parse(body)\nheaders.each { |key, value|\n  expect(last_response.headers.[](key)).to(eq(value&.strip))\n}\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response should contain the following raw headers:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\nheaders = body.split(/\\n/)\nheaders.each { |raw,|\n  (key, value) = raw.split(\":\")\n  expect(last_response.headers.[](key)).to(eq(value&.strip))\n}\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response should contain a valid(?: \"([^\\\"]+)\")? signature header for \"([^\\\"]+)\"$": {
+    "Code": "do\naccount = FindByAliasService.call(Account, { id: account_id, aliases: :slug })\nreq = last_request\nres = last_response\n\nbegin\n  expect(res.headers).to(have_key(\"X-Signature\"))\n  pub = OpenSSL::PKey::RSA.new(account.public_key)\n  digest = OpenSSL::Digest::SHA256.new\n  enc_sig = res.headers.[](\"X-Signature\")\n  sig = Base64.strict_decode64(enc_sig)\n  body = res.body.to_s\n  ok = pub.verify(digest, sig, body) rescue false\n  expect(ok).to(be(true))\nend\n\nbegin\n  expect(res.headers).to(have_key(\"Keygen-Signature\"))\n  attrs = SignatureHelper.parse(res.headers.[](\"Keygen-Signature\"))\n  expect(attrs).to_not(eq(nil))\n  keyid = attrs.[](:keyid)\n  algorithm = attrs.[](:algorithm)\n  signature = attrs.[](:signature)\n  headers = attrs.[](:headers)\n  if expected_algorithm.present?\n    expect(algorithm).to(eq(expected_algorithm))\n  else\n    expect(algorithm).to(satisfy { |v,|\n      [\"ed25519\", \"rsa-pss-sha256\", \"rsa-sha256\"].include?(v)\n    })\n  end\n  expect(keyid).to(eq(account.id))\n  expect(signature).to(be_a(String))\n  expect(headers).to(eq([\"(request-target)\", \"host\", \"date\", \"digest\"]))\n  sha256 = OpenSSL::Digest::SHA256.new\n  digest = sha256.digest(res.body)\n  enc = Base64.strict_encode64(digest)\n  expect(\"sha-256=#{enc}\").to(eq(res.headers.[](\"Digest\")))\n  ok = SignatureHelper.verify({ account: account, method: req.request_method, host: account.cname.presence || account.domain.presence || \"api.keygen.sh\", uri: req.fullpath, body: res.body, signature_algorithm: algorithm, signature_header: res.headers.[](\"Keygen-Signature\"), digest_header: res.headers.[](\"Digest\"), date_header: res.headers.[](\"Date\") })\n  expect(ok).to(be(true))\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response should be a \"([^\\\"]+)\" certificate$": {
+    "Code": "do\naccount = @account\nreq = last_request\nres = last_response\ncert = last_response.body\nexpect(cert).to(start_with(\"-----BEGIN #{type.upcase} FILE-----\\n\"))\nexpect(cert).to(end_with(\"-----END #{type.upcase} FILE-----\\n\"))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response should be a \"([^\\\"]+)\" certificate signed using \"([^\\\"]+)\"$": {
+    "Code": "do\naccount = @account\nreq = last_request\nres = last_response\ncert = last_response.body\nexpect(cert).to(start_with(\"-----BEGIN #{type.upcase} FILE-----\\n\"))\nexpect(cert).to(end_with(\"-----END #{type.upcase} FILE-----\\n\"))\npayload = cert.delete_prefix(\"-----BEGIN #{type.upcase} FILE-----\\n\").delete_suffix(\"-----END #{type.upcase} FILE-----\\n\")\nattrs = JSON.parse(Base64.decode64(payload))\nalg = attrs.fetch(\"alg\")\nenc = attrs.fetch(\"enc\")\nsig = attrs.fetch(\"sig\")\nexpect(alg).to(end_with(expected_alg))\nsigning_prefix = type.downcase\nsigning_data = \"#{signing_prefix}/#{enc}\"\nsig_bytes = Base64.strict_decode64(sig)\nok = false\ncase alg\nwhen /ed25519/\n  ed25519 = Ed25519::VerifyKey.new([account.ed25519_public_key].pack(\"H*\"))\n  ok = ed25519.verify(sig_bytes, signing_data) rescue false\nwhen /rsa-pss-sha256/\n  rsa = OpenSSL::PKey::RSA.new(account.public_key)\n  ok = rsa.verify_pss(OpenSSL::Digest::SHA256.new, sig_bytes, signing_data, { salt_length: :auto, mgf1_hash: \"SHA256\" }) rescue false\nwhen /rsa-sha256/\n  rsa = OpenSSL::PKey::RSA.new(account.public_key)\n  ok = rsa.verify(OpenSSL::Digest::SHA256.new, sig_bytes, signing_data) rescue false\nend\nexpect(ok).to(be(true))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response should be a \"([^\\\"]+)\" certificate with the following encoded data:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\nreq = last_request\nres = last_response\ncert = last_response.body\nexpect(cert).to(start_with(\"-----BEGIN #{type.upcase} FILE-----\\n\"))\nexpect(cert).to(end_with(\"-----END #{type.upcase} FILE-----\\n\"))\npayload = cert.delete_prefix(\"-----BEGIN #{type.upcase} FILE-----\\n\").delete_suffix(\"-----END #{type.upcase} FILE-----\\n\")\nattrs = JSON.parse(Base64.decode64(payload))\nenc = attrs.fetch(\"enc\")\ndata = JSON.parse(Base64.decode64(enc))\nactual_data = data.fetch(\"data\") {\n  nil\n}\nactual_meta = data.fetch(\"meta\") {\n  nil\n}\nactual_incl = data.fetch(\"included\") {\n  nil\n}\nexpected_json = JSON.parse(body)\nexpected_data = expected_json.fetch(\"data\") {\n  nil\n}\nexpected_meta = expected_json.fetch(\"meta\") {\n  nil\n}\nexpected_incl = expected_json.fetch(\"included\") {\n  nil\n}\nif expected_data.present?\n  expect(actual_data).to(deep_include(expected_data))\nend\nif expected_meta.present?\n  expect(actual_meta).to(deep_include(expected_meta))\nend\nif expected_incl.present?\n  expect(actual_incl).to(deep_include(*expected_incl))\nelse\n  expect(actual_incl).to(be_nil)\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response should be a \"([^\\\"]+)\" certificate with the following encrypted data:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\naccount = @account\nreq = last_request\nres = last_response\ncert = last_response.body\nexpect(cert).to(start_with(\"-----BEGIN #{type.upcase} FILE-----\\n\"))\nexpect(cert).to(end_with(\"-----END #{type.upcase} FILE-----\\n\"))\npayload = cert.delete_prefix(\"-----BEGIN #{type.upcase} FILE-----\\n\").delete_suffix(\"-----END #{type.upcase} FILE-----\\n\")\nattrs = JSON.parse(Base64.decode64(payload))\nenc = attrs.fetch(\"enc\")\nsecret = case type.downcase\nwhen \"license\"\n  account.licenses.first.key\nwhen \"machine\"\n  account.licenses.first.key + account.machines.first.fingerprint\nend\naes = OpenSSL::Cipher::AES256.new(:GCM)\naes.decrypt\nkey = OpenSSL::Digest::SHA256.digest(secret)\n(ciphertext, iv, tag) = enc.split(\".\").map {\n  Base64.strict_decode64(_1)\n}\naes.key=key\naes.iv=iv\naes.auth_tag=tag\naes.auth_data=\"\"\nplaintext = aes.update(ciphertext) + aes.final\ndata = JSON.parse(plaintext)\nactual_data = data.fetch(\"data\") {\n  nil\n}\nactual_meta = data.fetch(\"meta\") {\n  nil\n}\nactual_incl = data.fetch(\"included\") {\n  nil\n}\nexpected_json = JSON.parse(body)\nexpected_data = expected_json.fetch(\"data\") {\n  nil\n}\nexpected_meta = expected_json.fetch(\"meta\") {\n  nil\n}\nexpected_incl = expected_json.fetch(\"included\") {\n  nil\n}\nif expected_data.present?\n  expect(actual_data).to(deep_include(expected_data))\nend\nif expected_meta.present?\n  expect(actual_meta).to(deep_include(expected_meta))\nend\nif expected_incl.present?\n  expect(actual_incl).to(deep_include(*expected_incl))\nelse\n  expect(actual_incl).to(be_nil)\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should be a \"([^\\\"]+)\" with a certificate signed using \"([^\\\"]+)\"$": {
+    "Code": "do\naccount = @account\nreq = last_request\nres = last_response\njson = JSON.parse(last_response.body)\ncert = json.dig(\"data\", \"attributes\", \"certificate\")\ntype = json.dig(\"data\", \"type\")\nexpect(type).to(eq(resource_type.pluralize))\ntype = type.delete_suffix(\"-files\").singularize\nexpect(cert).to(start_with(\"-----BEGIN #{type.upcase} FILE-----\\n\"))\nexpect(cert).to(end_with(\"-----END #{type.upcase} FILE-----\\n\"))\npayload = cert.delete_prefix(\"-----BEGIN #{type.upcase} FILE-----\\n\").delete_suffix(\"-----END #{type.upcase} FILE-----\\n\")\nattrs = JSON.parse(Base64.decode64(payload))\nalg = attrs.fetch(\"alg\")\nenc = attrs.fetch(\"enc\")\nsig = attrs.fetch(\"sig\")\nexpect(alg).to(end_with(expected_alg))\nsigning_prefix = type.downcase\nsigning_data = \"#{signing_prefix}/#{enc}\"\nsig_bytes = Base64.strict_decode64(sig)\nok = false\ncase alg\nwhen /ed25519/\n  ed25519 = Ed25519::VerifyKey.new([account.ed25519_public_key].pack(\"H*\"))\n  ok = ed25519.verify(sig_bytes, signing_data) rescue false\nwhen /rsa-pss-sha256/\n  rsa = OpenSSL::PKey::RSA.new(account.public_key)\n  ok = rsa.verify_pss(OpenSSL::Digest::SHA256.new, sig_bytes, signing_data, { salt_length: :auto, mgf1_hash: \"SHA256\" }) rescue false\nwhen /rsa-sha256/\n  rsa = OpenSSL::PKey::RSA.new(account.public_key)\n  ok = rsa.verify(OpenSSL::Digest::SHA256.new, sig_bytes, signing_data) rescue false\nend\nexpect(ok).to(be(true))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should be a \"([^\\\"]+)\" with the following encoded certificate data:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\nreq = last_request\nres = last_response\njson = JSON.parse(last_response.body)\ncert = json.dig(\"data\", \"attributes\", \"certificate\")\ntype = json.dig(\"data\", \"type\")\nexpect(type).to(eq(resource_type.pluralize))\ntype = type.delete_suffix(\"-files\").singularize\nexpect(cert).to(start_with(\"-----BEGIN #{type.upcase} FILE-----\\n\"))\nexpect(cert).to(end_with(\"-----END #{type.upcase} FILE-----\\n\"))\npayload = cert.delete_prefix(\"-----BEGIN #{type.upcase} FILE-----\\n\").delete_suffix(\"-----END #{type.upcase} FILE-----\\n\")\nattrs = JSON.parse(Base64.decode64(payload))\nenc = attrs.fetch(\"enc\")\ndata = JSON.parse(Base64.decode64(enc))\nactual_data = data.fetch(\"data\") {\n  nil\n}\nactual_meta = data.fetch(\"meta\") {\n  nil\n}\nactual_incl = data.fetch(\"included\") {\n  nil\n}\nexpected_json = JSON.parse(body)\nexpected_data = expected_json.fetch(\"data\") {\n  nil\n}\nexpected_meta = expected_json.fetch(\"meta\") {\n  nil\n}\nexpected_incl = expected_json.fetch(\"included\") {\n  nil\n}\nif expected_data.present?\n  expect(actual_data).to(deep_include(expected_data))\nend\nif expected_meta.present?\n  expect(actual_meta).to(deep_include(expected_meta))\nend\nif expected_incl.present?\n  expect(actual_incl).to(deep_include(*expected_incl))\nelse\n  expect(actual_incl).to(be_nil)\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should be a \"([^\\\"]+)\" with the following encrypted certificate data:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\naccount = @account\nreq = last_request\nres = last_response\njson = JSON.parse(last_response.body)\ncert = json.dig(\"data\", \"attributes\", \"certificate\")\ntype = json.dig(\"data\", \"type\")\nexpect(type).to(eq(resource_type.pluralize))\ntype = type.delete_suffix(\"-files\").singularize\nexpect(cert).to(start_with(\"-----BEGIN #{type.upcase} FILE-----\\n\"))\nexpect(cert).to(end_with(\"-----END #{type.upcase} FILE-----\\n\"))\npayload = cert.delete_prefix(\"-----BEGIN #{type.upcase} FILE-----\\n\").delete_suffix(\"-----END #{type.upcase} FILE-----\\n\")\nattrs = JSON.parse(Base64.decode64(payload))\nenc = attrs.fetch(\"enc\")\nsecret = case type.downcase\nwhen \"license\"\n  license_id = json.dig(\"data\", \"relationships\", \"license\", \"data\", \"id\")\n  account.licenses.find(license_id).key\nwhen \"machine\"\n  license_id = json.dig(\"data\", \"relationships\", \"license\", \"data\", \"id\")\n  machine_id = json.dig(\"data\", \"relationships\", \"machine\", \"data\", \"id\")\n  account.licenses.find(license_id).key + account.machines.find(machine_id).fingerprint\nend\naes = OpenSSL::Cipher::AES256.new(:GCM)\naes.decrypt\nkey = OpenSSL::Digest::SHA256.digest(secret)\n(ciphertext, iv, tag) = enc.split(\".\").map {\n  Base64.strict_decode64(_1)\n}\naes.key=key\naes.iv=iv\naes.auth_tag=tag\naes.auth_data=\"\"\nplaintext = aes.update(ciphertext) + aes.final\ndata = JSON.parse(plaintext)\nactual_data = data.fetch(\"data\") {\n  nil\n}\nactual_meta = data.fetch(\"meta\") {\n  nil\n}\nactual_incl = data.fetch(\"included\") {\n  nil\n}\nexpected_json = JSON.parse(body)\nexpected_data = expected_json.fetch(\"data\") {\n  nil\n}\nexpected_meta = expected_json.fetch(\"meta\") {\n  nil\n}\nexpected_incl = expected_json.fetch(\"included\") {\n  nil\n}\nif expected_data.present?\n  expect(actual_data).to(deep_include(expected_data))\nend\nif expected_meta.present?\n  expect(actual_meta).to(deep_include(expected_meta))\nend\nif expected_incl.present?\n  expect(actual_incl).to(deep_include(*expected_incl))\nelse\n  expect(actual_incl).to(be_nil)\nend\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should be an HTML document without the following xpaths:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\ndoc = Nokogiri::HTML.parse(last_response.body)\nxpaths = body.split(\"\\n\")\nxpaths.each { |xpath,|\n  res = doc.search(xpath)\n  expect(res).to(be_empty, <<-HEREDOC)\nexpected XPath #{xpath} to not exist in document:\n\n#{doc.to_s.indent(2)}\n  HEREDOC\n}\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the response body should be an HTML document with the following xpaths:$": {
+    "Code": "do\nbody = parse_placeholders(body, { account: @account, bearer: @bearer, crypt: @crypt })\ndoc = Nokogiri::HTML.parse(last_response.body)\nxpaths = body.split(\"\\n\")\nxpaths.each { |xpath,|\n  res = doc.search(xpath)\n  expect(res).to_not(be_empty, <<-HEREDOC)\nexpected XPath #{xpath} to exist in document:\n\n#{doc.to_s.indent(2)}\n  HEREDOC\n}\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
+  "^the JSON data should be sorted by \"([^\\\"]+)\"$": {
+    "Code": "do\ndata = JSON.parse(last_response.body).fetch(\"data\")\nexpect(data).to(eq(data.sort_by {\n  _1.dig(*key.split(\".\"))\n}.reverse))\nend",
+    "File": "./repos/keygen-api\\features\\step_definitions\\request_steps.rb"
+  },
   "^sidekiq should (?:have|process) (\\d+) \"([^\\\"]*)\" jobs?(?: queued in ([.\\d]+ \\w+))?$": {
     "Code": "do\nworker_name = case worker_name\nwhen \"metric\"\n  \"record_metric_worker\"\nwhen \"request-log\"\n  \"request_log_worker\"\nwhen \"event-log\"\n  \"event_log_worker\"\nwhen \"event-notification\"\n  \"event_notification_worker\"\nwhen \"machine-heartbeat\"\n  \"machine_heartbeat_worker\"\nwhen \"process-heartbeat\"\n  \"process_heartbeat_worker\"\nelse\n  \"#{worker_name.singularize.underscore}_worker\"\nend\nif Keygen.ce? && worker_name.in?([\"request_log_worker\", \"event_log_worker\"])\n  next\nend\ncase worker_name\nwhen \"webhook_worker\"\n  CreateWebhookEventsWorker.drain\nend\nworker_class = worker_name.classify.constantize\nworker_count = worker_class.jobs.size\nexpect(worker_count).to(eq(expected_count.to_i))\ncase worker_name\nwhen \"initialize_billing_worker\"\n  InitializeBillingWorker.drain\nwhen \"event_notification_worker\"\n  EventNotificationWorker.drain\nwhen \"event_log_worker\"\n  EventLogWorker.drain\nwhen \"touch_license_worker\"\n  TouchLicenseWorker.drain\nend\nunless queued_at.present?\n  next\nend\njob = worker_class.jobs.last\n(n, m) = queued_at.split(\" \")\ndt = n.to_f.send(m)\nt1 = job.[](\"at\")\nt2 = dt.from_now.to_f\ncase m\nwhen \"seconds\", \"minutes\"\n  expect(t1).to(be_within(3.seconds).of(t2))\nelse\n  expect(t1).to(be_within(1.minute).of(t2))\nend\nend",
     "File": "./repos/keygen-api\\features\\step_definitions\\worker_steps.rb"
@@ -226,5 +458,269 @@
   "^the (?:account|user) should not receive an? \"([^\\\"]*)\" email$": {
     "Code": "do\nreceived_any = Sidekiq::Queues.[](\"mailers\").any? { |job,|\n  job.[](\"args\").first.[](\"arguments\").include?(mailer.underscore.parameterize({ separator: \"_\" }))\n}\nexpect(received_any).to(be(false))\nend",
     "File": "./repos/keygen-api\\features\\step_definitions\\worker_steps.rb"
+  },
+  "^the following \"([^\\\"]*)\"(?: rows)? exist:$": {
+    "Code": "data = table.hashes.map { |h| h.deep_transform_keys! &:underscore }\n  data.each do |attributes|\n    create(resource.singularize.underscore, attributes.transform_values(&:presence))",
+    "File": "resource_steps.rb"
+  },
+  "^the following \"([^\\\"]*)\" exists:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  attributes = JSON.parse(body).deep_transform_keys! &:underscore\n  create resource.singularize.underscore, attributes.transform_values(&:presence)",
+    "File": "resource_steps.rb"
+  },
+  "^there exists an(?:other)? account \"([^\\\"]*)\"$": {
+    "Code": "create :account, slug: slug",
+    "File": "resource_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" has the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  account = FindByAliasService.call(Account, id:, aliases: :slug)\n  attributes = JSON.parse(body).deep_transform_keys! &:underscore\n\n  account.update!(attributes)",
+    "File": "resource_steps.rb"
+  },
+  "^I have the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  attributes = JSON.parse(body).deep_transform_keys! &:underscore\n  @bearer.update!(attributes)",
+    "File": "resource_steps.rb"
+  },
+  "^I have a password reset token$": {
+    "Code": "@crypt << @bearer.generate_password_reset_token",
+    "File": "resource_steps.rb"
+  },
+  "^I have a password reset token that is expired$": {
+    "Code": "@crypt << @bearer.generate_password_reset_token\n  @bearer.update!(password_reset_sent_at: 3.days.ago)",
+    "File": "resource_steps.rb"
+  },
+  "^the current token has the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  attributes = JSON.parse(body).deep_transform_keys! &:underscore\n  @token.update!(attributes)",
+    "File": "resource_steps.rb"
+  },
+  "^the current account is \"([^\\\"]*)\"$": {
+    "Code": "@account = FindByAliasService.call(Account, id:, aliases: :slug)",
+    "File": "resource_steps.rb"
+  },
+  "^the current environment is \"([^\\\"]*)\"$": {
+    "Code": "Current.environment = FindByAliasService.call(@account.environments, id:, aliases: :code)",
+    "File": "resource_steps.rb"
+  },
+  "^there exists (\\d+) \"([^\\\"]*)\"$": {
+    "Code": "count.to_i.times { create(resource.singularize.underscore) }",
+    "File": "resource_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" has exceeded its daily request limit$": {
+    "Code": "account = FindByAliasService.call(Account, id:, aliases: :slug)\n\n  account.daily_request_count = 1_000_000_000",
+    "File": "resource_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" is on a free tier$": {
+    "Code": "account = FindByAliasService.call(Account, id:, aliases: :slug)\n\n  account.plan.update! price: 0",
+    "File": "resource_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" has a max (\\w+) limit of (\\d+)$": {
+    "Code": "account = FindByAliasService.call(Account, id:, aliases: :slug)\n\n  account.plan.update! \"max_#{resource.pluralize.underscore}\" => limit.to_i",
+    "File": "resource_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" has (\\d+) (?:([\\w+]+) )?\"([^\\\"]*)\"$": {
+    "Code": "account = FindByAliasService.call(Account, id:, aliases: :slug)\n  traits  = traits&.split('+')&.map(&:to_sym)\n\n  count.to_i.times do\n    create resource.singularize.underscore, *traits, account: account",
+    "File": "resource_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" has (\\d+) (?:([\\w+]+) )?\"([^\\\"]*)\" with the following:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  account = FindByAliasService.call(Account, id:, aliases: :slug)\n  attrs   = JSON.parse(body).deep_transform_keys!(&:underscore)\n  traits  = traits&.split('+')&.map(&:to_sym)\n\n  count.to_i.times do\n    create resource.singularize.underscore, *traits, **attrs, account:",
+    "File": "resource_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" has its billing uninitialized$": {
+    "Code": "account = FindByAliasService.call(Account, id:, aliases: :slug)\n\n  account.billing&.delete",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  attributes = JSON.parse(body).deep_transform_keys! &:underscore\n\n  @account.update!(attributes)",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has (\\d+) (?:([\\w+]+) )?\"([^\\\"]*)\"$": {
+    "Code": "traits = traits&.split('+')&.map(&:to_sym)\n\n  count.to_i.times do\n    create resource.singularize.underscore, *traits, account: @account",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has (\\d+) (?:([\\w+]+) )?\"([^\\\"]*)\" with the following:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  attrs  = JSON.parse(body).deep_transform_keys!(&:underscore)\n  traits = traits&.split('+')&.map(&:to_sym)\n\n  count.to_i.times do\n    create resource.singularize.underscore, *traits, **attrs, account: @account",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has the following \"([^\\\"]*)\" rows:$": {
+    "Code": "hashes  = rows.hashes.map { |h| h.transform_keys { |k| k.underscore.to_sym } }\n  factory = resource.singularize.underscore.to_sym\n\n  hashes.each do |hash|\n    hash.transform_values! { _1.presence }\n\n    # FIXME(ezekg) Treating releases a bit differently for convenience\n    case factory\n    when :release\n      codes = hash.delete(:entitlements)&.split(/,\\s*/)\n      if codes.present? && codes.any?\n        entitlements = codes.map { |code| { entitlement: @account.entitlements.find_by!(code: code) } }\n\n        hash[:constraints_attributes] = entitlements",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has (\\d+) (?:([\\w+]+) )?\"([^\\\"]*)\" (?:with|for|in)(?: an)? existing \"([^\\\"]*)\"(?: through \"([^\\\"]*)\")?$": {
+    "Code": "count.to_i.times do\n    associated_record = @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has (\\d+) (?:([\\w+]+) )?\"([^\\\"]*)\" (?:with|for|in) (?:all|each) \"([^\\\"]*)\"(?: through \"([^\\\"]*)\")?$": {
+    "Code": "associated_records =\n      case assoc_name.underscore.pluralize\n      when 'components'\n        @account.machine_components\n      when 'processes'\n        @account.machine_processes\n      when 'artifacts'\n        @account.release_artifacts\n      when 'packages'\n        @account.release_packages\n      when 'engines'\n        @account.release_engines\n      else\n        @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has (\\d+) (?:([\\w+]+) )?\"([^\\\"]*)\" (?:with|for|in) (?:all|each) \"([^\\\"]*)\" with the following:$": {
+    "Code": "body   = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n  attrs  = JSON.parse(body).deep_transform_keys!(&:underscore)\n  traits = traits&.split('+')&.map(&:to_sym)\n\n  associated_records =\n      case association.underscore.pluralize\n      when 'components'\n        @account.machine_components\n      when 'processes'\n        @account.machine_processes\n      when 'artifacts'\n        @account.release_artifacts\n      when 'packages'\n        @account.release_packages\n      when 'engines'\n        @account.release_engines\n      else\n        @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has (\\d+) (?:([\\w+]+) )?\"([^\\\"]*)\" (?:with|for|in) the (\\w+) \"([^\\\"]*)\"(?: as \"([^\\\"]*)\")? and the (\\w+) \"([^\\\"]*)\"(?: as \"([^\\\"]*)\")?$": {
+    "Code": "traits = traits&.split('+')&.map(&:to_sym)\n\n  count.to_i.times do\n    first_assoc_name    ||= first_assoc_model.singularize.underscore.to_sym\n    first_assoc_records   =\n      case first_assoc_model.underscore.pluralize\n      when 'components'\n        @account.machine_components\n      when 'processes'\n        @account.machine_processes\n      when 'artifacts'\n        @account.release_artifacts\n      when 'packages'\n        @account.release_packages\n      when 'engines'\n        @account.release_engines\n      else\n        @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has (\\d+) (?:([\\w+]+) )?\"([^\\\"]*)\" (?:with|for|in) the (\\w+) \"([^\\\"]*)\"(?: as \"([^\\\"]*)\")?$": {
+    "Code": "traits = traits&.split('+')&.map(&:to_sym)\n\n  count.to_i.times do\n    associated_records =\n      case association.underscore.pluralize\n      when 'components'\n        @account.machine_components\n      when 'processes'\n        @account.machine_processes\n      when 'artifacts'\n        @account.release_artifacts\n      when 'packages'\n        @account.release_packages\n      when 'engines'\n        @account.release_engines\n      else\n        @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has (\\d+) (?:([\\w+]+) )?\"([^\\\"]*)\" (?:with|for|in) the (\\w+) \"([^\\\"]*)\" with the following:$": {
+    "Code": "body   = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n  attrs  = JSON.parse(body).deep_transform_keys!(&:underscore)\n  traits = traits&.split('+')&.map(&:to_sym)\n\n  count.to_i.times do\n    associated_record = @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has (\\d+) legacy encrypted \"([^\\\"]*)\"$": {
+    "Code": "count.to_i.times do\n    @crypt << create(resource.singularize.underscore, :legacy_encrypt, account: @account)",
+    "File": "resource_steps.rb"
+  },
+  "^the current account has (\\d+) \"([^\\\"]*)\" using \"([^\\\"]*)\"$": {
+    "Code": "count.to_i.times do\n    case scheme\n    when 'RSA_2048_PKCS1_ENCRYPT'\n      @crypt << create(resource.singularize.underscore, :rsa_2048_pkcs1_encrypt, account: @account, key: SecureRandom.hex)\n    when 'RSA_2048_PKCS1_SIGN'\n      @crypt << create(resource.singularize.underscore, :rsa_2048_pkcs1_sign, account: @account, key: SecureRandom.hex)\n    when 'RSA_2048_PKCS1_PSS_SIGN'\n      @crypt << create(resource.singularize.underscore, :rsa_2048_pkcs1_pss_sign, account: @account, key: SecureRandom.hex)\n    when 'RSA_2048_JWT_RS256'\n      @crypt << create(resource.singularize.underscore, :rsa_2048_jwt_rs256, account: @account, key: JSON.generate(key: SecureRandom.hex))\n    when 'RSA_2048_PKCS1_SIGN_V2'\n      @crypt << create(resource.singularize.underscore, :rsa_2048_pkcs1_sign_v2, account: @account, key: SecureRandom.hex)\n    when 'RSA_2048_PKCS1_PSS_SIGN_V2'\n      @crypt << create(resource.singularize.underscore, :rsa_2048_pkcs1_pss_sign_v2, account: @account, key: SecureRandom.hex)\n    when 'ED25519_SIGN'\n      @crypt << create(resource.singularize.underscore, :ed25519_sign, account: @account, key: SecureRandom.hex)",
+    "File": "resource_steps.rb"
+  },
+  "^the (\\w+) \"([^\\\"]*)\" is associated (?:with|to) the (\\w+) \"([^\\\"]*)\"(?: as \"([^\\\"]*)\")?$": {
+    "Code": "numbers = {\n    \"first\"   => 1,\n    \"second\"  => 2,\n    \"third\"   => 3,\n    \"fourth\"  => 4,\n    \"fifth\"   => 5,\n    \"sixth\"   => 6,\n    \"seventh\" => 7,\n    \"eighth\"   => 8,\n    \"ninth\"   => 9\n  }\n\n  resource   = @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^(?:all|the) \"([^\\\"]*)\" have the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  attrs = JSON.parse(body).deep_transform_keys!(&:underscore)\n  resources =\n    case resource.underscore.pluralize\n    when 'components'\n      @account.machine_components\n    when 'processes'\n      @account.machine_processes\n    when 'artifacts'\n      @account.release_artifacts\n    when 'engines'\n      @account.release_engines\n    else\n      @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the first (\\d+) \"([^\\\"]*)\" have the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  attrs     = JSON.parse(body).deep_transform_keys!(&:underscore)\n  resources = @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the last (\\d+) \"([^\\\"]*)\" have the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  attrs     = JSON.parse(body).deep_transform_keys!(&:underscore)\n  resources = @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^(\\d+) \"([^\\\"]*)\" (?:have|has) the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  attrs = JSON.parse(body).deep_transform_keys!(&:underscore)\n  resources = @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^(?:the )?\"([^\\\"]*)\" (\\d+)(?:\\.\\.(\\.)?)(\\d+) (?:have|has) the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  exclusive_idx = exclusive_index.present?\n  start_idx     = start_index.to_i",
+    "File": "resource_steps.rb"
+  },
+  "^\"([^\\\"]*)\" (\\d+) has the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  idx       = index.to_i\n  resources = case resource.pluralize.underscore\n              when 'components'\n                @account.machine_components.limit(idx + 1)\n              when 'processes'\n                @account.machine_processes.limit(idx + 1)\n              when 'artifacts'\n                @account.release_artifacts.limit(idx + 1)\n              when 'packages'\n                @account.release_packages.limit(idx + 1)\n              else\n                @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|last) \"([^\\\"]*)\" has the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  attrs = JSON.parse(body).deep_transform_keys!(&:underscore)\n  model =\n    case resource.singularize\n    when \"plan\"\n      Plan.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|last) \"([^\\\"]*)\" has the following metadata:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  metadata = JSON.parse(body).deep_transform_keys!(&:underscore)\n  model    =\n    case resource.singularize\n    when \"plan\"\n      Plan.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|last) \"([^\\\"]*)\" has the following permissions:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  permissions = JSON.parse(body)\n  model       =\n    case resource.singularize\n    when \"plan\"\n      Plan.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (\\w+) \"([^\\\"]*)\" (?:belongs to|is in) the (\\w+) \"([^\\\"]*)\"(?: through \"([^\\\"]*)\")?$": {
+    "Code": "record =\n    case model_name.singularize\n    when 'component'\n      @account.machine_components.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|last) (\\d+) \"([^\\\"]*)\" (?:belong to|is in) the (\\w+) \"([^\\\"]*)\"(?: through \"([^\\\"]*)\")?$": {
+    "Code": "models =\n    case model_name.singularize\n    when 'component'\n      @account.machine_components\n    when 'process'\n      @account.machine_processes\n    when 'artifact'\n      @account.release_artifacts\n    when 'package'\n      @account.release_packages\n    when 'engine'\n      @account.release_engines\n    else\n      @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^(?:all|the) \"([^\\\"]*)\" belong to the (\\w+) \"([^\\\"]*)\"(?: through \"([^\\\"]*)\")?$": {
+    "Code": "models =\n    case model_name.singularize\n    when 'component'\n      @account.machine_components\n    when 'process'\n      @account.machine_processes\n    when 'artifact'\n      @account.release_artifacts\n    when 'package'\n      @account.release_package\n    else\n      @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth) \"license\" has the following policy entitlements:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  license = @account.licenses.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth) \"license\" has the following license entitlements:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  license = @account.licenses.s",
+    "File": "resource_steps.rb"
+  },
+  "^AWS S3 is (responding with a 200 status|responding with a 404 status|timing out)$": {
+    "Code": "res = case scenario\n        when 'responding with a 200 status'\n          []\n        when 'responding with a 404 status'\n          ['NotFound']\n        when 'timing out'\n          [Timeout::Error]\n        when 'nil'\n          next # bail without doing anything",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|last) \"([^\\\"]*)\" of account \"([^\\\"]*)\" has the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  account = FindByAliasService.call(Account, id:, aliases: :slug)\n  numbers = {\n    \"first\"   => 0,\n    \"second\"  => 1,\n    \"third\"   => 2,\n    \"fourth\"  => 3,\n    \"fifth\"   => 4,\n    \"sixth\"   => 5,\n    \"seventh\" => 6,\n    \"eighth\"   => 7,\n    \"ninth\"   => 8\n  }\n\n  m = account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|last) \"([^\\\"]*)\" of account \"([^\\\"]*)\" has the following metadata:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  account = FindByAliasService.call(Account, id:, aliases: :slug)\n  numbers = {\n    \"first\"   => 0,\n    \"second\"  => 1,\n    \"third\"   => 2,\n    \"fourth\"  => 3,\n    \"fifth\"   => 4,\n    \"sixth\"   => 5,\n    \"seventh\" => 6,\n    \"eighth\"   => 7,\n    \"ninth\"   => 8\n  }\n\n  m = account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the current account should have (\\d+) \"([^\\\"]*)\"$": {
+    "Code": "case resource\n  when /^administrators?$/\n    expect(@account.users.administrators.count).to eq count.to_i\n  when /^admins?$/\n    expect(@account.users.admins.count).to eq count.to_i\n  when /^developers?$/\n    expect(@account.users.with_role(:developer).count).to eq count.to_i\n  when /^sales-agents?$/\n    expect(@account.users.with_role(:sales_agent).count).to eq count.to_i\n  when /^support-agents?$/\n    expect(@account.users.with_role(:support_agent).count).to eq count.to_i\n  when /^read[-_]?onlys?$/\n    expect(@account.users.with_role(:read_only).count).to eq count.to_i\n  when /^users?$/\n    expect(@account.users.with_role(:user).count).to eq count.to_i\n  when /^components?$/\n    expect(@account.machine_components.count).to eq count.to_i\n  when /^process(es)?$/\n    expect(@account.machine_processes.count).to eq count.to_i\n  when /^artifacts?$/\n    expect(@account.release_artifacts.count).to eq count.to_i\n  when /^filetypes?$/\n    expect(@account.release_filetypes.count).to eq count.to_i\n  when /^channels?$/\n    expect(@account.release_channels.count).to eq count.to_i\n  when /^platforms?$/\n    expect(@account.release_platforms.count).to eq count.to_i\n  when /^arch(es)?$/\n    expect(@account.release_arches.count).to eq count.to_i\n  when /^packages?$/\n    expect(@account.release_packages.count).to eq count.to_i\n  when /^engines?$/\n    expect(@account.release_engines.count).to eq count.to_i\n  else\n    expect(@account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the current (?:bearer|user|license|product) should have (\\d+) \"([^\\\"]*)\"$": {
+    "Code": "count = @bearer.s",
+    "File": "resource_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" should have (\\d+) \"([^\\\"]*)\"$": {
+    "Code": "account = FindByAliasService.call(Account, id:, aliases: :slug)\n\n  case resource\n  when /^administrators?$/\n    expect(account.users.administrators.count).to eq count.to_i\n  when /^admins?$/\n    expect(account.users.admins.count).to eq count.to_i\n  when /^developers?$/\n    expect(account.users.with_role(:developer).count).to eq count.to_i\n  when /^sales-agents?$/\n    expect(account.users.with_role(:sales_agent).count).to eq count.to_i\n  when /^support-agents?$/\n    expect(account.users.with_role(:support_agent).count).to eq count.to_i\n  when /^read[-_]?onlys?$/\n    expect(account.users.with_role(:read_only).count).to eq count.to_i\n  when /^users?$/\n    expect(account.users.with_role(:user).count).to eq count.to_i\n  else\n    expect(account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" should have a referral of \"([^\\\"]*)\"$": {
+    "Code": "account = FindByAliasService.call(Account, id: account_id, aliases: :slug)\n  billing = account.billing\n\n  expect(billing.referral_id).to eq referral_id",
+    "File": "resource_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" should not have a referral$": {
+    "Code": "account = FindByAliasService.call(Account, id: account_id, aliases: :slug)\n  billing = account.billing\n\n  expect(billing.referral_id).to be_nil",
+    "File": "resource_steps.rb"
+  },
+  "^the account \"([^\\\"]*)\" should have the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  account = FindByAliasService.call(Account, id:, aliases: :slug)\n  attributes = JSON.parse(body).deep_transform_keys! &:underscore\n\n  expect(account.attributes.as_json).to include attributes",
+    "File": "resource_steps.rb"
+  },
+  "^the current token should have the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  attributes = JSON.parse(body).deep_transform_keys! &:underscore\n\n  expect(@token.reload.attributes.as_json).to include attributes",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|last) \"license\" should have a correct machine core count$": {
+    "Code": "numbers = {\n    \"first\"   => 0,\n    \"second\"  => 1,\n    \"third\"   => 2,\n    \"fourth\"  => 3,\n    \"fifth\"   => 4,\n    \"sixth\"   => 5,\n    \"seventh\" => 6,\n    \"eighth\"   => 7,\n    \"ninth\"   => 8\n  }\n  index = numbers[word_index]\n  model = @account.licenses.all[index]\n\n  expect(model.machines_core_count).to eq model.machines.sum(:cores)",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|last) \"license\" should have an? (\\w+) within seconds of \"([^\\\"]+)\"$": {
+    "Code": "value = parse_placeholders(value, account: @account, bearer: @bearer, crypt: @crypt)\n\n  license   = @account.licenses.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|last) \"license\" should have an? (\\w+) \"([^\\\"]+)\"$": {
+    "Code": "value = parse_placeholders(value, account: @account, bearer: @bearer, crypt: @crypt)\n\n  license   = @account.licenses.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|last) \"license\" should have an? (\\d+) (\\w+) expiry$": {
+    "Code": "license  = @account.licenses.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|last) \"license\" should not have an expiry$": {
+    "Code": "license = @account.licenses.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (\\w+) \"([^\\\"]*)\" should have the (\\w+) \"([^\\\"]+)\"$": {
+    "Code": "model =\n    case model_name.pluralize\n    when 'components'\n      @account.machine_components.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|last) \"([^\\\"]*)\" for account \"([^\\\"]*)\" should have the following attributes:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n\n  account = FindByAliasService.call(Account, id: account_id, aliases: :slug)\n  model   = account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|last) \"([^\\\"]*)\" should have the following attributes:$": {
+    "Code": "body  = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n  model =\n    case model_name.pluralize\n    when 'components'\n      @account.machine_components.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|last) \"([^\\\"]*)\" should not have the following attributes:$": {
+    "Code": "body  = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n  model = @account.s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|last) \"([^\\\"]*)\" should have the following relationships:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n  json = JSON.parse(last_response.body)\n  data = json['data'].select { _1['type'] == resource.pluralize }\n                     .s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|last) \"([^\\\"]*)\" should have the following data:$": {
+    "Code": "body = parse_placeholders(body, account: @account, bearer: @bearer, crypt: @crypt)\n  json = JSON.parse(last_response.body)\n  data = json['data'].select { _1['type'] == resource.pluralize }\n                     .s",
+    "File": "resource_steps.rb"
+  },
+  "^the (first|second|third|fourth|fifth|last) \"release\" should (be|not be) yanked$": {
+    "Code": "release  = @account.releases.s",
+    "File": "resource_steps.rb"
   }
 }
