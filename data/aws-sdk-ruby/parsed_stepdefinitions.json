@@ -1,0 +1,630 @@
+{
+  "^I create a disabled distribution$": {
+    "Code": "do\nparams = { distribution_config: { caller_reference: Time.now.to_i.to_s, aliases: { quantity: 0 }, default_root_object: \"\", origins: { quantity: 1, items: [{ id: \"Custom-mywebsite\", domain_name: \"mywebsite.io\", custom_origin_config: { http_port: 80, https_port: 443, origin_protocol_policy: \"http-only\" } }] }, default_cache_behavior: { target_origin_id: \"Custom-mywebsite\", forwarded_values: { query_string: false, cookies: { forward: \"none\" }, headers: { quantity: 0 } }, trusted_signers: { enabled: false, quantity: 0 }, viewer_protocol_policy: \"allow-all\", min_ttl: 0, allowed_methods: { quantity: 2, items: [\"GET\", \"HEAD\"] }, smooth_streaming: false }, cache_behaviors: { quantity: 0 }, custom_error_responses: { quantity: 0 }, comment: \"mywebsite-distribution\", logging: { enabled: false, include_cookies: false, bucket: \"\", prefix: \"\" }, price_class: \"PriceClass_100\", enabled: false, viewer_certificate: { cloud_front_default_certificate: true, ssl_support_method: \"vip\" }, restrictions: { geo_restriction: { restriction_type: \"none\", quantity: 0 } } } }\nresponse = @client.create_distribution(params)\n@distribution = response.distribution\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-cloudfront\\features\\step_definitions.rb"
+  },
+  "^I get the distribution configuration$": {
+    "Code": "do\nresponse = @client.get_distribution({ id: @distribution.[](:id) })\n@etag = response.etag\n@distribution = response.distribution\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-cloudfront\\features\\step_definitions.rb"
+  },
+  "^I can update the distribution configuration$": {
+    "Code": "do\nresponse = @client.update_distribution({ id: @distribution.[](:id), distribution_config: @distribution.[](:distribution_config), if_match: @etag })\n@etag = response.etag\n@distribution = response.distribution\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-cloudfront\\features\\step_definitions.rb"
+  },
+  "^I can delete the distribution$": {
+    "Code": "do\neventually({ upto: 60 * 20 }) {\n  @client.delete_distribution({ id: @distribution.[](:id), if_match: @etag })\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-cloudfront\\features\\step_definitions.rb"
+  },
+  "^I have an Aws::CognitoIdenty::Client without credentials$": {
+    "Code": "do\n@client = Aws::CognitoIdentity::Client.new({ credentials: nil, validate_params: false })\nexpect(@client.config.credentials).to(be(nil))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-cognitoidentity\\features\\step_definitions.rb"
+  },
+  "^I make a (\\w+) request$": {
+    "Code": "do\nbegin\n  @client.send(AwsSdkCodeGenerator::Underscore.underscore(operation))\nrescue => error\n  @error = error\nend\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-cognitoidentity\\features\\step_definitions.rb"
+  },
+  "^I should not receive an Aws::CognitoIdentity::Errors::MissingAuthenticationTokenException$": {
+    "Code": "do\nexpect(@error).not_to(be_kind_of(Aws::CognitoIdentity::Errors::MissingAuthenticationTokenException))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-cognitoidentity\\features\\step_definitions.rb"
+  },
+  "^I should receive a missing credentials error$": {
+    "Code": "do\nexpect(@error).to(be_kind_of(Aws::Errors::MissingCredentialsError))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-cognitoidentity\\features\\step_definitions.rb"
+  },
+  "I create a '(.*?)' client with config:": {
+    "Code": "do\nnamespace = Object.const_get(module_name)\nopts = JSON.parse(config, { symbolize_names: true })\nopts.[]=(:region, ENV.[](\"AWS_SMOKE_TEST_REGION\") || opts.[](:region))\n@client = namespace::Client.new(opts)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "I call the operation '(.*?)' with params:": {
+    "Code": "do\nopts = JSON.parse(params, { symbolize_names: true })\n\nbegin\n  @client.send(operation.to_sym, opts)\nrescue Aws::Errors::ServiceError => e\n  @last_error = e\nend\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "I expect a '(.*?)' was raised": {
+    "Code": "do\nerror_class = Object.const_get(error)\nexpect(@error).to(be_a(error_class))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "I expect an error was raised": {
+    "Code": "do\nexpect(@last_error).to_not(be_nil)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "I expect an error was not raised": {
+    "Code": "do\nexpect(@last_error).to(be_nil)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^a \"([^\"]*)\" is set in cfg(\\[.*\\])$": {
+    "Code": "do\ninstance_variable_set(\"@#{name}\", cfg_value(*path.scan(/\\w+/)))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^I call the \"(.*?)\" API$": {
+    "Code": "do\n@response = @client.send(underscore(api))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^I call the \"(.*?)\" API with:$": {
+    "Code": "do\nparams = if @simple_json\n  raw_params(params)\nelse\n  symbolized_params(params)\nend\n@response = @client.send(underscore(api), params)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^I attempt to call the \"(.*?)\" API with:$": {
+    "Code": "do\nparams = if @simple_json\n  raw_params(params)\nelse\n  symbolized_params(params)\nend\n\nbegin\n  @response = @client.send(underscore(api), params)\nrescue Aws::Errors::ServiceError => @error\nend\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^the response should contain a (list of )?\"(\\w+?)\"$": {
+    "Code": "do\ndata = @response.data\ndata = data.[](underscore(member_name))\nexpect(data).to(be_an(Array))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^the response should contain a \"(\\w+?)\" with a list of \"(\\w+?)\"$": {
+    "Code": "do\ndata = @response.data\ndata = data.[](underscore(member1))\ndata = data.[](underscore(member2))\nexpect(data).to(be_an(Array))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^I expect the response error code to be \"(.*?)\"$": {
+    "Code": "do\nexpect(@error.class.name.split(\"::\").last).to(eq(error_code))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^I expect the response error message to include:$": {
+    "Code": "do\nexpect(@error.message).to(include(error_message))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^the HTTP request body should be:$": {
+    "Code": "do\nexpect(@response.context.http_request.body_contents).to(eq(string))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^I expect response data to be a hash$": {
+    "Code": "do\nexpect(@response.data).to(be_a(Hash))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^I expect response data\\[\"(.*?)\"\\] to be an array$": {
+    "Code": "do\nexpect(@response.data.[](key)).to(be_an(Array))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^the response should contain a \"(.*?)\" member$": {
+    "Code": "do\nexpect(@response.data.[](underscore(member_name))).not_to(be_nil)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^the value at \"([^\"]*)\" should be a list$": {
+    "Code": "do\nexpect(@response.data.[](underscore(key))).to(be_an(Array))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-core\\features\\features_helper.rb"
+  },
+  "^I enable endpoint discovery at client$": {
+    "Code": "do\n@ed_client = Aws::DynamoDB::Client.new({ endpoint_discovery: true })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-dynamodb\\features\\step_definitions.rb"
+  },
+  "^I make describe_limits call$": {
+    "Code": "do\n@resp = @ed_client.describe_limits\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-dynamodb\\features\\step_definitions.rb"
+  },
+  "^I expect describe_endpoints is called first$": {
+    "Code": "do\nexpect(ApiCallTracker.called_operations.first).to(eq(:describe_endpoints))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-dynamodb\\features\\step_definitions.rb"
+  },
+  "^I expect API call is made through discovered endpoint$": {
+    "Code": "do\ndiscover_resp = ApiCallTracker.api_calls.first\n@discovered_enpoint = nil\nif discover_resp && discover_resp.key?(:endpoints)\n  if discover_resp.endpoints.size == 1\n    @discovered_enpoint = discover_resp.endpoints.first.address\n  end\nend\nif @discovered_enpoint\n  expect(@resp.context.http_request.endpoint.to_s).to(include(@discovered_enpoint))\nend\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-dynamodb\\features\\step_definitions.rb"
+  },
+  "^discovered endpoint is cached$": {
+    "Code": "do\nif @discover_endpoint\n  cache = @ed_client.config.endpoint_cache\n  expect(cache.entries).not_to(be_empty)\nend\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-dynamodb\\features\\step_definitions.rb"
+  },
+  "^I create a volume$": {
+    "Code": "do\n@volume = @service.create_volume({ size: 1, availability_zone: \"us-east-1a\", volume_type: \"gp2\" })\n@volume_id = @volume.id\n@volume_ids << @volume_id\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-ec2\\features\\step_definitions.rb"
+  },
+  "^I use \\#wait_until to wait until volume is available$": {
+    "Code": "do\nexpect {\n  @resp = @volume.wait_until { |v,|\n    v.state == \"available\"\n  }\n}.not_to(raise_error)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-ec2\\features\\step_definitions.rb"
+  },
+  "^Waiter works as expected$": {
+    "Code": "do\nexpect(ApiCallTracker.called_operations).to(include(:describe_volumes))\nexpect(@resp.id).to(eq(@volume_id))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-ec2\\features\\step_definitions.rb"
+  },
+  "^I have a vault ready to receive uploads$": {
+    "Code": "do\n@vault_name = \"aws-sdk-core-integration-test-vault\"\n\nbegin\n  @client.describe_vault({ vault_name: @vault_name, account_id: \"-\" })\nrescue Aws::Glacier::Errors::ResourceNotFoundException\n  @client.create_vault({ vault_name: @vault_name, account_id: \"-\" })\nend\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-glacier\\features\\step_definitions.rb"
+  },
+  "^I upload an archive with the contents \"(.*?)\"$": {
+    "Code": "do\nbegin\n  upload_glacier_archive(contents)\nrescue => @error\nend\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-glacier\\features\\step_definitions.rb"
+  },
+  "^I upload an archive from a ([0-9\\.]+)MB large file$": {
+    "Code": "do\nupload_glacier_archive(create_file(size_in_mb))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-glacier\\features\\step_definitions.rb"
+  },
+  "^I multipart\\-upload a ([0-9\\.]+)MB file in ([0-9\\.]+) byte chunks$": {
+    "Code": "do\nfile = create_file(size_in_mb)\npart_size = part_size.to_i\nresp = @client.initiate_multipart_upload({ vault_name: @vault_name, part_size: part_size })\n@upload_id = resp.data.upload_id\ntree_hash = Aws::TreeHash.new\noffset = 0\nuntil file.eof?\n  chunk = file.read(part_size)\n  resp = @client.upload_multipart_part({ vault_name: @vault_name, upload_id: @upload_id, body: chunk, range: \"bytes #{offset}-#{offset + chunk.bytesize - 1}/*\" })\n  tree_hash.hashes.concat(resp.context.[](:tree_hash).hashes)\n  offset += chunk.bytesize\nend\nresp = @client.complete_multipart_upload({ vault_name: @vault_name, upload_id: @upload_id, archive_size: file.size, checksum: tree_hash.digest })\n@archive_id = resp.archive_id\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-glacier\\features\\step_definitions.rb"
+  },
+  "^I should be able to delete the archive$": {
+    "Code": "do\n@client.delete_archive({ vault_name: @vault_name, archive_id: @archive_id })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-glacier\\features\\step_definitions.rb"
+  },
+  "^I force path style requests$": {
+    "Code": "do\n@client = Aws::S3::Client.new({ force_path_style: true })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I am using the S3 \"(.*?)\" region$": {
+    "Code": "do\n@client = Aws::S3::Client.new({ region: region })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I create a bucket$": {
+    "Code": "do\ncreate_bucket\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I create a DNS compatible bucket$": {
+    "Code": "do\ncreate_bucket\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I create a bucket with the location constraint \"(.*?)\"$": {
+    "Code": "do\ncreate_bucket({ create_bucket_configuration: { location_constraint: loc } })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the bucket should have a location constraint of \"(.*?)\"$": {
+    "Code": "do\nresp = @client.get_bucket_location({ bucket: @bucket_name })\nexpect(resp.data.location_constraint).to(eq(loc))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the bucket should exist$": {
+    "Code": "do\nexpect {\n  @client.get_bucket_location({ bucket: @bucket_name })\n}.not_to(raise_error)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I should be able to HEAD the bucket$": {
+    "Code": "do\nexpect {\n  @client.head_bucket({ bucket: @bucket_name })\n}.not_to(raise_error)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I delete the bucket$": {
+    "Code": "do\n@client.delete_bucket({ bucket: @bucket_name })\n@created_buckets.delete(@bucket_name)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the bucket should not exist$": {
+    "Code": "do\neventually({ upto: 60 }) {\n  begin\n    @client.get_bucket_location({ bucket: @bucket_name })\n  rescue StandardError => e\n    @error = e\n  end\n  expect(@error).to(be_kind_of(Aws::S3::Errors::NoSuchBucket))\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I put nothing to the key \"(.*?)\"$": {
+    "Code": "do\n@client.put_object({ bucket: @bucket_name, key: key })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I put \"(.*?)\" to the key \"(.*?)\"$": {
+    "Code": "do\n@response = @client.put_object({ bucket: @bucket_name, key: key, body: data })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I put the test png to the key \"(.*?)\"$": {
+    "Code": "do\nfile = File.open(File.join(File.dirname(\"./repos/aws-sdk-ruby\\\\gems\\\\aws-sdk-s3\\\\features\\\\client\\\\step_definitions.rb\"), \"test.png\"), \"rb\")\n@client.put_object({ bucket: @bucket_name, key: key, body: file })\nfile.close\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the object with the key \"(.*?)\" should have a content length of (\\d+)$": {
+    "Code": "do\nresp = @client.head_object({ bucket: @bucket_name, key: key })\nexpect(resp.data.content_length).to(eq(size.to_i))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I page s3 objects prefixed \"(.*?)\" delimited \"(.*?)\" limit (\\d+)$": {
+    "Code": "do\n@responses = []\n@client.list_objects({ bucket: @bucket_name, prefix: prefix, delimiter: delimiter, max_keys: max_keys }).each { |resp,|\n  @responses << resp\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I should have received (\\d+) responses$": {
+    "Code": "do\nexpect(@responses.size).to(eq(count.to_i))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I am using the S3 \"(.*?)\" endpoint$": {
+    "Code": "do\n@client = Aws::S3::Client.new({ endpoint: endpoint })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I create a bucket with a DNS compatible name that contains a dot$": {
+    "Code": "do\n@bucket_name = \"aws.#{Time.now.to_i}.sdk\"\ncreate_bucket({ bucket: @bucket_name })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I should be able to delete the bucket$": {
+    "Code": "do\n@client.delete_bucket({ bucket: @bucket_name })\n@created_buckets.delete(@bucket_name)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the bucket name should be in the request path$": {
+    "Code": "do\nendpoint = @response.context.http_request.endpoint\nexpect(endpoint.path).to(include(@bucket_name))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the bucket name should not be in the request host$": {
+    "Code": "do\nendpoint = @response.context.http_request.endpoint\nexpect(endpoint.host).not_to(include(@bucket_name))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the bucket name should be in the request host$": {
+    "Code": "do\nendpoint = @response.context.http_request.endpoint\nexpect(endpoint.host).to(include(@bucket_name))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the bucket name should not be in the request path$": {
+    "Code": "do\nendpoint = @response.context.http_request.endpoint\nexpect(endpoint.path).not_to(include(@bucket_name))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I put \"(.*?)\" to the key \"(.*?)\" with an aes key$": {
+    "Code": "do\n@aes_key = OpenSSL::Cipher.new(\"aes-256-cbc\").random_key\n@client.put_object({ bucket: @bucket_name, key: key, body: body, sse_customer_algorithm: \"AES256\", sse_customer_key: @aes_key })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I can download the key \"(.*?)\" with the aes key$": {
+    "Code": "do\n@client.get_object({ bucket: @bucket_name, key: key, sse_customer_algorithm: \"AES256\", sse_customer_key: @aes_key })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I get the object with the key \"(.*?)\"$": {
+    "Code": "do\n@response = @client.get_object({ bucket: @bucket_name, key: key })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the body should be an IO object$": {
+    "Code": "do\nexpect(@response.body).to(be_kind_of(StringIO))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the body #read method should return \"(.*?)\"$": {
+    "Code": "do\nexpect(@response.body.read).to(eq(str))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I put a large object with a broken content-md5$": {
+    "Code": "do\nbegin\n  @client.put_object({ bucket: @bucket_name, key: \"key\", body: \".\" * 1024 * 1024, content_md5: \"abc\" })\nrescue StandardError => e\n  @error = e\nend\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I should receive an invalid digest error$": {
+    "Code": "do\nexpect(@error).to(be_kind_of(Aws::S3::Errors::InvalidDigest))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I put a large object$": {
+    "Code": "do\n@key = \"large-object\"\n@client.put_object({ bucket: @bucket_name, key: @key, body: \".\" * 1024 * 1024 })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the object should exist$": {
+    "Code": "do\n@client.head_object({ bucket: @bucket_name, key: @key })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I create a (non-secure )?presigned url for \"(.*?)\" with:$": {
+    "Code": "do\npresigner = Aws::S3::Presigner.new({ client: @client })\nparams = symbolized_params(params)\nparams.[]=(:bucket, @bucket_name)\nif non_secure\n  params.[]=(:secure, false)\nend\n@url = presigner.presigned_url(method.to_sym, params)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I send an HTTP get request for the presigned url$": {
+    "Code": "do\nuri = URI(@url)\n@resp = Net::HTTP.get_response(uri.host, uri.request_uri)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the response should be \"(.*?)\"$": {
+    "Code": "do\nexpect(@resp.body).to(eq(expected))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I send an HTTP put request for the presigned url with body \"(.*?)\"$": {
+    "Code": "do\nuri = URI(@url)\nhttp = Net::HTTP.new(uri.host)\nreq = Net::HTTP::Put.new(uri.request_uri, { \"content-length\" => body.bytesize.to_s })\nreq.body=body\n@resp = http.request(req)\nexpect(@resp.code).to(eq(\"200\"))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I make an unauthenticated HTTPS GET request for key \"(.*?)\"$": {
+    "Code": "do\nuri = URI.parse(\"https://#{@bucket_name}.s3.amazonaws.com/#{key}\")\nhttp = Net::HTTP.new(uri.host, 443)\nhttp.use_ssl=true\nreq = Net::HTTP::Get.new(uri.request_uri)\n@resp = http.request(req)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I make an unauthenticated HTTP GET request for key \"(.*?)\"$": {
+    "Code": "do\nuri = URI.parse(\"http://#{@bucket_name}.s3.amazonaws.com/#{key}\")\n@resp = Net::HTTP.get_response(uri)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I get an object that doesn't exist with a read block$": {
+    "Code": "do\n@yielded = []\n\nbegin\n  @client.get_object({ bucket: @bucket_name, key: \"bad-key\" }) { |chunk,|\n    @yielded << chunk\n  }\nrescue StandardError => e\n  @error = e\nend\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^an error should be raise and the block should not yield$": {
+    "Code": "do\nexpect(@error).to(be_kind_of(Aws::S3::Errors::NoSuchKey))\nexpect(@yielded).to(eq([]))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the response content\\-type should be \"(.*?)\"$": {
+    "Code": "do\nexpect(@resp.to_hash.[](\"content-type\")).to(eq([\"text/plain\"]))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I send an HTTP put request with the content type as \"(.*?)\"$": {
+    "Code": "do\nuri = URI(@url)\nhttp = Net::HTTP.new(uri.host)\nreq = Net::HTTP::Put.new(uri.request_uri, { \"content-type\" => content_type })\nreq.body=\"data\"\n@resp = http.request(req)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the response should have a (\\d+) status code$": {
+    "Code": "do\nexpect(@resp.code.to_i).to(eq(code))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the object \"([^\"]*)\" should have a \"([^\"]*)\" storage class$": {
+    "Code": "do\nresp = @client.list_objects({ bucket: @bucket_name, prefix: key, max_keys: 1 })\nexpect(resp.contents.first.storage_class).to(eq(sc))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the keys in my bucket should be$": {
+    "Code": "do\nkeys = @client.list_objects({ bucket: @bucket_name }).contents.map(&:key)\nexpect(keys.sort).to(eq(table.rows.map(&:first).sort))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I have a bucket configured with a virtual hosted CNAME$": {
+    "Code": "do\n@bucket_name = cfg_value(\"s3\", \"virtual_hosted_bucket\")\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I get the bucket location$": {
+    "Code": "do\n@response = @client.get_bucket_location({ bucket: @bucket_name })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the location constraint should be \"([^\"]*)\"$": {
+    "Code": "do\nexpect(@response.location_constraint).to(eq(lc))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I can streaming download key \"([^\"]*)\"$": {
+    "Code": "do\nresp = @client.get_object({ bucket: @bucket_name, key: key }) { |chunk,|\n  expect(chunk).to(eq(\"hello world\"))\n}\nexpect(resp.body).to(be_a(Aws::S3::Plugins::RetryableBlockIO))\nexpect(resp.context.[](:response_target)).to(be_a(Proc))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I put a file with content:$": {
+    "Code": "do\n@select_file_name = \"test.csv\"\ncsv = Tempfile.new(\"file.csv\")\nCSV.open(csv.path, \"wb\") { |f,|\n  table.raw.each { |row,|\n    f << row\n  }\n}\n@client.put_object({ bucket: @bucket_name, key: @select_file_name, body: File.read(csv.path) })\ncsv.unlink\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I select it with query \"([^\"]*)\"$": {
+    "Code": "do\n@select_resp = @client.select_object_content({ bucket: @bucket_name, key: @select_file_name, expression_type: \"SQL\", expression: query, input_serialization: { csv: { file_header_info: \"USE\" } }, output_serialization: { csv: {} } })\n@tracker = Hash.new([])\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^response should contain \"([^\"]*)\" event$": {
+    "Code": "do\n@select_resp.payload.each { |event,|\n  unless event.event_type == type.to_sym\n    next\n  end\n  @tracker.[](type.to_sym) << event\n}\nexpect(@tracker.[](:records)).not_to(be_nil)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^the event should have payload member with content \"([^\"]*)\"$": {
+    "Code": "do\n@tracker.[](:records).each { |e,|\n  e.payload.rewind\n  expect(e.payload.read.strip).to(eq(payload))\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I select it with query \"([^\"]*)\" with block$": {
+    "Code": "do\n@tracker = Hash.new([])\n@select_resp = @client.select_object_content({ bucket: @bucket_name, key: @select_file_name, expression_type: \"SQL\", expression: query, input_serialization: { csv: { file_header_info: \"USE\" } }, output_serialization: { csv: {} } }) { |stream,|\n  stream.on_records_event { |e,|\n    @tracker.[](e.event_type) << e\n  }\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^\"([^\"]*)\" event should be processed \"(\\d+)\" times when it arrives$": {
+    "Code": "do\nexpect(@tracker.[](type.to_sym).size).to(eq(times.to_i))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I select it with query \"([^\"]*)\" with event stream handler$": {
+    "Code": "do\n@tracker = Hash.new([])\nhandler = Aws::S3::EventStreams::SelectObjectContentEventStream.new\nhandler.on_records_event { |e,|\n  @tracker.[](:records) << e\n}\n@select_resp = @client.select_object_content({ bucket: @bucket_name, key: @select_file_name, expression_type: \"SQL\", expression: string, input_serialization: { csv: { file_header_info: \"USE\" } }, output_serialization: { csv: {} }, event_stream_handler: handler })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I select it with query \"([^\"]*)\" with Proc Object$": {
+    "Code": "do\n@tracker = Hash.new([])\nhandler = Proc.new { |stream,|\n  stream.on_records_event { |e,|\n    @tracker.[](:records) << e\n  }\n}\n@select_resp = @client.select_object_content({ bucket: @bucket_name, key: @select_file_name, expression_type: \"SQL\", expression: query, input_serialization: { csv: { file_header_info: \"USE\" } }, output_serialization: { csv: {} }, event_stream_handler: handler })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I select it with query \"([^\"]*)\" with handler and block$": {
+    "Code": "do\n@tracker = Hash.new([])\nhandler = Aws::S3::EventStreams::SelectObjectContentEventStream.new\nhandler.on_records_event { |e,|\n  @tracker.[](:records) << e\n}\n@select_resp = @client.select_object_content({ bucket: @bucket_name, key: @select_file_name, expression_type: \"SQL\", expression: query, input_serialization: { csv: { file_header_info: \"USE\" } }, output_serialization: { csv: {} }, event_stream_handler: handler }) { |stream,|\n  stream.on_records_event { |e,|\n    @tracker.[](:records) << e\n  }\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "I have access to an MRAP bucket and CRT": {
+    "Code": "do\nunless Aws::Sigv4::Signer.use_crt?\n  pending(\"CRT is not available\")\nend\n\nbegin\n  @client.head_bucket({ bucket: \"ruby-sdk-integtest-mrap-bucket\" })\nrescue\n  pending(\"Account does not have access to the MRAP test bucket: ruby-sdk-integtest-mrap-bucket\")\nend\n@bucket_name = \"arn:aws:s3::469596866844:accesspoint/mpatcdsojq97c.mrap\"\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\client\\step_definitions.rb"
+  },
+  "^I create a bucket resource$": {
+    "Code": "do\n@bucket_name = \"aws-sdk-resources-#{Time.now.to_i}-#{rand(1000)}\"\n@bucket = @s3.create_bucket({ bucket: @bucket_name })\n@s3.client.wait_until(:bucket_exists, { bucket: @bucket_name })\n@created_buckets << @bucket\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I upload the chunks using tempfile to the \"(.*?)\" object$": {
+    "Code": "do\n@bucket.object(key).upload_stream({ tempfile: true }) { |write_stream,|\n  @chunks.each { |chunk,|\n    write_stream << chunk\n  }\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I upload the chunks to the \"(.*?)\" object$": {
+    "Code": "do\n@bucket.object(key).upload_stream { |write_stream,|\n  @chunks.each { |chunk,|\n    write_stream << chunk\n  }\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I upload the chunks to the \"(.*?)\" object with SSE/CPK$": {
+    "Code": "do\nrequire(\"openssl\")\ncipher = OpenSSL::Cipher::AES256.new(:CBC)\nencryption_key = cipher.random_key\n@bucket.object(key).upload_stream({ sse_customer_key: encryption_key, sse_customer_algorithm: \"AES256\" }) { |write_stream,|\n  @chunks.each { |chunk,|\n    write_stream << chunk\n  }\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^the chunks should have been uploaded as a multipart upload$": {
+    "Code": "do\nexpect(ApiCallTracker.called_operations).to(include(:create_multipart_upload))\nexpect(ApiCallTracker.called_operations).to(include(:upload_part))\nexpect(ApiCallTracker.called_operations).to(include(:complete_multipart_upload))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "the \"(.*?)\" object should contained the chunks joined": {
+    "Code": "do\ndata = @s3.bucket(@bucket_name).object(key).get.body.read\nexpect(data).to(eq(@chunks.join))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I have a (\\d+)MB file$": {
+    "Code": "do\n@file = Tempfile.new(\"tempfile\")\n@file.write(\".\" * size.to_i * 1024 * 1024)\n@file.rewind\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I upload the file to the \"(.*?)\" object$": {
+    "Code": "do\n@bucket.object(key).upload_file(@file)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I upload the file$": {
+    "Code": "do\n@object = @bucket.object(@file.path)\n@object.upload_file(@file)\n@old_key = @file.path\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I upload the file to the \"(.*?)\" object with SSE/CPK$": {
+    "Code": "do\nrequire(\"openssl\")\ncipher = OpenSSL::Cipher::AES256.new(:CBC)\necnryption_key = cipher.random_key\n@bucket.object(key).upload_file(@file, { sse_customer_key: ecnryption_key, sse_customer_algorithm: \"AES256\" })\n@bucket.object(key).upload_file(@file)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^the file should have been uploaded as a multipart upload$": {
+    "Code": "do\nexpect(ApiCallTracker.called_operations).to(include(:create_multipart_upload))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I have an encryption client$": {
+    "Code": "do\n@cse = Aws::S3::Encryption::Client.new({ client: @s3.client, encryption_key: Base64.decode64(\"w1WLio3agRWRTSJK/Ouh8NHoqRQ6fn5WbSXDTHjXMSo=\") })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I have a V2 encryption client$": {
+    "Code": "do\n@cse = Aws::S3::EncryptionV2::Client.new({ client: @s3.client, encryption_key: Base64.decode64(\"w1WLio3agRWRTSJK/Ouh8NHoqRQ6fn5WbSXDTHjXMSo=\"), key_wrap_schema: :aes_gcm, content_encryption_schema: :aes_gcm_no_padding, security_profile: :v2_and_legacy })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I have an encryption client configured to use KMS$": {
+    "Code": "do\n@cse = Aws::S3::Encryption::Client.new({ client: @s3.client, kms_key_id: @kms_key_id })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I have a V2 encryption client configured to use KMS$": {
+    "Code": "do\n@cse = Aws::S3::EncryptionV2::Client.new({ client: @s3.client, kms_key_id: @kms_key_id })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I have an encryption client configured for :instruction_file$": {
+    "Code": "do\n@cse = Aws::S3::Encryption::Client.new({ client: @s3.client, encryption_key: Base64.decode64(\"w1WLio3agRWRTSJK/Ouh8NHoqRQ6fn5WbSXDTHjXMSo=\"), envelope_location: :instruction_file })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I have a V2 encryption client configured for :instruction_file$": {
+    "Code": "do\n@cse = Aws::S3::EncryptionV2::Client.new({ client: @s3.client, encryption_key: Base64.decode64(\"w1WLio3agRWRTSJK/Ouh8NHoqRQ6fn5WbSXDTHjXMSo=\"), envelope_location: :instruction_file, key_wrap_schema: :aes_gcm, content_encryption_schema: :aes_gcm_no_padding, security_profile: :v2_and_legacy })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I perform an encrypted PUT of the value \"(.*?)\"$": {
+    "Code": "do\n@key = \"encrypted\"\n@plain_text = value\n@cse.put_object({ bucket: @bucket_name, key: @key, body: @plain_text })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I GET the object with a non\\-encryption client$": {
+    "Code": "do\n@cipher_text = @s3.client.get_object({ bucket: @bucket_name, key: @key }).body.read\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I GET the object with a V2 encryption client$": {
+    "Code": "do\ncse_v2 = Aws::S3::EncryptionV2::Client.new({ client: @s3.client, encryption_key: Base64.decode64(\"w1WLio3agRWRTSJK/Ouh8NHoqRQ6fn5WbSXDTHjXMSo=\"), key_wrap_schema: :aes_gcm, content_encryption_schema: :aes_gcm_no_padding, security_profile: :v2_and_legacy })\n@cipher_text = cse_v2.get_object({ bucket: @bucket_name, key: @key }).body.read\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^the object data should be encrypted$": {
+    "Code": "do\nexpect(@cipher_text).not_to(eq(@plain_text))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I GET the object with an encryption client$": {
+    "Code": "do\n@plain_text = @cse.get_object({ bucket: @bucket_name, key: @key }).body.read\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^the object data should be \"(.*?)\"$": {
+    "Code": "do\nexpect(@plain_text).to(eq(value))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^the instruction file should exist$": {
+    "Code": "do\nexpect {\n  @s3.client.head_object({ bucket: @bucket_name, key: @key + \".instruction\" })\n}.not_to(raise_error)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I create a presigned post$": {
+    "Code": "do\n@post = @bucket.object(\"key\").presigned_post({ success_action_status: \"201\" })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I should be able to POST an object to the form url$": {
+    "Code": "do\nuri = URI.parse(@post.url)\nreq = Net::HTTP::Post::Multipart.new(uri.request_uri, @post.fields.merge({ \"file\" => UploadIO.new(File.open(\"./repos/aws-sdk-ruby\\\\gems\\\\aws-sdk-s3\\\\features\\\\resources\\\\step_definitions.rb\", \"r\"), \"text/plain\") }))\nhttp = Net::HTTP.new(uri.host, uri.port)\nhttp.use_ssl=true\nhttp.verify_mode=OpenSSL::SSL::VERIFY_PEER\nresp = http.request(req)\nexpect(resp.code.to_i).to(eq(201))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I have an encryption client configured to read a Java encrypted object$": {
+    "Code": "do\n@cse = Aws::S3::Encryption::Client.new({ profile: @profile, kms_key_id: @kms_key_id })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I have a V2 encryption client configured to read a Java encrypted object$": {
+    "Code": "do\n@cse = Aws::S3::EncryptionV2::Client.new({ profile: @profile, kms_key_id: @kms_key_id })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I should be able to multipart copy the object to a different bucket$": {
+    "Code": "do\ntarget_bucket = @s3.bucket(@bucket_name)\ntarget_object = target_bucket.object(\"#{@source_key}-copy\")\ntarget_object.copy_from(\"#{@source_bucket}/#{@source_key}\", { multipart_copy: true })\nexpect(ApiCallTracker.called_operations).to(include(:create_multipart_upload))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I should be able to multipart copy the object$": {
+    "Code": "do\ntarget_bucket = @s3.bucket(@bucket_name)\ntarget_object = target_bucket.object(\"test object-copy\")\ntarget_object.copy_from(\"#{@bucket_name}/test object\", { multipart_copy: true })\nexpect(ApiCallTracker.called_operations).to(include(:create_multipart_upload))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I have a (\\d+)M file$": {
+    "Code": "do\n@file = Tempfile.new(\"randomfile\")\nFile.open(@file, \"wb\") { |f,|\n  f.write(Random.new.bytes(mb.to_i * 1024 * 1024))\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I upload the file using put_object$": {
+    "Code": "do\n@object = @s3.bucket(@bucket_name).object(@file.path)\n@object.put({ body: @file })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^(\\d+) (\\w+) requests? should have been made$": {
+    "Code": "do\nexpect(ApiCallTracker.called_operations.count { |name,|\n  method_name.to_sym == name\n}).to(eq(expected_count.to_i))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^the downloaded file should match the uploaded file$": {
+    "Code": "do\nexpect(FileUtils.compare_file(@file.path, @download_file_dest)).to(be(true))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I download the file with mode \"([^\"]*)\"$": {
+    "Code": "do\ntempfile = Tempfile.new(\"sample\")\n@download_file_dest = tempfile.path\ntempfile.unlink\n@object.download_file(@download_file_dest, { mode: mode })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I download the file with mode \"([^\"]*)\" with (\\d+)M chunk size$": {
+    "Code": "do\ntempfile = Tempfile.new(\"sample\")\n@download_file_dest = tempfile.path\ntempfile.unlink\n@object.download_file(@download_file_dest, { mode: mode, chunk_size: (mb.to_i * 1024 * 1024) })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^this test file has been cleaned up$": {
+    "Code": "do\nFile.unlink(@download_file_dest)\nexpect(File.exist?(@download_file_dest)).to(be(false))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I download the file (\\d+) times with mode \"([^\"]*)\" with (\\d+)M chunk size$": {
+    "Code": "do\n@download_dest = []\n(1..cnt.to_i).each { |e,|\n  tempfile = Tempfile.new(\"sample_#{e}\")\n  @download_dest << tempfile.path\n  tempfile.unlink\n}\n(1..cnt.to_i).map { |c,|\n  Thread.new {\n    @object.download_file(@download_dest.[](c - 1), { mode: mode, chunk_size: (mb.to_i * 1024 * 1024) })\n  }\n}.each(&:join)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^those downloaded files should match the uploaded file$": {
+    "Code": "do\n@download_dest.each { |download,|\n  expect(FileUtils.compare_file(@file.path, download)).to(be(true))\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^these test file has been cleaned up$": {
+    "Code": "do\n@download_dest.each { |file,|\n  File.unlink(file)\n  expect(File.exist?(file)).to(be(false))\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I put \"([^\"]*)\" to the object with key \"([^\"]*)\"$": {
+    "Code": "do\n@obj = @bucket.object(key)\n@obj.put({ body: body })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I can streaming download object with key \"([^\"]*)\"$": {
+    "Code": "do\nresp = @obj.get { |chunk,|\n  expect(chunk).to(eq(\"hello world\"))\n}\nexpect(resp.body).to(be_a(Aws::S3::Plugins::RetryableBlockIO))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I enabled bucket versioning$": {
+    "Code": "do\n@s3.client.put_bucket_versioning({ bucket: @bucket_name, versioning_configuration: { status: \"Enabled\" } })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I upload the file with same key$": {
+    "Code": "do\n@version_id = @object.version_id\n@object = @bucket.object(@old_key)\n@object.upload_file(@file)\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I download the file with previous version id$": {
+    "Code": "do\ntempfile = Tempfile.new(\"sample\")\n@download_file_dest = tempfile.path\ntempfile.unlink\n@object.download_file(@download_file_dest, { version_id: @version_id })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^the download file should match the previous version object$": {
+    "Code": "do\nexpect(FileUtils.compare_file(@old_key, @download_file_dest)).to(be(true))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-s3\\features\\resources\\step_definitions.rb"
+  },
+  "^I create a queue in \"(.*?)\"$": {
+    "Code": "do\nname = \"aws-sdk-core-integration-test-#{Time.now.to_i}-#{rand(1000)}\"\nresp = Aws::SQS::Client.new({ region: region }).create_queue({ queue_name: name })\n@queue_url = resp.queue_url\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-sqs\\features\\step_definitions.rb"
+  },
+  "^I operate on that queue in \"(.*?)\"$": {
+    "Code": "do\n@resp = Aws::SQS::Client.new({ region: region }).send_message({ queue_url: @queue_url, message_body: \"hello\" })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-sqs\\features\\step_definitions.rb"
+  },
+  "^the request should be made against \"(.*?)\"$": {
+    "Code": "do\nexpect(@resp.context.http_request.endpoint.to_s).to(include(region))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-sqs\\features\\step_definitions.rb"
+  },
+  "^I have have a queue$": {
+    "Code": "do\n@queue_name = \"aws-sdk-integration-#{Time.now.to_i}-#{rand(10000)}\"\n@queue_url = @client.create_queue({ queue_name: @queue_name }).queue_url\n@sqs_created_queues << @queue_url\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-sqs\\features\\step_definitions.rb"
+  },
+  "^I send (\\d+) messages to the queue$": {
+    "Code": "do\ncount.to_i.times { |n,|\n  @client.send_message({ queue_url: @queue_url, message_body: \"msg-#{n}\" })\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-sqs\\features\\step_definitions.rb"
+  },
+  "^I poll (\\d+) messages at a time with a (\\d+) second idle timeout$": {
+    "Code": "do\npoller = Aws::SQS::QueuePoller.new(@queue_url, { client: @client, max_number_of_messages: max.to_i, idle_timeout: idle.to_i })\n@received_messages = []\n@stats = poller.poll { |messages,|\n  @received_messages += messages\n}\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-sqs\\features\\step_definitions.rb"
+  },
+  "^I should have received all (\\d+) messages$": {
+    "Code": "do\nexpect(@received_messages.count).to(eq(count.to_i))\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-sqs\\features\\step_definitions.rb"
+  },
+  "^I have an audio file$": {
+    "Code": "do\npath = File.expand_path(File.join(File.dirname(\"./repos/aws-sdk-ruby\\\\gems\\\\aws-sdk-transcribestreamingservice\\\\features\\\\step_definitions.rb\"), \"slience.wav\"))\n@file = File.new(path, \"rb\")\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-transcribestreamingservice\\features\\step_definitions.rb"
+  },
+  "^I make start_stream_transcription async call$": {
+    "Code": "do\n@input_stream = Aws::TranscribeStreamingService::EventStreams::AudioStream.new\n@async_resp = @async_client.start_stream_transcription({ language_code: \"en-US\", media_encoding: \"pcm\", media_sample_rate_hertz: 16000, input_event_stream_handler: @input_stream, output_event_stream_handler: @output_stream })\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-transcribestreamingservice\\features\\step_definitions.rb"
+  },
+  "^I signal events at audio stream$": {
+    "Code": "do\nwhile !@file.eof?\n  @input_stream.signal_audio_event_event({ audio_chunk: @file.read(2000) })\nend\n@input_stream.signal_end_stream\n@file.close\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-transcribestreamingservice\\features\\step_definitions.rb"
+  },
+  "^I call async response wait$": {
+    "Code": "do\n@sync_resp = @async_resp.wait\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-transcribestreamingservice\\features\\step_definitions.rb"
+  },
+  "^sync response is returned$": {
+    "Code": "do\nexpect(@tracker).to(match_array(@sync_resp.transcript_result_stream.to_a))\n@tracker = []\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-transcribestreamingservice\\features\\step_definitions.rb"
+  },
+  "^I call async response join!$": {
+    "Code": "do\nsleep(3)\n@sync_resp = @async_resp.join!\nend",
+    "File": "./repos/aws-sdk-ruby\\gems\\aws-sdk-transcribestreamingservice\\features\\step_definitions.rb"
+  }
+}

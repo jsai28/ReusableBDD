@@ -9,6 +9,7 @@ behave = "*"
 numpy = "*"
 matplotlib = "*"
 scikit-learn = "*"
+seaborn = "*"
 
 [dev-packages]
 

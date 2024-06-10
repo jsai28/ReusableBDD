@@ -27,6 +27,7 @@ def has_step_definitions(file_path: str) -> bool:
         r'^When\("I (run|type|close|pipe|stop|terminate|wait|send|look) ',
         r'^Then\s*\(\/\^\(\d+\) (should|should not|should contain|should not contain|should be|should not be|should match|should not match)',
         r'^Given\s*\(\/\^\(\d+\) (aruba|default|wait)',
+        r'^this\.(Given|When|Then|And)',
     ]
     compiled_patterns = [re.compile(pattern, re.IGNORECASE) for pattern in patterns]
     try:

@@ -1,9 +1,38 @@
 import json
 import zlib
 import numpy as np
+import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.cluster import KMeans
+
+def kmeans_clustering(matrix, num_clusters, labels):
+    """Perform K-Means clustering and plot the results."""
+    # Perform K-Means clustering on the distance matrix
+    kmeans = KMeans(n_clusters=num_clusters, random_state=42)
+    # Reshape the matrix to a 2D array suitable for K-Means (flatten the upper triangle)
+    upper_triangle_indices = np.triu_indices_from(matrix, k=1)
+    matrix_flattened = matrix[upper_triangle_indices]
+    matrix_for_clustering = matrix_flattened.reshape(-1, 1)
+    kmeans.fit(matrix_for_clustering)
+    clusters = kmeans.labels_
+    
+    # Reshape cluster labels back to the original matrix form
+    clustered_matrix = np.zeros_like(matrix)
+    for idx, (i, j) in enumerate(zip(*upper_triangle_indices)):
+        clustered_matrix[i, j] = clusters[idx]
+        clustered_matrix[j, i] = clusters[idx]  # Since the distance matrix is symmetric
+    
+    # Plot the clustered heatmap
+    plt.figure(figsize=(10, 7))
+    sns.heatmap(clustered_matrix, annot=True, cmap='viridis', xticklabels=labels, yticklabels=labels)
+    plt.title(f"K-Means Clustering with {num_clusters} Clusters")
+    plt.xlabel('Test Case Index')
+    plt.ylabel('Test Case Index')
+    plt.show()
+    
+    return clusters
 
 def calculate_ncd(data1, data2):
     """Calculate the Normalized Compression Distance (NCD) between two strings."""
@@ -27,9 +56,11 @@ def stringify_test_cases(test_data, data_key):
 def stringify_test_titles(test_data):
     """Retrieve the scenario titles and put them in an array"""
     test_titles = []
+    test_nums = []
     for test in test_data:
+        test_nums.append(test["test_num"])
         test_titles.append(test["test_case"])
-    return test_titles
+    return test_nums, test_titles
 
 def calculate_pairwise_ncd(test_strings):
     ncd_matrix = np.zeros((len(test_strings), len(test_strings)))
@@ -106,11 +137,11 @@ def plot_heatmaps(step_matrix, glue_matrix, title_matrix, type):
     plt.show()
 
 if __name__ == "__main__":
-    data_file = './data/jekyll/jekyll_data_v2.json'
+    data_file = './data/jekyll/jekyll_parsed_steps.json'
     with open(data_file, 'r') as f:
         test_data = json.load(f)
 
-    test_step_strings, test_glue_strings = stringify_test_cases(test_data, 'step_name'), stringify_test_cases(test_data, 'glue_code')
+    test_step_strings, test_glue_strings = stringify_test_cases(test_data, 'step_name'), stringify_test_cases(test_data, 'step_definition')
     test_titles = stringify_test_titles(test_data)
     
     # calculate and plot NCD
