@@ -1,4 +1,5 @@
 import json
+import collections
 import zlib
 import numpy as np
 import seaborn as sns
@@ -8,29 +9,35 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 
 def kmeans_clustering(matrix, num_clusters, labels):
-    """Perform K-Means clustering and plot the results."""
-    # Perform K-Means clustering on the distance matrix
+    """Perform K-Means clustering and return the clusters."""
+    # Perform K-Means clustering on the similarity matrix
     kmeans = KMeans(n_clusters=num_clusters, random_state=42)
-    # Reshape the matrix to a 2D array suitable for K-Means (flatten the upper triangle)
-    upper_triangle_indices = np.triu_indices_from(matrix, k=1)
-    matrix_flattened = matrix[upper_triangle_indices]
-    matrix_for_clustering = matrix_flattened.reshape(-1, 1)
-    kmeans.fit(matrix_for_clustering)
-    clusters = kmeans.labels_
+    kmeans.fit(matrix)
+    cluster_labels = kmeans.labels_
     
-    # Reshape cluster labels back to the original matrix form
-    clustered_matrix = np.zeros_like(matrix)
-    for idx, (i, j) in enumerate(zip(*upper_triangle_indices)):
-        clustered_matrix[i, j] = clusters[idx]
-        clustered_matrix[j, i] = clusters[idx]  # Since the distance matrix is symmetric
+    # Organize test cases by clusters
+    clusters = {}
+    for idx, label in enumerate(cluster_labels):
+        if label not in clusters:
+            clusters[label] = []
+        clusters[label].append(labels[idx])
     
-    # Plot the clustered heatmap
-    plt.figure(figsize=(10, 7))
-    sns.heatmap(clustered_matrix, annot=True, cmap='viridis', xticklabels=labels, yticklabels=labels)
-    plt.title(f"K-Means Clustering with {num_clusters} Clusters")
-    plt.xlabel('Test Case Index')
-    plt.ylabel('Test Case Index')
-    plt.show()
+    sorted_clusters = dict(sorted(clusters.items()))
+    return sorted_clusters
+
+def list_clusters(clusters):
+    """Print each cluster and its corresponding test cases."""
+    for cluster, test_cases in clusters.items():
+        print(f"\nCluster {cluster}:")
+        for test_case in test_cases:
+            print(f"  - {test_case}")
+
+def true_clusters(test_data):
+    clusters = collections.defaultdict(list)
+    for test in test_data:
+        feature_file = test["feature_file"]
+        test_case = test["test_case"]
+        clusters[feature_file].append(test_case)
     
     return clusters
 
