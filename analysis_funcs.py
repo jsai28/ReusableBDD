@@ -7,15 +7,88 @@ import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
+from scipy.optimize import linear_sum_assignment
+from sklearn.metrics import f1_score, precision_score, recall_score
+
+def run_analysis(data_file):
+    with open(data_file, 'r') as f:
+        test_data = json.load(f)
+    
+    step_definition_strings = stringify_test_cases(test_data, "step_definition")
+    step_name_strings = stringify_test_cases(test_data, "step_name")
+    scenario_nums, scenario_title_strings = stringify_test_titles(test_data)
+
+    step_name_ncd_matrix = calculate_pairwise_ncd(step_name_strings)
+    step_definition_ncd_matrix = calculate_pairwise_ncd(step_definition_strings)
+    scenario_title_ncd_matrix = calculate_pairwise_ncd(scenario_title_strings)
+
+    plot_heatmaps(step_name_ncd_matrix, step_definition_ncd_matrix, scenario_title_ncd_matrix, type="NCD")
+    num_clusters = len(set([test['feature_file'] for test in test_data]))
+    test_clusters = true_clusters(test_data)
+
+    step_name_clusters = kmeans_clustering(step_name_ncd_matrix, num_clusters, scenario_title_strings)
+    step_definition_clusters = kmeans_clustering(step_definition_ncd_matrix, num_clusters, scenario_title_strings)
+    scenario_clusters = kmeans_clustering(scenario_title_ncd_matrix, num_clusters, scenario_title_strings)
+
+    _, step_name_precision, step_name_recall, step_name_f1 = cluster_similarity(test_clusters, step_name_clusters)
+    _, step_definition_precision, step_definition_recall, step_definition_f1 = cluster_similarity(test_clusters, step_definition_clusters)
+    _, scenario_precision, scenario_recall, scenario_f1 = cluster_similarity(test_clusters, scenario_clusters)
+
+    print("Step Name Precision: ", step_name_precision)
+    print("Step Name Recall: ", step_name_recall)
+    print("Step Name F1 score: ", step_name_f1)
+
+    print("Step Definition Precision: ", step_definition_precision)
+    print("Step Definition Recall: ", step_definition_recall)
+    print("Step Definition F1 score", step_definition_f1)
+
+    print("Scenario Precision: ", scenario_precision)
+    print("Scenario Recall: ", scenario_recall)
+    print("Scenario F1 score", scenario_f1)
+
+def cluster_similarity(true_clusters, predicted_clusters):
+    true_keys = list(true_clusters.keys())
+    pred_keys = list(predicted_clusters.keys())
+    
+    overlap_matrix = np.zeros((len(true_keys), len(pred_keys)))
+    
+    for i, true_key in enumerate(true_keys):
+        true_values = set(true_clusters[true_key])
+        for j, pred_key in enumerate(pred_keys):
+            pred_values = set(predicted_clusters[pred_key])
+            overlap = true_values & pred_values
+            overlap_matrix[i, j] = len(overlap)
+    
+    cost_matrix = -overlap_matrix
+    
+    # Apply the Hungarian algorithm to find the optimal assignment
+    row_ind, col_ind = linear_sum_assignment(cost_matrix)
+    
+    true_labels = []
+    pred_labels = []
+    
+    for i, true_key in enumerate(true_keys):
+        for value in true_clusters[true_key]:
+            true_labels.append(i)
+            
+    for j, pred_key in enumerate(pred_keys):
+        for value in predicted_clusters[pred_key]:
+            pred_labels.append(col_ind[j])
+    
+    precision = precision_score(true_labels, pred_labels, average='micro')
+    recall = recall_score(true_labels, pred_labels, average='micro')
+    f1 = f1_score(true_labels, pred_labels, average='micro')
+    
+    matches = [(true_keys[i], pred_keys[j]) for i, j in zip(row_ind, col_ind)]
+    
+    return matches, precision, recall, f1
 
 def kmeans_clustering(matrix, num_clusters, labels):
     """Perform K-Means clustering and return the clusters."""
-    # Perform K-Means clustering on the similarity matrix
     kmeans = KMeans(n_clusters=num_clusters, random_state=42)
     kmeans.fit(matrix)
     cluster_labels = kmeans.labels_
     
-    # Organize test cases by clusters
     clusters = {}
     for idx, label in enumerate(cluster_labels):
         if label not in clusters:
@@ -33,10 +106,13 @@ def list_clusters(clusters):
             print(f"  - {test_case}")
 
 def true_clusters(test_data):
-    clusters = collections.defaultdict(list)
+    clusters = {}
     for test in test_data:
         feature_file = test["feature_file"]
         test_case = test["test_case"]
+        if feature_file not in clusters:
+            clusters[feature_file] = []
+            
         clusters[feature_file].append(test_case)
     
     return clusters
