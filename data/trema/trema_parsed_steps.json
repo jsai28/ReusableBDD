@@ -1570,32 +1570,8 @@
     ]
   },
   {
-    "feature_file": "delete_link.feature",
-    "test_num": 53,
-    "test_case": "\"link not found\" error",
-    "steps": []
-  },
-  {
-    "feature_file": "socket_dir_option.feature",
-    "test_num": 54,
-    "test_case": "-S option",
-    "steps": []
-  },
-  {
-    "feature_file": "socket_dir_option.feature",
-    "test_num": 55,
-    "test_case": "--socket_dir option",
-    "steps": []
-  },
-  {
-    "feature_file": "socket_dir_option.feature",
-    "test_num": 56,
-    "test_case": "\"link not found\" error",
-    "steps": []
-  },
-  {
     "feature_file": "dump_flows.feature",
-    "test_num": 57,
+    "test_num": 53,
     "test_case": "dump_flows (no flow entries)",
     "steps": [
       {
@@ -1620,7 +1596,7 @@
   },
   {
     "feature_file": "dump_flows.feature",
-    "test_num": 58,
+    "test_num": 54,
     "test_case": "dump_flows (one flow entry)",
     "steps": [
       {
@@ -1645,7 +1621,7 @@
   },
   {
     "feature_file": "dump_flows.feature",
-    "test_num": 59,
+    "test_num": 55,
     "test_case": "dump_flows OpenFlow 1.3 (no flow entries)",
     "steps": [
       {
@@ -1676,7 +1652,7 @@
   },
   {
     "feature_file": "dump_flows.feature",
-    "test_num": 60,
+    "test_num": 56,
     "test_case": "dump_flows OpenFlow 1.3 (one flow entry)",
     "steps": [
       {
@@ -1707,7 +1683,7 @@
   },
   {
     "feature_file": "socket_dir_option.feature",
-    "test_num": 61,
+    "test_num": 57,
     "test_case": "-S option",
     "steps": [
       {
@@ -1726,7 +1702,7 @@
   },
   {
     "feature_file": "socket_dir_option.feature",
-    "test_num": 62,
+    "test_num": 58,
     "test_case": "--socket_dir option",
     "steps": [
       {
@@ -1745,7 +1721,7 @@
   },
   {
     "feature_file": "socket_dir_option.feature",
-    "test_num": 63,
+    "test_num": 59,
     "test_case": "\"No such directory\" error",
     "steps": [
       {
@@ -1770,7 +1746,7 @@
   },
   {
     "feature_file": "all_option.feature",
-    "test_num": 64,
+    "test_num": 60,
     "test_case": "killall --all",
     "steps": [
       {
@@ -1819,7 +1795,7 @@
   },
   {
     "feature_file": "killall.feature",
-    "test_num": 65,
+    "test_num": 61,
     "test_case": "killall controller_name",
     "steps": [
       {
@@ -1886,7 +1862,7 @@
   },
   {
     "feature_file": "killall.feature",
-    "test_num": 66,
+    "test_num": 62,
     "test_case": "\"Controller process does not exist\" error",
     "steps": [
       {
@@ -1911,7 +1887,7 @@
   },
   {
     "feature_file": "socket_dir_option.feature",
-    "test_num": 67,
+    "test_num": 63,
     "test_case": "-S option",
     "steps": [
       {
@@ -1942,7 +1918,7 @@
   },
   {
     "feature_file": "socket_dir_option.feature",
-    "test_num": 68,
+    "test_num": 64,
     "test_case": "--socket_dir option",
     "steps": [
       {
@@ -1973,7 +1949,7 @@
   },
   {
     "feature_file": "socket_dir_option.feature",
-    "test_num": 69,
+    "test_num": 65,
     "test_case": "\"Controller process does not exist\" error",
     "steps": [
       {
@@ -2016,7 +1992,7 @@
   },
   {
     "feature_file": "netns.feature",
-    "test_num": 70,
+    "test_num": 66,
     "test_case": "netns namespece",
     "steps": [
       {
@@ -2047,7 +2023,7 @@
   },
   {
     "feature_file": "netns.feature",
-    "test_num": 71,
+    "test_num": 67,
     "test_case": "netns namespece command",
     "steps": [
       {
@@ -2066,7 +2042,7 @@
   },
   {
     "feature_file": "reset_stats.feature",
-    "test_num": 72,
+    "test_num": 68,
     "test_case": "run controller_file",
     "steps": [
       {
@@ -2115,7 +2091,7 @@
   },
   {
     "feature_file": "conf_option.feature",
-    "test_num": 73,
+    "test_num": 69,
     "test_case": "-c option",
     "steps": [
       {
@@ -2140,7 +2116,7 @@
   },
   {
     "feature_file": "conf_option.feature",
-    "test_num": 74,
+    "test_num": 70,
     "test_case": "--conf option",
     "steps": [
       {
@@ -2165,7 +2141,7 @@
   },
   {
     "feature_file": "conf_option.feature",
-    "test_num": 75,
+    "test_num": 71,
     "test_case": "\"No such file\" error",
     "steps": [
       {
@@ -2190,7 +2166,7 @@
   },
   {
     "feature_file": "conf_option.feature",
-    "test_num": 76,
+    "test_num": 72,
     "test_case": "NameError",
     "steps": [
       {
@@ -2221,7 +2197,7 @@
   },
   {
     "feature_file": "conf_option.feature",
-    "test_num": 77,
+    "test_num": 73,
     "test_case": "SyntaxError",
     "steps": [
       {
@@ -2252,7 +2228,7 @@
   },
   {
     "feature_file": "daemonize_option.feature",
-    "test_num": 78,
+    "test_num": 74,
     "test_case": "-d option",
     "steps": [
       {
@@ -2271,7 +2247,7 @@
   },
   {
     "feature_file": "daemonize_option.feature",
-    "test_num": 79,
+    "test_num": 75,
     "test_case": "--daemonize option",
     "steps": [
       {
@@ -2290,7 +2266,7 @@
   },
   {
     "feature_file": "logging_level_option.feature",
-    "test_num": 80,
+    "test_num": 76,
     "test_case": "the default logging level",
     "steps": [
       {
@@ -2339,7 +2315,7 @@
   },
   {
     "feature_file": "logging_level_option.feature",
-    "test_num": 81,
+    "test_num": 77,
     "test_case": "--logging_level debug",
     "steps": [
       {
@@ -2358,7 +2334,7 @@
   },
   {
     "feature_file": "logging_level_option.feature",
-    "test_num": 82,
+    "test_num": 78,
     "test_case": "\"Invalid log level\" error",
     "steps": [
       {
@@ -2383,7 +2359,7 @@
   },
   {
     "feature_file": "log_dir_option.feature",
-    "test_num": 83,
+    "test_num": 79,
     "test_case": "-L option",
     "steps": [
       {
@@ -2414,7 +2390,7 @@
   },
   {
     "feature_file": "log_dir_option.feature",
-    "test_num": 84,
+    "test_num": 80,
     "test_case": "--log_dir option",
     "steps": [
       {
@@ -2445,7 +2421,7 @@
   },
   {
     "feature_file": "log_dir_option.feature",
-    "test_num": 85,
+    "test_num": 81,
     "test_case": "\"No such directory\" error",
     "steps": [
       {
@@ -2470,7 +2446,7 @@
   },
   {
     "feature_file": "openflow13_option.feature",
-    "test_num": 86,
+    "test_num": 82,
     "test_case": "--openflow13 option",
     "steps": [
       {
@@ -2495,7 +2471,7 @@
   },
   {
     "feature_file": "openflow13_option.feature",
-    "test_num": 87,
+    "test_num": 83,
     "test_case": "--no-openflow13 option",
     "steps": [
       {
@@ -2520,7 +2496,7 @@
   },
   {
     "feature_file": "openflow13_option.feature",
-    "test_num": 88,
+    "test_num": 84,
     "test_case": "the default OpenFlow version is 1.0",
     "steps": [
       {
@@ -2545,7 +2521,7 @@
   },
   {
     "feature_file": "pid_dir_option.feature",
-    "test_num": 89,
+    "test_num": 85,
     "test_case": "-P option",
     "steps": [
       {
@@ -2576,7 +2552,7 @@
   },
   {
     "feature_file": "pid_dir_option.feature",
-    "test_num": 90,
+    "test_num": 86,
     "test_case": "--pid_dir option",
     "steps": [
       {
@@ -2607,7 +2583,7 @@
   },
   {
     "feature_file": "pid_dir_option.feature",
-    "test_num": 91,
+    "test_num": 87,
     "test_case": "\"No such directory\" error",
     "steps": [
       {
@@ -2632,7 +2608,7 @@
   },
   {
     "feature_file": "port_option.feature",
-    "test_num": 92,
+    "test_num": 88,
     "test_case": "-p option",
     "steps": [
       {
@@ -2657,7 +2633,7 @@
   },
   {
     "feature_file": "port_option.feature",
-    "test_num": 93,
+    "test_num": 89,
     "test_case": "--port option",
     "steps": [
       {
@@ -2682,7 +2658,7 @@
   },
   {
     "feature_file": "run.feature",
-    "test_num": 94,
+    "test_num": 90,
     "test_case": "run controller_file",
     "steps": [
       {
@@ -2707,7 +2683,7 @@
   },
   {
     "feature_file": "run.feature",
-    "test_num": 95,
+    "test_num": 91,
     "test_case": "cleanup on failure",
     "steps": [
       {
@@ -2744,7 +2720,7 @@
   },
   {
     "feature_file": "show_backtrace_on_exception.feature",
-    "test_num": 96,
+    "test_num": 92,
     "test_case": "\"No controller class is defined\" error",
     "steps": [
       {
@@ -2781,7 +2757,7 @@
   },
   {
     "feature_file": "show_backtrace_on_exception.feature",
-    "test_num": 97,
+    "test_num": 93,
     "test_case": "SyntaxError",
     "steps": [
       {
@@ -2818,7 +2794,7 @@
   },
   {
     "feature_file": "show_backtrace_on_exception.feature",
-    "test_num": 98,
+    "test_num": 94,
     "test_case": "NameError",
     "steps": [
       {
@@ -2867,7 +2843,7 @@
   },
   {
     "feature_file": "show_backtrace_on_exception.feature",
-    "test_num": 99,
+    "test_num": 95,
     "test_case": "RuntimeError",
     "steps": [
       {
@@ -2916,7 +2892,7 @@
   },
   {
     "feature_file": "socket_dir_option.feature",
-    "test_num": 100,
+    "test_num": 96,
     "test_case": "-S option",
     "steps": [
       {
@@ -2941,7 +2917,7 @@
   },
   {
     "feature_file": "socket_dir_option.feature",
-    "test_num": 101,
+    "test_num": 97,
     "test_case": "--socket_dir option",
     "steps": [
       {
@@ -2966,7 +2942,7 @@
   },
   {
     "feature_file": "socket_dir_option.feature",
-    "test_num": 102,
+    "test_num": 98,
     "test_case": "\"No such directory\" error",
     "steps": [
       {
@@ -2990,20 +2966,8 @@
     ]
   },
   {
-    "feature_file": "socket_dir_option.feature",
-    "test_num": 103,
-    "test_case": "-S option",
-    "steps": []
-  },
-  {
-    "feature_file": "socket_dir_option.feature",
-    "test_num": 104,
-    "test_case": "--socket_dir option",
-    "steps": []
-  },
-  {
     "feature_file": "start.feature",
-    "test_num": 105,
+    "test_num": 99,
     "test_case": "stop and start a switch",
     "steps": [
       {
@@ -3040,7 +3004,7 @@
   },
   {
     "feature_file": "start.feature",
-    "test_num": 106,
+    "test_num": 100,
     "test_case": "stop and start host_name",
     "steps": [
       {
@@ -3077,7 +3041,7 @@
   },
   {
     "feature_file": "start.feature",
-    "test_num": 107,
+    "test_num": 101,
     "test_case": "\"Open vSwitch is already running\" error",
     "steps": [
       {
@@ -3102,7 +3066,7 @@
   },
   {
     "feature_file": "start.feature",
-    "test_num": 108,
+    "test_num": 102,
     "test_case": "\"vswitch is already running\" error",
     "steps": [
       {
@@ -3127,7 +3091,7 @@
   },
   {
     "feature_file": "start.feature",
-    "test_num": 109,
+    "test_num": 103,
     "test_case": "start NO_SUCH_NAME",
     "steps": [
       {
@@ -3151,20 +3115,8 @@
     ]
   },
   {
-    "feature_file": "socket_dir_option.feature",
-    "test_num": 110,
-    "test_case": "-S option",
-    "steps": []
-  },
-  {
-    "feature_file": "socket_dir_option.feature",
-    "test_num": 111,
-    "test_case": "--socket_dir option",
-    "steps": []
-  },
-  {
     "feature_file": "stop.feature",
-    "test_num": 112,
+    "test_num": 104,
     "test_case": "stop a switch",
     "steps": [
       {
@@ -3189,7 +3141,7 @@
   },
   {
     "feature_file": "stop.feature",
-    "test_num": 113,
+    "test_num": 105,
     "test_case": "stop a host",
     "steps": [
       {
@@ -3214,7 +3166,7 @@
   },
   {
     "feature_file": "stop.feature",
-    "test_num": 114,
+    "test_num": 106,
     "test_case": "stop NO_SUCH_NAME",
     "steps": [
       {

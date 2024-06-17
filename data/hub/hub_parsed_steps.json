@@ -3211,24 +3211,6 @@
     ]
   },
   {
-    "feature_file": "bash_completion.feature",
-    "test_num": 92,
-    "test_case": "Completion of user/repo in \"browse\"",
-    "steps": []
-  },
-  {
-    "feature_file": "bash_completion.feature",
-    "test_num": 93,
-    "test_case": "Completion of branch names in \"compare\"",
-    "steps": []
-  },
-  {
-    "feature_file": "bash_completion.feature",
-    "test_num": 94,
-    "test_case": "Completion of \"owner/repo:branch\" in \"pull-request -h/b\"",
-    "steps": []
-  },
-  {
     "feature_file": "browse.feature",
     "test_num": 95,
     "test_case": "No repo",

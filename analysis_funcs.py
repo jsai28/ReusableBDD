@@ -10,41 +10,66 @@ from sklearn.cluster import KMeans
 from scipy.optimize import linear_sum_assignment
 from sklearn.metrics import f1_score, precision_score, recall_score
 
+def plot_and_cluster(matrix, matrix_name, num_clusters, scenario_titles, true_clusters):
+    """
+    Plot heatmap, perform k-means clustering, and compute similarity metrics.
+    """
+    # Plot heatmap
+    plot_individual_heatmap(matrix, title=f"{matrix_name} Heatmap")
+
+    # Perform k-means clustering
+    predicted_clusters = kmeans_clustering(matrix, num_clusters, scenario_titles)
+
+    # Calculate similarity metrics
+    aligned_clusters, precision, recall, f1 = cluster_similarity(true_clusters, predicted_clusters)
+
+    # Print metrics
+    print(f"{matrix_name} Metrics:")
+    print(f"  Precision: {precision:.4f}")
+    print(f"  Recall: {recall:.4f}")
+    print(f"  F1 Score: {f1:.4f}")
+    print()
+
+    return aligned_clusters, precision, recall, f1
+
 def run_analysis(data_file):
+    """main function to run the analysis"""
+    # Load in data
     with open(data_file, 'r') as f:
         test_data = json.load(f)
     
+    # Convert JSON steps into strings
     step_definition_strings = stringify_test_cases(test_data, "step_definition")
     step_name_strings = stringify_test_cases(test_data, "step_name")
     scenario_nums, scenario_title_strings = stringify_test_titles(test_data)
 
-    step_name_ncd_matrix = calculate_pairwise_ncd(step_name_strings)
-    step_definition_ncd_matrix = calculate_pairwise_ncd(step_definition_strings)
-    scenario_title_ncd_matrix = calculate_pairwise_ncd(scenario_title_strings)
+    # Calculate matrices for each metric
+    matrices = {
+        "Step Name NCD": calculate_pairwise_ncd(step_name_strings),
+        "Step Definition NCD": calculate_pairwise_ncd(step_definition_strings),
+        "Scenario Title NCD": calculate_pairwise_ncd(scenario_title_strings),
+        "Step Name Cosine": calculate_cosine_similarity(step_name_strings),
+        "Step Definition Cosine": calculate_cosine_similarity(step_definition_strings),
+        "Scenario Title Cosine": calculate_cosine_similarity(scenario_title_strings),
+        "Step Name Euclidean": calculate_euclidean_distance(step_name_strings),
+        "Step Definition Euclidean": calculate_euclidean_distance(step_definition_strings),
+        "Scenario Title Euclidean": calculate_euclidean_distance(scenario_title_strings),
+        "Step Name Manhattan": calculate_manhattan_distance(step_name_strings),
+        "Step Definition Manhattan": calculate_manhattan_distance(step_definition_strings),
+        "Scenario Title Manhattan": calculate_manhattan_distance(scenario_title_strings)
+    }
 
-    plot_heatmaps(step_name_ncd_matrix, step_definition_ncd_matrix, scenario_title_ncd_matrix, type="NCD")
+    # Determine number of clusters
     num_clusters = len(set([test['feature_file'] for test in test_data]))
-    test_clusters = true_clusters(test_data)
+    true_cluster_labels = true_clusters(test_data)
 
-    step_name_clusters = kmeans_clustering(step_name_ncd_matrix, num_clusters, scenario_title_strings)
-    step_definition_clusters = kmeans_clustering(step_definition_ncd_matrix, num_clusters, scenario_title_strings)
-    scenario_clusters = kmeans_clustering(scenario_title_ncd_matrix, num_clusters, scenario_title_strings)
-
-    _, step_name_precision, step_name_recall, step_name_f1 = cluster_similarity(test_clusters, step_name_clusters)
-    _, step_definition_precision, step_definition_recall, step_definition_f1 = cluster_similarity(test_clusters, step_definition_clusters)
-    _, scenario_precision, scenario_recall, scenario_f1 = cluster_similarity(test_clusters, scenario_clusters)
-
-    print("Step Name Precision: ", step_name_precision)
-    print("Step Name Recall: ", step_name_recall)
-    print("Step Name F1 score: ", step_name_f1)
-
-    print("Step Definition Precision: ", step_definition_precision)
-    print("Step Definition Recall: ", step_definition_recall)
-    print("Step Definition F1 score", step_definition_f1)
-
-    print("Scenario Precision: ", scenario_precision)
-    print("Scenario Recall: ", scenario_recall)
-    print("Scenario F1 score", scenario_f1)
+    # Process each matrix, plot data and list metrics
+    metrics = {}
+    for matrix_name, matrix in matrices.items():
+        aligned_clusters, precision, recall, f1 = plot_and_cluster(
+            matrix, matrix_name, num_clusters, scenario_title_strings, true_cluster_labels
+        )
+        metrics[matrix_name] = (aligned_clusters, precision, recall, f1)
 
 def cluster_similarity(true_clusters, predicted_clusters):
     true_keys = list(true_clusters.keys())
@@ -118,12 +143,21 @@ def true_clusters(test_data):
     return clusters
 
 def calculate_ncd(data1, data2):
-    """Calculate the Normalized Compression Distance (NCD) between two strings."""
-    combined_length = len(data1) + len(data2)
+    if not data1 or not data2:
+        raise ValueError("Input data strings must not be empty.")
+    
     compressed1 = zlib.compress(data1.encode())
     compressed2 = zlib.compress(data2.encode())
     compressed_combined = zlib.compress((data1 + data2).encode())
-    return (len(compressed_combined) - min(len(compressed1), len(compressed2))) / combined_length
+    
+    len_compressed1 = len(compressed1)
+    len_compressed2 = len(compressed2)
+    combined_length = len_compressed1 + len_compressed2
+    
+    if combined_length == 0:
+        raise ValueError("Combined length of compressed data is zero, cannot calculate NCD.")
+    
+    return (len(compressed_combined) - min(len_compressed1, len_compressed2)) / combined_length
 
 def stringify_test_cases(test_data, data_key):
     """Convert the steps and glue code into strings"""
@@ -146,12 +180,19 @@ def stringify_test_titles(test_data):
     return test_nums, test_titles
 
 def calculate_pairwise_ncd(test_strings):
-    ncd_matrix = np.zeros((len(test_strings), len(test_strings)))
-    for i in range(len(test_strings)):
-        for j in range(i+1, len(test_strings)):
-            ncd = calculate_ncd(test_strings[i], test_strings[j])
-            ncd_matrix[i, j] = ncd
-            ncd_matrix[j, i] = ncd  # Since NCD is symmetric
+    num_strings = len(test_strings)
+    ncd_matrix = np.zeros((num_strings, num_strings))
+    
+    for i in range(num_strings):
+        for j in range(i + 1, num_strings):
+            try:
+                ncd = calculate_ncd(test_strings[i], test_strings[j])
+                ncd_matrix[i, j] = ncd
+                ncd_matrix[j, i] = ncd  # Since NCD is symmetric
+            except ValueError as e:
+                print(f"Error calculating NCD for pair ({i}, {j}): {e}")
+                ncd_matrix[i, j] = float('inf')
+                ncd_matrix[j, i] = float('inf')
     
     return ncd_matrix
 
@@ -192,6 +233,16 @@ def calculate_manhattan_distance(test_case_strings):
             manhattan_distances[j, i] = manhattan_distances[i, j]  # Since the distance is symmetric
     return manhattan_distances
 
+def plot_individual_heatmap(matrix, title):
+    """Plot a single similarity matrix using a heatmap."""
+    plt.figure(figsize=(8, 8))
+    plt.imshow(matrix, cmap='hot', interpolation='nearest')
+    plt.title(title)
+    plt.xlabel('Test Case Index')
+    plt.ylabel('Test Case Index')
+    plt.colorbar()
+    plt.show()
+
 def plot_heatmaps(step_matrix, glue_matrix, title_matrix, type):
     """Plot similarity matrix using heatmaps"""
     fig, axs = plt.subplots(1, 3, figsize=(20, 8))
@@ -205,14 +256,14 @@ def plot_heatmaps(step_matrix, glue_matrix, title_matrix, type):
 
     # Plot heatmap for glue_code
     im2 = axs[1].imshow(glue_matrix, cmap='hot', interpolation='nearest')
-    axs[1].set_title(f'{type} Heatmap for Glue Code')
+    axs[1].set_title(f'{type} Heatmap for Step Definitions')
     axs[1].set_xlabel('Test Case Index')
     axs[1].set_ylabel('Test Case Index')
     fig.colorbar(im2, ax=axs[1])
 
     # Plot heatmap for titles
     im2 = axs[2].imshow(title_matrix, cmap='hot', interpolation='nearest')
-    axs[2].set_title(f'{type} Heatmap for Titles')
+    axs[2].set_title(f'{type} Heatmap for Scenarios')
     axs[2].set_xlabel('Test Case Index')
     axs[2].set_ylabel('Test Case Index')
     fig.colorbar(im2, ax=axs[2])
