@@ -10,28 +10,6 @@ from sklearn.cluster import KMeans
 from scipy.optimize import linear_sum_assignment
 from sklearn.metrics import f1_score, precision_score, recall_score
 
-def plot_and_cluster(matrix, matrix_name, num_clusters, scenario_titles, true_clusters):
-    """
-    Plot heatmap, perform k-means clustering, and compute similarity metrics.
-    """
-    # Plot heatmap
-    plot_individual_heatmap(matrix, title=f"{matrix_name} Heatmap")
-
-    # Perform k-means clustering
-    predicted_clusters = kmeans_clustering(matrix, num_clusters, scenario_titles)
-
-    # Calculate similarity metrics
-    aligned_clusters, precision, recall, f1 = cluster_similarity(true_clusters, predicted_clusters)
-
-    # Print metrics
-    print(f"{matrix_name} Metrics:")
-    print(f"  Precision: {precision:.4f}")
-    print(f"  Recall: {recall:.4f}")
-    print(f"  F1 Score: {f1:.4f}")
-    print()
-
-    return aligned_clusters, precision, recall, f1
-
 def run_analysis(data_file):
     """main function to run the analysis"""
     # Load in data
@@ -66,10 +44,31 @@ def run_analysis(data_file):
     # Process each matrix, plot data and list metrics
     metrics = {}
     for matrix_name, matrix in matrices.items():
-        aligned_clusters, precision, recall, f1 = plot_and_cluster(
+        aligned_clusters, precision, mean_avg_precision = plot_and_cluster(
             matrix, matrix_name, num_clusters, scenario_title_strings, true_cluster_labels
         )
-        metrics[matrix_name] = (aligned_clusters, precision, recall, f1)
+        metrics[matrix_name] = (aligned_clusters, precision, mean_avg_precision)
+
+def plot_and_cluster(matrix, matrix_name, num_clusters, scenario_titles, true_clusters):
+    """
+    Plot heatmap, perform k-means clustering, and compute similarity metrics.
+    """
+    # Plot heatmap
+    plot_individual_heatmap(matrix, title=f"{matrix_name} Heatmap")
+
+    # Perform k-means clustering
+    predicted_clusters = kmeans_clustering(matrix, num_clusters, scenario_titles)
+
+    # Calculate similarity metrics
+    aligned_clusters, precision, mean_avg_precision = cluster_similarity(true_clusters, predicted_clusters)
+
+    # Print metrics
+    print(f"{matrix_name} Metrics:")
+    print(f"  Precision: {precision:.4f}")
+    print(f"  Mean Average Precision: {mean_avg_precision:.4f}")
+    print()
+
+    return aligned_clusters, precision, mean_avg_precision
 
 def cluster_similarity(true_clusters, predicted_clusters):
     true_keys = list(true_clusters.keys())
@@ -89,24 +88,29 @@ def cluster_similarity(true_clusters, predicted_clusters):
     # Apply the Hungarian algorithm to find the optimal assignment
     row_ind, col_ind = linear_sum_assignment(cost_matrix)
     
-    true_labels = []
-    pred_labels = []
+    i = 0
+    total_correct = 0
+    total_scenarios = 0
+    average_precisions = []
+    for true_key, true_labels in true_clusters.items():
+        cur_correct = 0
+        pred_cluster_index = col_ind[i]
+        pred_labels = set(predicted_clusters[pred_cluster_index])
+
+        for label in true_labels:
+            total_scenarios += 1
+            if label in pred_labels:
+                total_correct += 1
+                cur_correct += 1
+
+        average_precisions.append(cur_correct/len(true_labels))
+
     
-    for i, true_key in enumerate(true_keys):
-        for value in true_clusters[true_key]:
-            true_labels.append(i)
-            
-    for j, pred_key in enumerate(pred_keys):
-        for value in predicted_clusters[pred_key]:
-            pred_labels.append(col_ind[j])
+    precision = total_correct/total_scenarios
+    mean_average_precision = np.mean(average_precisions)
+    matches = [(true_keys[i], pred_keys[j]) for i, j in zip(row_ind, col_ind)] 
     
-    precision = precision_score(true_labels, pred_labels, average='micro')
-    recall = recall_score(true_labels, pred_labels, average='micro')
-    f1 = f1_score(true_labels, pred_labels, average='micro')
-    
-    matches = [(true_keys[i], pred_keys[j]) for i, j in zip(row_ind, col_ind)]
-    
-    return matches, precision, recall, f1
+    return matches, precision, mean_average_precision
 
 def kmeans_clustering(matrix, num_clusters, labels):
     """Perform K-Means clustering and return the clusters."""
