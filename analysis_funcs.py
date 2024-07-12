@@ -44,10 +44,10 @@ def run_analysis(data_file):
     # Process each matrix, plot data and list metrics
     metrics = {}
     for matrix_name, matrix in matrices.items():
-        aligned_clusters, precision, mean_avg_precision = plot_and_cluster(
+        aligned_clusters, precision, mean_avg_precision, mean_reciprocal_ranks = plot_and_cluster(
             matrix, matrix_name, num_clusters, scenario_title_strings, true_cluster_labels
         )
-        metrics[matrix_name] = (aligned_clusters, precision, mean_avg_precision)
+        metrics[matrix_name] = (aligned_clusters, precision, mean_avg_precision, mean_reciprocal_ranks)
 
 def plot_and_cluster(matrix, matrix_name, num_clusters, scenario_titles, true_clusters):
     """
@@ -60,15 +60,16 @@ def plot_and_cluster(matrix, matrix_name, num_clusters, scenario_titles, true_cl
     predicted_clusters = kmeans_clustering(matrix, num_clusters, scenario_titles)
 
     # Calculate similarity metrics
-    aligned_clusters, precision, mean_avg_precision = cluster_similarity(true_clusters, predicted_clusters)
+    aligned_clusters, precision, mean_avg_precision, mean_reciprocal_ranks = cluster_similarity(true_clusters, predicted_clusters)
 
     # Print metrics
     print(f"{matrix_name} Metrics:")
     print(f"  Precision: {precision:.4f}")
     print(f"  Mean Average Precision: {mean_avg_precision:.4f}")
+    print(f"  Mean Reciprocal Ranks: {mean_reciprocal_ranks:.4f}")
     print()
 
-    return aligned_clusters, precision, mean_avg_precision
+    return aligned_clusters, precision, mean_avg_precision, mean_reciprocal_ranks
 
 def cluster_similarity(true_clusters, predicted_clusters):
     true_keys = list(true_clusters.keys())
@@ -92,6 +93,7 @@ def cluster_similarity(true_clusters, predicted_clusters):
     total_correct = 0
     total_scenarios = 0
     average_precisions = []
+    reciprocal_ranks = []
     for true_key, true_labels in true_clusters.items():
         cur_correct = 0
         pred_cluster_index = col_ind[i]
@@ -102,6 +104,10 @@ def cluster_similarity(true_clusters, predicted_clusters):
             if label in pred_labels:
                 total_correct += 1
                 cur_correct += 1
+            
+            for pred_key, pred_labels in predicted_clusters.items():
+                if label in pred_labels:
+                    reciprocal_ranks.append(1/(pred_key+1))
 
         average_precisions.append(cur_correct/len(true_labels))
 
@@ -109,8 +115,9 @@ def cluster_similarity(true_clusters, predicted_clusters):
     precision = total_correct/total_scenarios
     mean_average_precision = np.mean(average_precisions)
     matches = [(true_keys[i], pred_keys[j]) for i, j in zip(row_ind, col_ind)] 
-    
-    return matches, precision, mean_average_precision
+    mean_reciprocal_ranks = np.mean(reciprocal_ranks)
+
+    return matches, precision, mean_average_precision, mean_reciprocal_ranks
 
 def kmeans_clustering(matrix, num_clusters, labels):
     """Perform K-Means clustering and return the clusters."""
