@@ -39,6 +39,15 @@ def pattern_search(step_name, step_patterns):
             return definition
     return None
 
+def replace_inputs_with_blank_quotes(step_name):
+    # This regex matches any text within double quotes
+    pattern = r'"[^"]*"'
+    
+    # Replace matched text with ""
+    modified_text = re.sub(pattern, '""', step_name)
+    
+    return modified_text
+
 def feature_parser(base_dir, parsed_definitions, combined_directory='./data'):
     """
     Build the dataset of each test case and its corresponding glue code and step definitions.
@@ -91,6 +100,7 @@ def feature_parser(base_dir, parsed_definitions, combined_directory='./data'):
                     steps.append({
                         "step_num": step_num,
                         "step_name": step.name,
+                        "step_name_cleaned": replace_inputs_with_blank_quotes(step.name),
                         "step_definition": step_definition,
                         "step_definition_file": step_definition_file
                     })
@@ -98,6 +108,9 @@ def feature_parser(base_dir, parsed_definitions, combined_directory='./data'):
                 if matched_scenario[step.name] is None:
                     print(f"Step number {step_num} with Step name {step.name} not matched.")
                     total_unmatched_steps += 1
+            
+            if not steps:
+                continue
             
             matched_steps.append({
                         "feature_file": os.path.basename(feature_file),

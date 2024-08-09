@@ -19,20 +19,25 @@ def run_analysis(data_file):
     # Convert JSON steps into strings
     step_definition_strings = stringify_test_cases(test_data, "step_definition")
     step_name_strings = stringify_test_cases(test_data, "step_name")
+    step_name_clean_strings = stringify_test_cases(test_data, "step_name_cleaned")
     scenario_nums, scenario_title_strings = stringify_test_titles(test_data)
 
     # Calculate matrices for each metric
     matrices = {
         "Step Name NCD": calculate_pairwise_ncd(step_name_strings),
+        "Step Name Cleaned NCD": calculate_pairwise_ncd(step_name_clean_strings),
         "Step Definition NCD": calculate_pairwise_ncd(step_definition_strings),
         "Scenario Title NCD": calculate_pairwise_ncd(scenario_title_strings),
         "Step Name Cosine": calculate_cosine_similarity(step_name_strings),
+        "Step Name Cleaned Cosine": calculate_cosine_similarity(step_name_clean_strings),
         "Step Definition Cosine": calculate_cosine_similarity(step_definition_strings),
         "Scenario Title Cosine": calculate_cosine_similarity(scenario_title_strings),
         "Step Name Euclidean": calculate_euclidean_distance(step_name_strings),
+        "Step Name Cleaned Euclidean": calculate_euclidean_distance(step_name_clean_strings),
         "Step Definition Euclidean": calculate_euclidean_distance(step_definition_strings),
         "Scenario Title Euclidean": calculate_euclidean_distance(scenario_title_strings),
         "Step Name Manhattan": calculate_manhattan_distance(step_name_strings),
+        "Step Name Cleaned Manhattan": calculate_manhattan_distance(step_name_clean_strings),
         "Step Definition Manhattan": calculate_manhattan_distance(step_definition_strings),
         "Scenario Title Manhattan": calculate_manhattan_distance(scenario_title_strings)
     }
